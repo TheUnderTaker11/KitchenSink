@@ -1,0 +1,44 @@
+itemGroup.KStab=Kitchen Sink Mod
+
+
+item.blessedPick.name=Blessed Metal Pick
+item.blessedShovel.name=Blessed Metal Shovel
+item.blessedSword.name=Blessed Metal Sword
+item.blessedAxe.name=Blessed Metal Axe
+item.blessedHoe.name=Blessed Metal Hoe
+item.blessedPick2.name=Blessed Metal Pick
+item.godsTool.name=God's Tool
+item.deathsSythe.name=Death's Scythe
+item.SkeletonSword.name=Soul Sword
+item.DemonicSword.name=Demonic Soul Sword
+item.LevelPick.name=Lapis Pickaxe
+item.Wand.name=Wand Of Blessing
+
+item.diamondPlate.name=Diamond Plate
+item.compDiamond.name=Compressed Diamond
+item.obsidianPlate.name=Obsidian Plate
+item.angelAlloy.name=Angelic Ingot
+item.deathIngot.name=Ingot of Death
+item.deathNugget.name=Nugget of Death
+item.blessedRock.name=Blessed...Rock?
+item.netherStarPlate.name=Nether Star Plate
+item.godEssence.name=Essence Of God
+item.ItemMagnet.name=Item Magnet T1
+item.ItemMagnetT2.name=Item Magnet T2
+item.ItemMagnetT3.name=Item Magnet T3
+item.ItemMagnetT4.name=Item Magnet T4
+item.ItemMagnetT5.name=Item Magnet T5
+item.ItemMagnetT6.name=Blessed Magnet
+item.xpItem.name=Extracted XP Bottle
+
+
+tile.BlackBlock.name=Black Block
+tile.BabyBlueBlock.name=Baby Blue Block
+tile.BlueBlock.name=Blue Block
+tile.BrownBlock.name=Brown Block
+tile.GreenBlock.name=Green Block
+tile.OrangeBlock.name=Orange Block
+tile.PurpleBlock.name=Purple Block
+tile.RedBlock.name=Red Block
+tile.WhiteBlock.name=White Block
+tile.YellowBlock.name=Yellow Block
