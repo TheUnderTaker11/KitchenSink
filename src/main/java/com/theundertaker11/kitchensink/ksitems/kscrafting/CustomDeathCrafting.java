@@ -19,15 +19,12 @@ public class CustomDeathCrafting implements IRecipe {
 		for(int i=0; i < inv.getSizeInventory(); ++i)
 		{
 			ItemStack item = inv.getStackInSlot(i);
-			if (item != null && item.getItem() == Itemsss.DemonicSword && item.getTagCompound() != null) 
+			if (item != null &&i==4&& item.getItem() == Itemsss.DemonicSword && item.getTagCompound() != null) 
 			{
 				if(item.getTagCompound().getInteger("zombiekills")>99&&item.getTagCompound().getInteger("endermankills")>99
 					&&item.getTagCompound().getInteger("skeletonkills")>99&&item.getTagCompound().getInteger("creeperkills")>99)
 				{
-					if(i==4)
-					{
 					++demonsword;
-					}
 				}
 				
 				

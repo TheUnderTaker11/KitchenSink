@@ -1,6 +1,5 @@
 package com.theundertaker11.kitchensink.ksitems.kscrafting;
 
-import com.sun.glass.ui.Screen;
 import com.theundertaker11.kitchensink.ksitems.Itemsss;
 
 import net.minecraft.enchantment.Enchantment;

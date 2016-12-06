@@ -4,14 +4,19 @@ import java.util.List;
 
 import com.theundertaker11.kitchensink.KitchenSink;
 
+import baubles.api.BaubleType;
+import baubles.api.IBauble;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class blessedRock extends Item {
+public class blessedRock extends Item implements IBauble{
 	public blessedRock(String name){
 		super();
 		this.setUnlocalizedName(name);
@@ -37,4 +42,20 @@ public class blessedRock extends Item {
     {
 	    return true;
     }
+	
+	@Override
+	public void onUpdate(ItemStack itemstack, World world, Entity entity, int metadata, boolean bool)
+	{
+		if(entity instanceof EntityPlayer)
+		{
+			EntityPlayer player = (EntityPlayer)entity;
+			player.capabilities.allowFlying = true;
+		}
+	}
+
+	@Override
+	public BaubleType getBaubleType(ItemStack arg0) 
+	{
+		return BaubleType.TRINKET;
+	}
 }

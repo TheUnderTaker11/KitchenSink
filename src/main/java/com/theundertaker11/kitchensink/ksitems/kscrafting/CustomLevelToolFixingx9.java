@@ -1,6 +1,5 @@
 package com.theundertaker11.kitchensink.ksitems.kscrafting;
 
-import com.sun.glass.ui.Screen;
 import com.theundertaker11.kitchensink.ksitems.Itemsss;
 
 import net.minecraft.enchantment.Enchantment;
@@ -36,7 +35,7 @@ public class CustomLevelToolFixingx9 implements IRecipe{
 					++pick;
 				}
 			}
-			if(item != null && inv.getStackInSlot(i).getItem()==inv.getStackInSlot(i).getItem().getItemFromBlock(Blocks.iron_block))
+			if(item != null && inv.getStackInSlot(i).getItem()==inv.getStackInSlot(i).getItem().getItemFromBlock(Blocks.IRON_BLOCK))
 			{
 				++ironcount;
 			}

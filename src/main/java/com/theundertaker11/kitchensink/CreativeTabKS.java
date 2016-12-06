@@ -17,6 +17,6 @@ public final class CreativeTabKS extends CreativeTabs
     @SideOnly(Side.CLIENT)
     public Item getTabIconItem()
     {
-        return Items.bowl;
+        return Items.BOWL;
     }
 }

@@ -28,6 +28,7 @@ public class Itemsss
 	public static Item blessedHoe;
 	public static Item godsTool;
 	public static Item deathsSythe;
+	public static Item DeathHand;
 	
 	//items
 	public static Item angelAlloy;
@@ -45,13 +46,18 @@ public class Itemsss
 	public static Item ItemMagnetT4;
 	public static Item ItemMagnetT5;
 	public static Item ItemMagnetT6;
+	public static Item MagnetRing;
 	public static Item xpItem;
+	public static Item HealthTPitem;
+	public static Item TPitem;
+	public static Item ProtectionCharm;
 	
 	public static Item DemonicSword;
 	public static Item SkeletonSword;
 	
 	public static Item Wand;
 	public static Item LevelPick;
+
 	
 	public static void itemprops(){
 		GameRegistry.register(obsidianPlate = new angelAlloy("obsidianPlate"));
@@ -61,15 +67,19 @@ public class Itemsss
 		GameRegistry.register(compDiamond = new angelAlloy("compDiamond"));
 		GameRegistry.register(diamondPlate = new angelAlloy("diamondPlate"));
 		GameRegistry.register(blessedRock = new blessedRock("blessedRock"));
-		GameRegistry.register(netherStarPlate = new netherStarPlate("netherStarPlate"));
+		GameRegistry.register(netherStarPlate = new deathIngot("netherStarPlate"));
 		GameRegistry.register(godEssence = new godEssence("godEssence"));
-		GameRegistry.register(ItemMagnet = new ItemMagnet());
-		GameRegistry.register(ItemMagnetT2 = new ItemMagnetT2());
-		GameRegistry.register(ItemMagnetT3 = new ItemMagnetT3());
-		GameRegistry.register(ItemMagnetT4 = new ItemMagnetT4());
-		GameRegistry.register(ItemMagnetT5 = new ItemMagnetT5());
-		GameRegistry.register(ItemMagnetT6 = new ItemMagnetT6());
+		GameRegistry.register(ItemMagnet = new ItemMagnetT6("ItemMagnet", 2.5,1));
+		GameRegistry.register(ItemMagnetT2 = new ItemMagnetT6("ItemMagnetT2", 3.5,2));
+		GameRegistry.register(ItemMagnetT3 = new ItemMagnetT6("ItemMagnetT3", 4.5,3));
+		GameRegistry.register(ItemMagnetT4 = new ItemMagnetT6("ItemMagnetT4", 5.5,4));
+		GameRegistry.register(ItemMagnetT5 = new ItemMagnetT6("ItemMagnetT5", 6.5,5));
+		GameRegistry.register(ItemMagnetT6 = new ItemMagnetT6("ItemMagnetT6", 12.5,6));
+		GameRegistry.register(MagnetRing = new MagnetRing("MagnetRing"));
+		GameRegistry.register(HealthTPitem = new HealthTPitem("HealthTPitem"));
+		GameRegistry.register(TPitem = new TPitem("TPitem"));
 		GameRegistry.register(xpItem = new xpItem("xpItem"));
+		GameRegistry.register(ProtectionCharm = new ProtectionCharm("ProtectionCharm"));
 		
 		//Tools
 		GameRegistry.register(blessedSword = new blessedSword("blessedSword", blessed_mat));
@@ -82,13 +92,10 @@ public class Itemsss
 		GameRegistry.register(SkeletonSword = new SkeletonSword("SkeletonSword", low_mat));
 		GameRegistry.register(DemonicSword = new DemonicSword("DemonicSword", low_mat2));
 		GameRegistry.register(LevelPick = new LevelPick("LevelPick", low_mat2));
+		GameRegistry.register(DeathHand = new DeathHand("DeathHand", low_mat));
 		
 		//waht
-		GameRegistry.register(Wand = new Wand("Wand"));
-		
-		
-		
-		
+		GameRegistry.register(Wand = new Wand("Wand"));	
 		
 	}
 

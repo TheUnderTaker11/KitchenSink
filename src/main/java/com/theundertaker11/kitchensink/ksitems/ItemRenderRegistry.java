@@ -36,6 +36,10 @@ public class ItemRenderRegistry {
 	    reg(Itemsss.xpItem);
 	    reg(Itemsss.SkeletonSword);
 	    reg(Itemsss.DemonicSword);
+	    reg(Itemsss.DeathHand);
+	    reg(Itemsss.HealthTPitem);
+	    reg(Itemsss.TPitem);
+	    reg(Itemsss.ProtectionCharm);
 	    
 	    regWithMeta(Itemsss.ItemMagnet, 1);
 	    regWithMeta(Itemsss.ItemMagnetT2, 1);

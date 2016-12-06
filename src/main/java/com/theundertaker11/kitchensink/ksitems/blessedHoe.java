@@ -60,21 +60,21 @@ public class blessedHoe extends ItemHoe {
 
             if (facing != EnumFacing.DOWN && worldIn.isAirBlock(pos.up()))
             {
-                if (block == Blocks.grass || block == Blocks.grass_path)
+                if (block == Blocks.GRASS || block == Blocks.GRASS_PATH)
                 {
-                    func_185071_a(stack, playerIn, worldIn, pos, Blocks.farmland.getDefaultState());
+                    this.setBlock(stack, playerIn, worldIn, pos, Blocks.FARMLAND.getDefaultState());
                     return EnumActionResult.SUCCESS;
                 }
 
-                if (block == Blocks.dirt)
+                if (block == Blocks.DIRT)
                 {
                     switch ((BlockDirt.DirtType)iblockstate.getValue(BlockDirt.VARIANT))
                     {
                         case DIRT:
-                            this.func_185071_a(stack, playerIn, worldIn, pos, Blocks.farmland.getDefaultState());
+                            this.setBlock(stack, playerIn, worldIn, pos, Blocks.FARMLAND.getDefaultState());
                             return EnumActionResult.SUCCESS;
                         case COARSE_DIRT:
-                            this.func_185071_a(stack, playerIn, worldIn, pos, Blocks.dirt.getDefaultState().withProperty(BlockDirt.VARIANT, BlockDirt.DirtType.DIRT));
+                            this.setBlock(stack, playerIn, worldIn, pos, Blocks.DIRT.getDefaultState().withProperty(BlockDirt.VARIANT, BlockDirt.DirtType.DIRT));
                             return EnumActionResult.SUCCESS;
                     }
                 }
@@ -87,14 +87,14 @@ public class blessedHoe extends ItemHoe {
 	 * What runs to do the hoe action
 	 */
 	@Override
-	protected void func_185071_a(ItemStack stack, EntityPlayer player, World worldIn, BlockPos pos, IBlockState state)
+	protected void setBlock(ItemStack stack, EntityPlayer player, World worldIn, BlockPos pos, IBlockState state)
     {
-        worldIn.playSound(player, pos, SoundEvents.item_hoe_till, SoundCategory.BLOCKS, 1.0F, 1.0F);
+        worldIn.playSound(player, pos, SoundEvents.ITEM_HOE_TILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
 
         if (!worldIn.isRemote)
         {
             worldIn.setBlockState(pos, state, 11);
-           // stack.damageItem(1, player);   I slashed this out so it would not damage the hoe.
+            stack.damageItem(1, player);
         }
     }
 

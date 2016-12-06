@@ -1,6 +1,5 @@
 package com.theundertaker11.kitchensink.ksitems.kscrafting;
 
-import com.sun.glass.ui.Screen;
 import com.theundertaker11.kitchensink.ksitems.Itemsss;
 
 import net.minecraft.block.Block;
@@ -30,10 +29,10 @@ public class CustomLevelToolSpeed implements IRecipe{
 			
 			if (item != null && item.getItem() == Itemsss.LevelPick && item.getTagCompound() != null) 
 			{
-				NBTTagCompound tag = item.getTagCompound();
-					++pick;
+				if(item.getTagCompound().getInteger("pickspeed")<200000000)
+				++pick;
 			}
-			if(item != null && item.getItem()==item.getItem().getItemFromBlock(Blocks.redstone_block))
+			if(item != null && item.getItem()==item.getItem().getItemFromBlock(Blocks.REDSTONE_BLOCK))
 			{
 				++redstonecount;
 			}

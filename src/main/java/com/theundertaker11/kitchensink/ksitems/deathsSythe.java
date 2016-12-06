@@ -33,6 +33,7 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
@@ -51,35 +52,41 @@ public class deathsSythe extends blessedSword {
 		}
 
 	@Override
-	public void onUpdate(ItemStack itemstack, World world, Entity entity, int metadata, boolean bool){
-		if (itemstack.getItemDamage() != 10000){
+	public void onUpdate(ItemStack itemstack, World world, Entity entity, int metadata, boolean bool)
+	{
+		//Fixes it when it loses duribility
+		if (itemstack.getItemDamage() != 0)
+		{
 			itemstack.setItemDamage(0);
 		}
-		
-		
-	}
-	
-	
-	@Override
-	public void onCreated(ItemStack itemStack, World world, EntityPlayer player){
-		if (itemStack.getTagCompound() == null)
-        {
-			itemStack.setTagCompound(new NBTTagCompound());  
-        }
-		itemStack.getTagCompound().setString("ownerID", player.getUniqueID().toString());
-		itemStack.getTagCompound().setString("owner", player.getName());
+		if(entity instanceof EntityPlayer)
+		{
+			if (itemstack.getTagCompound() == null)
+			{
+				itemstack.setTagCompound(new NBTTagCompound());  
+				itemstack.getTagCompound().setString("ownerID", entity.getUniqueID().toString());
+				itemstack.getTagCompound().setString("owner", entity.getName());
+			}
+			
+		}
 		
 	}
 	
-	//adds tooltip(duh?)
+	
+			//adds tooltip
 			@Override
 			public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced)
 		    {
 				tooltip.add("Death Takes Us All");
+				//Adds the owners name and if the person holding it is the owner.
 				if(stack.getTagCompound() != null)
 				{
 					String owner = stack.getTagCompound().getString("owner");
 					tooltip.add("Owner:" + owner);
+					if(!stack.getTagCompound().getString("ownerID").equals(playerIn.getUniqueID().toString()))
+					{
+						tooltip.add(TextFormatting.DARK_RED + "You are not the owner");
+					}
 				}
 				
 		    }
@@ -119,6 +126,7 @@ public class deathsSythe extends blessedSword {
 				}
 			}
 		}
+		//Makes it so players take 20 damage that bypasses armor
 		if(entity instanceof EntityPlayer)
 		{
 			float damage = 10f;
@@ -147,21 +155,21 @@ public class deathsSythe extends blessedSword {
 
             if (facing != EnumFacing.DOWN && worldIn.isAirBlock(pos.up()))
             {
-                if (block == Blocks.grass || block == Blocks.grass_path)
+                if (block == Blocks.GRASS || block == Blocks.GRASS_PATH)
                 {
-                    func_185071_a(stack, playerIn, worldIn, pos, Blocks.farmland.getDefaultState());
+                    this.setBlock(stack, playerIn, worldIn, pos, Blocks.FARMLAND.getDefaultState());
                     return EnumActionResult.SUCCESS;
                 }
 
-                if (block == Blocks.dirt)
+                if (block == Blocks.DIRT)
                 {
                     switch ((BlockDirt.DirtType)iblockstate.getValue(BlockDirt.VARIANT))
                     {
                         case DIRT:
-                            this.func_185071_a(stack, playerIn, worldIn, pos, Blocks.farmland.getDefaultState());
+                            this.setBlock(stack, playerIn, worldIn, pos, Blocks.FARMLAND.getDefaultState());
                             return EnumActionResult.SUCCESS;
                         case COARSE_DIRT:
-                            this.func_185071_a(stack, playerIn, worldIn, pos, Blocks.dirt.getDefaultState().withProperty(BlockDirt.VARIANT, BlockDirt.DirtType.DIRT));
+                            this.setBlock(stack, playerIn, worldIn, pos, Blocks.DIRT.getDefaultState().withProperty(BlockDirt.VARIANT, BlockDirt.DirtType.DIRT));
                             return EnumActionResult.SUCCESS;
                     }
                 }
@@ -173,14 +181,14 @@ public class deathsSythe extends blessedSword {
 	/**
 	 * What runs to do the hoe action
 	 */
-	protected void func_185071_a(ItemStack stack, EntityPlayer player, World worldIn, BlockPos pos, IBlockState state)
+	protected void setBlock(ItemStack stack, EntityPlayer player, World worldIn, BlockPos pos, IBlockState state)
     {
-        worldIn.playSound(player, pos, SoundEvents.item_hoe_till, SoundCategory.BLOCKS, 1.0F, 1.0F);
+        worldIn.playSound(player, pos, SoundEvents.ITEM_HOE_TILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
 
         if (!worldIn.isRemote)
         {
             worldIn.setBlockState(pos, state, 11);
-           // stack.damageItem(1, player);   I slashed this out so it would not damage the hoe.
+            stack.damageItem(1, player);
         }
     }
 	//end of letting it be a hoe

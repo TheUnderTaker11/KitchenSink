@@ -30,7 +30,10 @@ item.ItemMagnetT4.name=Item Magnet T4
 item.ItemMagnetT5.name=Item Magnet T5
 item.ItemMagnetT6.name=Blessed Magnet
 item.xpItem.name=Extracted XP Bottle
-
+item.DeathHand.name=Hand of Death
+item.HealthTPitem.name=Charm of the Immortal Coward
+item.TPitem.name=Charm of Recall
+item.ProtectionCharm.name=Charm of Protection
 
 tile.BlackBlock.name=Black Block
 tile.BabyBlueBlock.name=Baby Blue Block

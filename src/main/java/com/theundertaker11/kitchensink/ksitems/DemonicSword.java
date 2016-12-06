@@ -143,6 +143,13 @@ public class DemonicSword extends ItemSword {
 				 tooltip.add(TextFormatting.RED + "Enderman Souls: " + stringKills3);
 			 }
 		}
+		else
+		{
+			tooltip.add(TextFormatting.RED + "Skeleton Souls: 0");
+			tooltip.add(TextFormatting.RED + "Zombie Souls: 0");
+			tooltip.add(TextFormatting.RED + "Creeper Souls: 0");
+			tooltip.add(TextFormatting.RED + "Enderman Souls: 0");
+		}
 	}
 	
 	public static void addKill(ItemStack stack, int mob)

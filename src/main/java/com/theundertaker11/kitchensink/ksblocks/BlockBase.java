@@ -18,7 +18,7 @@ public class BlockBase extends Block{
     }
 
     public BlockBase(String unlocalizedName, float hardness, float resistance) {
-        this(unlocalizedName, Material.rock, hardness, resistance);
+        this(unlocalizedName, Material.ROCK, hardness, resistance);
     }
 
     public BlockBase(String unlocalizedName) {

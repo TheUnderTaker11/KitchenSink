@@ -24,6 +24,7 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
@@ -38,24 +39,28 @@ public class godsTool extends ItemPickaxe {
 		this.setRegistryName(name);
 	}
 	
-	//Might make it fix itself when duriblity is brought down by other mods, havent tested.
+	
 	@Override
-	public void onUpdate(ItemStack itemstack, World world, Entity entity, int metadata, boolean bool){
-		if (itemstack.getItemDamage() != 10000){
+	public void onUpdate(ItemStack itemstack, World world, Entity entity, int metadata, boolean bool)
+	{
+		//Fixes it when it loses duribility
+		if (itemstack.getItemDamage() != 0)
+		{
 			itemstack.setItemDamage(0);
+		}
+		
+		if(entity instanceof EntityPlayer)
+		{
+			if (itemstack.getTagCompound() == null)
+			{
+				itemstack.setTagCompound(new NBTTagCompound());  
+				itemstack.getTagCompound().setString("ownerID", entity.getUniqueID().toString());
+				itemstack.getTagCompound().setString("owner", entity.getName());
+			}
+			
 		}
 	}
 	
-	@Override
-	public void onCreated(ItemStack itemStack, World world, EntityPlayer player){
-		if (itemStack.getTagCompound() == null)
-        {
-			itemStack.setTagCompound(new NBTTagCompound());  
-        }
-		itemStack.getTagCompound().setString("ownerID", player.getUniqueID().toString());
-		itemStack.getTagCompound().setString("owner", player.getName());
-		
-	}
 	
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand)
@@ -93,14 +98,6 @@ public class godsTool extends ItemPickaxe {
 	    return ImmutableSet.of("pickaxe", "spade", "axe");
 	}
 	
-	private static Set effectiveAgainst = Sets.newHashSet(new Block[] {
-		    Blocks.grass, Blocks.dirt, Blocks.sand, Blocks.gravel, 
-		    Blocks.snow_layer, Blocks.snow, Blocks.clay, Blocks.farmland, 
-		    Blocks.soul_sand, Blocks.mycelium, Blocks.planks, Blocks.bookshelf, Blocks.log, Blocks.log2, 
-		    Blocks.chest, Blocks.pumpkin, Blocks.lit_pumpkin, Blocks.web, Blocks.trapdoor, Blocks.ladder, Blocks.wool,
-		    Blocks.glowstone, Blocks.skull, Blocks.glass, Blocks.glass_pane, Blocks.stained_glass, Blocks.stained_glass_pane, Blocks.cactus,
-		    Blocks.leaves, Blocks.leaves2, Blocks.redstone_lamp, Blocks.carpet});
-	
 	@Override
 	public boolean canHarvestBlock(IBlockState blockIn) 
 	{
@@ -110,7 +107,7 @@ public class godsTool extends ItemPickaxe {
 	@Override
 	public float getStrVsBlock(ItemStack stack, IBlockState state)
     {
-		return 10000;
+		return 1000000;
 	}
 	//End multitool code
 	
@@ -124,6 +121,10 @@ public class godsTool extends ItemPickaxe {
 			{
 				String owner = stack.getTagCompound().getString("owner");
 				tooltip.add("Owner:" + owner);
+				if(!stack.getTagCompound().getString("ownerID").equals(playerIn.getUniqueID().toString()))
+				{
+					tooltip.add(TextFormatting.DARK_RED + "You are not the owner");
+				}
 			}
 		}
 			

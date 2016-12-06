@@ -37,11 +37,6 @@ public class SkeletonSword extends ItemSword {
 	
 	@Override
 	public void onCreated(ItemStack itemStack, World world, EntityPlayer player){
-		if (itemStack.getTagCompound() == null)
-        {
-			itemStack.setTagCompound(new NBTTagCompound());
-        }
-			itemStack.getTagCompound().setInteger("kills", 50);
 			
 			if(itemStack.getTagCompound() != null)
 			  {
@@ -86,6 +81,10 @@ public class SkeletonSword extends ItemSword {
 			 {
 				 tooltip.add(TextFormatting.RED + "Enderman Souls: " + stringKills);
 			 }
+	 }
+	 else
+	 {
+		 tooltip.add("No Soul Type Set Yet");
 	 }
 	 
 	 

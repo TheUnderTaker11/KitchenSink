@@ -1,6 +1,10 @@
 package com.theundertaker11.kitchensink.ksblocks;
 
+import com.theundertaker11.kitchensink.KitchenSink;
+
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockChest;
+import net.minecraft.block.material.Material;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public final class KSBlocks {
@@ -29,6 +33,7 @@ public final class KSBlocks {
 		GameRegistry.register(RedBlock = new BlockBase("RedBlock"));
 		GameRegistry.register(WhiteBlock = new BlockBase("WhiteBlock"));
 		GameRegistry.register(YellowBlock = new BlockBase("YellowBlock"));
+		GameRegistry.register(CompChest = new StorageBlockBase(Material.IRON, "CompChest"));
 		GameRegistry.registerBlock(BabyBlueBlock);
 		GameRegistry.registerBlock(BlackBlock);
 		GameRegistry.registerBlock(BlueBlock);
@@ -39,6 +44,7 @@ public final class KSBlocks {
 		GameRegistry.registerBlock(RedBlock);
 		GameRegistry.registerBlock(WhiteBlock);
 		GameRegistry.registerBlock(YellowBlock);
+		GameRegistry.registerBlock(CompChest);
 	}
 
 }

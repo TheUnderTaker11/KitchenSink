@@ -5,12 +5,14 @@ import java.util.List;
 
 import com.theundertaker11.kitchensink.ModUtils;
 import com.theundertaker11.kitchensink.entity.IndestructibleEntityItem;
+import com.theundertaker11.kitchensink.KitchenSink;
 import com.theundertaker11.kitchensink.Logger;
 import com.theundertaker11.kitchensink.ModUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
@@ -36,17 +38,20 @@ import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import net.minecraftforge.event.entity.player.PlayerPickupXpEvent;
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
 
-public class ItemMagnetT6 extends ItemBase {
+public class ItemMagnetT6 extends Item {
 	protected double distanceFromPlayer;
-	protected static String name = "ItemMagnetT6";
+	private static int teir = 0;
 
-	public ItemMagnetT6() {
-		super(name);
+	public ItemMagnetT6(String name, double range, int teir) {
+		super();
+		this.teir = teir;
 		setMaxStackSize(1);
-		this.distanceFromPlayer = 12.5;
+		this.distanceFromPlayer = range;
 		canRepair = false;
 		setMaxDamage(0);
 		this.setRegistryName(name);
+		setUnlocalizedName(name);
+		setCreativeTab(KitchenSink.KStab);
 	}
 
 	@Override
@@ -66,6 +71,11 @@ public class ItemMagnetT6 extends ItemBase {
 	@SuppressWarnings("rawtypes")
 	@Override
 	public void onUpdate(ItemStack item, World world, Entity entity, int i, boolean f) {
+		if(item.getTagCompound()==null)
+		{
+			item.setTagCompound(new NBTTagCompound());
+			item.getTagCompound().setInteger("teir", this.teir);
+		}
 		if (world.isRemote)
 			return;
 		if (!isActivated(item))
@@ -89,7 +99,7 @@ public class ItemMagnetT6 extends ItemBase {
 			if (pickupEvent.getResult() == Result.ALLOW || stackSize <= 0
 					|| player.inventory.addItemStackToInventory(itemStackToGet)) {
 				player.onItemPickup(itemToGet, stackSize);
-				world.playSound(player, player.getPosition(), SoundEvents.entity_item_pickup, SoundCategory.AMBIENT,
+				world.playSound(player, player.getPosition(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.AMBIENT,
 						0.15F, ((world.rand.nextFloat() - world.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
 			}
 		}

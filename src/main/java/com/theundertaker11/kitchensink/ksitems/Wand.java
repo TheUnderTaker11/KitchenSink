@@ -2,16 +2,22 @@ package com.theundertaker11.kitchensink.ksitems;
 
 import java.util.List;
 
+
 import com.theundertaker11.kitchensink.KitchenSink;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.projectile.EntityDragonFireball;
 import net.minecraft.entity.projectile.EntitySmallFireball;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemHoe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTool;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 public class Wand extends Item {
@@ -40,7 +46,20 @@ public class Wand extends Item {
 		return false;
     }
 	
+	@Override
+	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand)
+    {
+			if (!worldIn.isRemote) 
+			{
+	            Vec3d v3 = playerIn.getLook(1);
+	            EntityDragonFireball dragonfireball = new EntityDragonFireball(worldIn, playerIn.posX, playerIn.posY + playerIn.eyeHeight, playerIn.posZ, v3.xCoord, v3.yCoord, v3.zCoord);
+	            dragonfireball.shootingEntity = playerIn;
+	            worldIn.spawnEntityInWorld(dragonfireball);
+			}
+		return new ActionResult<ItemStack>(EnumActionResult.PASS, itemStackIn);
+    }	
 	
+		
 	
 	/*      This shoots a fireball where the player is looking
 			if (!world.isRemote) 

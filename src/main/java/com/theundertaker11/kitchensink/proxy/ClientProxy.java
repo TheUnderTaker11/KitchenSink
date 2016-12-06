@@ -9,6 +9,7 @@ import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.MinecraftForgeClient;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
 
 public class ClientProxy extends CommonProxy {
 	int WandVariantInt = 4;
@@ -17,6 +18,8 @@ public class ClientProxy extends CommonProxy {
 	public void RegisterRenders()
 	{
 		ItemRenderRegistry.RenderItems();
+		
+		
 		
 		ResourceLocation[] WandTextures = new ResourceLocation[WandVariantInt];
 		ResourceLocation[] LevelPickTextures = new ResourceLocation[PickVariantInt];

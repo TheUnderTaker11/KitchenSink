@@ -57,7 +57,7 @@ public class LevelPick extends ItemPickaxe {
 	 * Max=250(level) + 250
 	 * 
 	 * XP to next level
-	 * Y=400(level)+150
+	 * Y=200(level)+50
 	 * 
 	 * Harvest level is the same as the level up to 5
 	 * 
@@ -68,47 +68,23 @@ public class LevelPick extends ItemPickaxe {
 	{
 		if(!world.isRemote&&itemstack.getTagCompound()!=null)
 		{
+			if(itemstack.getTagCompound().getInteger("maxdur")<itemstack.getTagCompound().getInteger("dur"))
+			{
+				itemstack.getTagCompound().setInteger("dur",itemstack.getTagCompound().getInteger("maxdur"));
+			}
 			if(itemstack.getTagCompound().getInteger("pickxp")>=itemstack.getTagCompound().getInteger("xptonextlevel"))
 			{
 				if(itemstack.getTagCompound().getInteger("picklevel")==0)
 				{
-					itemstack.getTagCompound().setInteger("pickxp", 0);
-					itemstack.getTagCompound().setInteger("picklevel", 1);
-					itemstack.getTagCompound().setFloat("pickspeed", (itemstack.getTagCompound().getFloat("pickspeed")+1F));
-					entity.addChatMessage(new TextComponentString("Your Pick Has Leveled Up!"));
-					entity.addChatMessage(new TextComponentString("Speed added: 1"));
+					levelUpPick(itemstack, entity,1F);
 				}
-				if(itemstack.getTagCompound().getInteger("picklevel")==1)
+				if(itemstack.getTagCompound().getInteger("picklevel")==2||itemstack.getTagCompound().getInteger("picklevel")==3)
 				{
-					itemstack.getTagCompound().setInteger("pickxp", 0);
-					itemstack.getTagCompound().setInteger("picklevel", 2);
-					itemstack.getTagCompound().setFloat("pickspeed", (itemstack.getTagCompound().getFloat("pickspeed")+2F));
-					entity.addChatMessage(new TextComponentString("Your Pick Has Leveled Up!"));
-					entity.addChatMessage(new TextComponentString("Speed added: 2"));
-				}
-				if(itemstack.getTagCompound().getInteger("picklevel")==2)
-				{
-					itemstack.getTagCompound().setInteger("pickxp", 0);
-					itemstack.getTagCompound().setInteger("picklevel", 3);
-					itemstack.getTagCompound().setFloat("pickspeed", (itemstack.getTagCompound().getFloat("pickspeed")+3F));
-					entity.addChatMessage(new TextComponentString("Your Pick Has Leveled Up!"));
-					entity.addChatMessage(new TextComponentString("Speed added: 3"));
-				}
-				if(itemstack.getTagCompound().getInteger("picklevel")==3)
-				{
-					itemstack.getTagCompound().setInteger("pickxp", 0);
-					itemstack.getTagCompound().setInteger("picklevel", 4);
-					itemstack.getTagCompound().setFloat("pickspeed", (itemstack.getTagCompound().getFloat("pickspeed")+2F));
-					entity.addChatMessage(new TextComponentString("Your Pick Has Leveled Up!"));
-					entity.addChatMessage(new TextComponentString("Speed added: 2"));
+					levelUpPick(itemstack, entity,3F);
 				}
 				if(itemstack.getTagCompound().getInteger("picklevel")==4)
 				{
-					itemstack.getTagCompound().setInteger("pickxp", 0);
-					itemstack.getTagCompound().setInteger("picklevel", 5);
-					itemstack.getTagCompound().setFloat("pickspeed", (itemstack.getTagCompound().getFloat("pickspeed")+1F));
-					entity.addChatMessage(new TextComponentString("Your Pick Has Leveled Up!"));
-					entity.addChatMessage(new TextComponentString("Speed added: 1"));
+					levelUpPick(itemstack, entity, 1F);
 					//Adds fortune 10 if it there is not silk touch
 					if(EnchantmentHelper.getEnchantmentLevel(Enchantment.getEnchantmentByID(33), itemstack)<1)
 					{
@@ -117,34 +93,19 @@ public class LevelPick extends ItemPickaxe {
 					}
 					
 				}
-				if(itemstack.getTagCompound().getInteger("picklevel")>=5)
+				//If it was level 1 or level 5+
+				if(itemstack.getTagCompound().getInteger("picklevel")==1||itemstack.getTagCompound().getInteger("picklevel")>=5)
 				{
-					itemstack.getTagCompound().setInteger("pickxp", 0);
-					itemstack.getTagCompound().setInteger("picklevel", (itemstack.getTagCompound().getInteger("picklevel")+1));
-					itemstack.getTagCompound().setFloat("pickspeed", (itemstack.getTagCompound().getFloat("pickspeed")+2F));
-					entity.addChatMessage(new TextComponentString("Your Pick Has Leveled Up!"));
-					entity.addChatMessage(new TextComponentString("Speed added: 2"));
+					levelUpPick(itemstack, entity, 2F);
 				}
 			}
-			
-			if(entity instanceof EntityPlayer)
-			{
-				String maxHealthUUID = "bb861290-0a7e-11e6-b512-3e1d05defe78";
-				EntityPlayer player = (EntityPlayer)entity;
-				if(player.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).getModifier(UUID.fromString(maxHealthUUID))==null)
-				{
-				//player.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).applyModifier(new AttributeModifier(maxHealthUUID.toString(), 4.0D, 0));
-			
-				}
-			}
-			
 			
 			/*
 			 * Does math to the level to set certain values(Ones that only matter what the level is).
-			 * ce655818-f5e6-4149-a375-ec32adb78e06    bb861290-0a7e-11e6-b512-3e1d05defe78
+			 * 
 			 */
 			itemstack.getTagCompound().setInteger("maxdur", ((itemstack.getTagCompound().getInteger("picklevel")*250)+250));
-			itemstack.getTagCompound().setInteger("xptonextlevel", ((itemstack.getTagCompound().getInteger("picklevel")*400)+150));
+			itemstack.getTagCompound().setInteger("xptonextlevel", ((itemstack.getTagCompound().getInteger("picklevel")*200)+50));
 			itemstack.getTagCompound().setInteger("harvestlevel", itemstack.getTagCompound().getInteger("picklevel"));
 		/*
 		 * Start magnet
@@ -168,7 +129,7 @@ if(itemstack.getTagCompound().getBoolean("allowmagnet")&&itemstack.getTagCompoun
 					if (pickupEvent.getResult() == Result.ALLOW || stackSize <= 0
 							|| player.inventory.addItemStackToInventory(itemStackToGet)) {
 						player.onItemPickup(itemToGet, stackSize);
-						world.playSound(player, player.getPosition(), SoundEvents.entity_item_pickup, SoundCategory.AMBIENT,
+						world.playSound(player, player.getPosition(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.AMBIENT,
 								0.15F, ((world.rand.nextFloat() - world.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
 					}
 				}
@@ -199,10 +160,23 @@ if(itemstack.getTagCompound().getBoolean("allowmagnet")&&itemstack.getTagCompoun
 	 */
 		}
 	}
+	
 	/**
-	 * Adds Tooltip
-	 * 
+	 * Levels up the pick, entity is needed to give them the chat message
 	 */
+	  public static void levelUpPick(ItemStack itemstack, Entity entity, float speedadded)
+	  {
+		  if(itemstack.getTagCompound()!=null)
+		  {
+			  itemstack.getTagCompound().setInteger("pickxp", 0);
+			  itemstack.getTagCompound().setInteger("picklevel", itemstack.getTagCompound().getInteger("picklevel")+1);
+			  itemstack.getTagCompound().setFloat("pickspeed", (itemstack.getTagCompound().getFloat("pickspeed")+speedadded));
+			  entity.addChatMessage(new TextComponentString("Your Pick Has Leveled Up!"));
+			  entity.addChatMessage(new TextComponentString("Speed added: " + speedadded));
+		  }
+	  }
+	  
+	//Adds tooltip
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced)
     {
@@ -241,7 +215,7 @@ if(itemstack.getTagCompound().getBoolean("allowmagnet")&&itemstack.getTagCompoun
 		}
     }
 	/**
-	 * Makes it so hitting Enity's adds to my NBT duribility
+	 * Makes it so hitting Entity's takes 2 from NBT duribility
 	 * 
 	 */
 	@Override
@@ -254,7 +228,7 @@ if(itemstack.getTagCompound().getBoolean("allowmagnet")&&itemstack.getTagCompoun
         return false;
     }
 	/**
-	 * Makes it so breaking blocks adds to my NBT duribility
+	 * Makes it so breaking takes 1 from my NBT duribility
 	 * Also adds XP for each block broken, based on the block
 	 */
 	@Override
@@ -263,11 +237,12 @@ if(itemstack.getTagCompound().getBoolean("allowmagnet")&&itemstack.getTagCompoun
 		if(!worldIn.isRemote&&stack.getTagCompound() !=null&& stack.getTagCompound().getInteger("dur")>0)
 		{
 			stack.getTagCompound().setInteger("dur", (stack.getTagCompound().getInteger("dur")-1));
-			if(blockIn==Blocks.diamond_ore||blockIn==Blocks.gold_ore||blockIn==Blocks.emerald_ore||blockIn==Blocks.quartz_ore||blockIn==Blocks.obsidian)
+			//These will give varying XP based on the block broken.
+			if(blockIn==Blocks.DIAMOND_ORE||blockIn==Blocks.GOLD_ORE||blockIn==Blocks.EMERALD_ORE||blockIn==Blocks.QUARTZ_ORE||blockIn==Blocks.OBSIDIAN)
 			{
 			stack.getTagCompound().setInteger("pickxp", stack.getTagCompound().getInteger("pickxp")+4);
 			}
-			else if(blockIn==Blocks.coal_ore||blockIn==Blocks.iron_ore||blockIn==Blocks.lapis_ore||blockIn==Blocks.redstone_ore)
+			else if(blockIn==Blocks.COAL_ORE||blockIn==Blocks.IRON_ORE||blockIn==Blocks.LAPIS_ORE||blockIn==Blocks.REDSTONE_ORE)
 			{
 			stack.getTagCompound().setInteger("pickxp", stack.getTagCompound().getInteger("pickxp")+3);
 			}
@@ -312,7 +287,9 @@ if(itemstack.getTagCompound().getBoolean("allowmagnet")&&itemstack.getTagCompoun
 		return 3.0F;
     }
 
-	/**Makes it so my pick cant break blocks when NBT Duribility is 0 */
+	/**Makes it so my pick cant break blocks when NBT Duribility is 0 
+	 * (Along with the getStrVsBlock method)
+	 */
 	@Override
 	public boolean onBlockStartBreak(ItemStack itemstack, BlockPos pos, EntityPlayer player)
     {
@@ -339,7 +316,6 @@ if(itemstack.getTagCompound().getBoolean("allowmagnet")&&itemstack.getTagCompoun
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand)
     {
-		System.out.println(UUID.randomUUID()+"");
 		if (!worldIn.isRemote && playerIn.isSneaking()&&itemStackIn.getTagCompound()!=null)
 		{
 			if(itemStackIn.getTagCompound().getBoolean("allowmagnet"))
@@ -359,17 +335,17 @@ if(itemstack.getTagCompound().getBoolean("allowmagnet")&&itemstack.getTagCompoun
 	}
 	
 	/**
-	 * Adds duribility when called by the playertick in event class
+	 * Adds duribility when called by the playertick in my event class
 	 * 
 	 */
 	public static void addDur(ItemStack itemstack, EntityPlayer player)
 	{
 		
-		if(itemstack.getTagCompound()!=null&&itemstack.getTagCompound().getBoolean("autorepair")&&player instanceof EntityPlayer&&!player.isSwingInProgress)
+		if(itemstack.getTagCompound()!=null&&itemstack.getTagCompound().getBoolean("autorepair")&&!player.isSwingInProgress)
 		{
 			if(itemstack.getTagCompound().getInteger("dur")<itemstack.getTagCompound().getInteger("maxdur"))
 			{
-				itemstack.getTagCompound().setInteger("dur",(itemstack.getTagCompound().getInteger("dur")+1));
+				itemstack.getTagCompound().setInteger("dur",(itemstack.getTagCompound().getInteger("dur")+20));
 			}
 		}
 	}
@@ -388,7 +364,7 @@ if(itemstack.getTagCompound().getBoolean("allowmagnet")&&itemstack.getTagCompoun
 		{
 			return ((double)stack.getTagCompound().getInteger("maxdur")-(double)stack.getTagCompound().getInteger("dur"))/(double)stack.getTagCompound().getInteger("maxdur");
 		}
-        return 1;
+		else return 1;
     }
 	
 	@Override

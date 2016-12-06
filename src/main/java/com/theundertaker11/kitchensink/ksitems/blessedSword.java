@@ -45,7 +45,7 @@ public class blessedSword extends ItemSword {
 		@Override
 		public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand)
 		{    
-			playerIn.addPotionEffect((new PotionEffect(Potion.getPotionById(11), 10, 1)));
+			playerIn.addPotionEffect((new PotionEffect(Potion.getPotionById(11), 20, 1)));
 		    return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
 		}
 		
@@ -53,6 +53,7 @@ public class blessedSword extends ItemSword {
 		@Override
 		public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker)
 	    {
+			//target.setDead();
 	        return false;
 	    }
 		@Override

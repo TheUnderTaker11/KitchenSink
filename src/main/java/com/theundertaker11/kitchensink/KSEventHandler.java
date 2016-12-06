@@ -1,6 +1,7 @@
 package com.theundertaker11.kitchensink;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import net.minecraft.block.Block;
@@ -12,23 +13,36 @@ import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.world.BlockEvent.BreakEvent;
 import net.minecraftforge.event.world.BlockEvent.HarvestDropsEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent.WorldTickEvent;
 
 import com.theundertaker11.kitchensink.ksitems.DemonicSword;
+import com.theundertaker11.kitchensink.ksitems.HealthTPitem;
 import com.theundertaker11.kitchensink.ksitems.Itemsss;
 import com.theundertaker11.kitchensink.ksitems.LevelPick;
+import com.theundertaker11.kitchensink.ksitems.ProtectionCharm;
 import com.theundertaker11.kitchensink.ksitems.SkeletonSword;
+
+import baubles.api.BaublesApi;
+import baubles.api.cap.BaublesCapabilities;
+import baubles.api.cap.IBaublesItemHandler;
 
 public class KSEventHandler {
 	
@@ -36,77 +50,130 @@ public class KSEventHandler {
 	
 	List<String> PlayersWithFlight = new ArrayList<String>();
 	@SubscribeEvent
-	public void pTickEvent(PlayerTickEvent event)
+	public void GameTick(TickEvent event)
 	{
-		/*
-		 * 
-		 * Gives and Takes flight based on the blessed rock.
-		 */
-		String person = event.player.getGameProfile().getName();
-		if (event.player != null)
-		{
-		 if(event.player.capabilities.isCreativeMode != true)
-		 { 
+		++ticktimer;
+	}
 
-				if(event.player.inventory.hasItemStack(new ItemStack(Itemsss.blessedRock)))
-				{
-					PlayersWithFlight.add(person);
-					event.player.capabilities.allowFlying = true;
-					event.player.sendPlayerAbilities();
-				}
-			else
+	@SubscribeEvent
+	public void WorldTick(WorldTickEvent event)
+	{
+		if(ticktimer>1000&&event.world.provider.getDimension()==0)	
+		{
+			ticktimer = 0;
+			for(EntityPlayerMP player: event.world.getMinecraftServer().getPlayerList().getPlayerList())
 			{
-				if (PlayersWithFlight.contains(person) && !event.player.inventory.hasItemStack(new ItemStack(Itemsss.blessedRock)))
-				{
-					event.player.capabilities.allowFlying = false;
-					event.player.capabilities.isFlying = false;
-					event.player.fallDistance = 0;
-					event.player.sendPlayerAbilities();
-					PlayersWithFlight.remove(person);
-				}
+				/**
+				 * Gives and Takes flight based on the blessed rock.
+				 */
+				IBaublesItemHandler baubles = player.getCapability(BaublesCapabilities.CAPABILITY_BAUBLES, player.getHorizontalFacing());
+				String username = player.getGameProfile().getName();
 				
-			}
-		 }
-		}
-		/*
-		 * Calls the add dur method based on my timer, it checks if it actually can do that in the class,
-		 * so all I have to do is call it
-		 */
-		if(!event.player.worldObj.isRemote)
-		{
-		if(event.player.inventory.hasItemStack(new ItemStack(Itemsss.LevelPick)))
-		{
-			if(++ticktimer>160)
-			{
-				ticktimer = 0;
-				for(int i=0;i<event.player.inventory.getSizeInventory();++i)
-				{
-				 if(event.player.inventory.getStackInSlot(i)!=null)
+				 if(!player.capabilities.isCreativeMode)
 				 {
-					if(event.player.inventory.getStackInSlot(i).getItem()==Itemsss.LevelPick)
-					{
-						ItemStack itemstack = event.player.inventory.getStackInSlot(i);
-						if(itemstack.getTagCompound()!=null)
+					 boolean hasRock=false;
+					 
+					//Looks in bauble slots
+					//To save on how many times I use loops, I also check if the protection charm is in the baubles slots
+					//with this same loop.
+					 for(int i=0;i<baubles.getSlots();++i)
+					 {
+						 if(baubles.getStackInSlot(i)!=null)
+					 		{
+					 			ItemStack stack = baubles.getStackInSlot(i);
+					 			//This is where I repair the protection charm.
+					 			if(stack.getItem()==Itemsss.ProtectionCharm)
+					 			{
+					 				ProtectionCharm.RepairCharm(stack, 3);
+					 			}
+					 			//Back to your regularly scheduled creative flight code.
+					 			if(stack.getItem()==Itemsss.blessedRock)
+					 			{
+					 				hasRock=true;
+					 			}
+					 		}
+					 }
+					 
+					 //Looks in normal inventory(Only if not in baubles, to save lag.
+					 if(!hasRock)
+					 {
+					 for(int i=0;i<player.inventory.getSizeInventory();++i)
 						{
-							if(itemstack.getTagCompound().hasKey("dur")&&itemstack.getTagCompound().hasKey("maxdur")&&itemstack.getTagCompound().hasKey("autorepair"))
-							{
-								LevelPick.addDur(itemstack, event.player);	
-							}
+						 	if(player.inventory.getStackInSlot(i)!=null)
+						 		{
+						 			ItemStack stack = player.inventory.getStackInSlot(i);
+						 			if(stack.getItem()==Itemsss.blessedRock)
+						 			{
+						 				hasRock=true;
+						 				break;
+						 			}
+						 		}
 						}
-						
-					}
+					 }
+					 
+					 if(hasRock)
+					 {
+						 player.capabilities.allowFlying = true;
+						 player.sendPlayerAbilities();
+						 if(!PlayersWithFlight.contains(username)) PlayersWithFlight.add(username);
+					 }	
+					 if (PlayersWithFlight.contains(username)&&!hasRock)
+						{
+							player.capabilities.allowFlying = false;
+							player.capabilities.isFlying = false;
+							player.fallDistance = 0;
+							player.sendPlayerAbilities();
+							PlayersWithFlight.remove(username);
+						}
 				 }
-			    }
+				
+				 /**
+				  * Repairs the protection charm, Lapis Pick, and Immortal Coward charm
+				  */
+				 if(player.inventory.hasItemStack(new ItemStack(Itemsss.ProtectionCharm))||player.inventory.hasItemStack(new ItemStack(Itemsss.HealthTPitem))||player.inventory.hasItemStack(new ItemStack(Itemsss.LevelPick)))
+				 {
+					 for(int i=0;i<player.inventory.getSizeInventory();++i)
+						{
+						 if(player.inventory.getStackInSlot(i)!=null)
+						 {
+							ItemStack itemstack = player.inventory.getStackInSlot(i);
+							//Repairs protection charm
+							if(player.inventory.getStackInSlot(i).getItem()==Itemsss.ProtectionCharm)
+							{
+								ProtectionCharm.RepairCharm(itemstack, 3);
+							}
+							//Repairs the HealthTPitem
+							if(player.inventory.getStackInSlot(i).getItem()==Itemsss.HealthTPitem)
+							{
+								if(itemstack.getTagCompound()!=null)
+								{
+									HealthTPitem.TimerRepair(itemstack);
+								}
+								
+							}
+							//Repairs my Lapis Pickaxe
+							if(player.inventory.getStackInSlot(i).getItem()==Itemsss.LevelPick)
+							{
+								if(itemstack.getTagCompound()!=null)
+								{
+									if(itemstack.getTagCompound().hasKey("dur")&&itemstack.getTagCompound().hasKey("maxdur")&&itemstack.getTagCompound().hasKey("autorepair"))
+									{
+										LevelPick.addDur(itemstack, player);	
+									}
+								}
+								
+							}
+							
+						 }
+					    } 
+				 }
+				 
 			}
-		}
 		}
 	}
+	
 			
-			
-	/*
-	 * 
-	 * Makes the wither drop death nuggets
-	 */
+	//Makes the wither drop death nuggets
 	@SubscribeEvent
 	public void onMobDrop(LivingDropsEvent event) 
 	{
@@ -119,17 +186,18 @@ public class KSEventHandler {
 		}
 	}
 	 
-	/*
-	 * 
-	 * Adds kills to skeleton and demonic swords.
-	 */
+
+	 /**
+	  * Adds kills to skeleton and demonic swords.
+	  * 
+	  */
 	 @SubscribeEvent
 	 public void onDeath(LivingDeathEvent event)
 	 {
 		 if(!event.getEntityLiving().worldObj.isRemote && event.getSource().getEntity() instanceof EntityPlayer )
 		 {
 			 EntityPlayer player = (EntityPlayer) event.getSource().getEntity();
-			 if(player.getHeldItem(EnumHand.MAIN_HAND).getItem() == Itemsss.SkeletonSword)
+			 if(player.getHeldItem(EnumHand.MAIN_HAND).getItem()!=null&&player.getHeldItem(EnumHand.MAIN_HAND).getItem() == Itemsss.SkeletonSword)
 			 {
 				 ItemStack in = player.getHeldItem(EnumHand.MAIN_HAND);
 				 if(event.getEntityLiving() instanceof EntitySkeleton)
@@ -150,7 +218,7 @@ public class KSEventHandler {
 				 }
 			 }
 			 
-			 if(player.getHeldItem(EnumHand.MAIN_HAND).getItem() == Itemsss.DemonicSword)
+			 if(player.getHeldItem(EnumHand.MAIN_HAND).getItem()!=null&&player.getHeldItem(EnumHand.MAIN_HAND).getItem() == Itemsss.DemonicSword)
 			 {
 				 ItemStack in = player.getHeldItem(EnumHand.MAIN_HAND);
 				 if(event.getEntityLiving() instanceof EntitySkeleton)
@@ -175,22 +243,51 @@ public class KSEventHandler {
 		 }
 		 
 	 }
-	 
-	 /*
-	  * Makes it so no blocks get harvested when dur is 0 on levelpick
-	  * 
-	  */
+	 //I use this to work the Protection Charm.
 	 @SubscribeEvent
-	 public void harvestBlocks(BreakEvent event)
+	 public void onHurt(LivingHurtEvent event)
 	 {
-		 if(event.getPlayer() !=null&&event.getPlayer().getHeldItem(EnumHand.MAIN_HAND).getItem()==Itemsss.LevelPick)
+		 if(event.getEntity() instanceof EntityPlayer)
 		 {
-			 if(event.getPlayer().getHeldItem(EnumHand.MAIN_HAND).getTagCompound()!=null)
+			 EntityPlayer player = (EntityPlayer)event.getEntity();
+			 IBaublesItemHandler baubles = player.getCapability(BaublesCapabilities.CAPABILITY_BAUBLES, player.getHorizontalFacing());
+			 if(player.getHealth()<=(player.getMaxHealth()*0.3))
 			 {
-				 ItemStack item = event.getPlayer().getHeldItem(EnumHand.MAIN_HAND);
-				 if(item.getTagCompound().getInteger("dur")==0)
+				 if(player.inventory.hasItemStack(new ItemStack(Itemsss.ProtectionCharm))||ModUtils.baublesHasItemStack(player, new ItemStack(Itemsss.ProtectionCharm)))
 				 {
-					 event.setCanceled(true);
+					 boolean finished = false;
+					 for(int i=0;i<baubles.getSlots();++i)
+					 {
+						 if(baubles.getStackInSlot(i)!=null&&baubles.getStackInSlot(i).getItem()==Itemsss.ProtectionCharm)
+						 {							 
+								 ItemStack itemstack = baubles.getStackInSlot(i);
+								 if(itemstack.getTagCompound()!=null&&itemstack.getTagCompound().getInteger("dur")>10)
+								 {
+									 event.setAmount(0);
+									 ProtectionCharm.DamageCharm(itemstack, 10);
+									 finished = true;
+									 event.setCanceled(true);
+									 break;
+								 }
+						 }
+					 }
+					 if(!finished)
+					 {
+					 for(int i=0;i<player.inventory.getSizeInventory();++i)
+					 {
+						 if(player.inventory.getStackInSlot(i)!=null&&player.inventory.getStackInSlot(i).getItem()==Itemsss.ProtectionCharm)
+						 {
+								 ItemStack itemstack = player.inventory.getStackInSlot(i);
+								 if(itemstack.getTagCompound()!=null&&itemstack.getTagCompound().getInteger("dur")>10)
+								 {
+									 event.setAmount(0);
+									 ProtectionCharm.DamageCharm(itemstack, 10);
+									 event.setCanceled(true);
+									 break;
+								 }
+						 }
+					 }
+					 }
 				 }
 			 }
 		 }
