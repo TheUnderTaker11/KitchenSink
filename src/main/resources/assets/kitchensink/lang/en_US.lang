@@ -34,6 +34,7 @@ item.DeathHand.name=Hand of Death
 item.HealthTPitem.name=Charm of the Immortal Coward
 item.TPitem.name=Charm of Recall
 item.ProtectionCharm.name=Charm of Protection
+item.MagnetRing.name=Magnet Ring
 
 tile.BlackBlock.name=Black Block
 tile.BabyBlueBlock.name=Baby Blue Block

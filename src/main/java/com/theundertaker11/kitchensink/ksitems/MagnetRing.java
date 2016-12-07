@@ -41,7 +41,8 @@ public class MagnetRing extends Item implements IBauble{
     {
 		if(stack.getTagCompound()!=null)
 		{
-			tooltip.add("Item Magnet T"+(stack.getTagCompound().getInteger("teir")));
+			if(stack.getTagCompound().getInteger("teir")==6) tooltip.add("Blessed Magnet");
+			else tooltip.add("Item Magnet T"+(stack.getTagCompound().getInteger("teir")));
 			tooltip.add("While sneaking it will not pull in items");
 		}
 		else 
@@ -50,29 +51,24 @@ public class MagnetRing extends Item implements IBauble{
 				tooltip.add("While sneaking it will not pull in items");
 			}
     }
-	
-	@Override
-	public void onUpdate(ItemStack item, World world, Entity entity, int i, boolean f) 
-	{
-		
-	}
 
 	@Override
 	public BaubleType getBaubleType(ItemStack itemstack) {
-		return BaubleType.TRINKET;
+		return BaubleType.RING;
 	}
 	
 	@Override
 	public void onWornTick(ItemStack item, EntityLivingBase Player) {
 		if(item.getTagCompound()!=null)
 			{
-			this.distanceFromPlayer = (item.getTagCompound().getInteger("range"));
+			this.distanceFromPlayer = (item.getTagCompound().getDouble("range"));
 			}
+		else return;
 		if (!(Player instanceof EntityPlayer))
 			return;
 		EntityPlayer player = (EntityPlayer)Player;
 		World world = player.getEntityWorld();
-		if (!player.isSneaking())
+		if (player.isSneaking())
 			return;
 		if (world.isRemote)
 			return;

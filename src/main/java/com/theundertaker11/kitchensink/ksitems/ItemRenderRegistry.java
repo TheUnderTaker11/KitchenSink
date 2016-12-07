@@ -40,6 +40,7 @@ public class ItemRenderRegistry {
 	    reg(Itemsss.HealthTPitem);
 	    reg(Itemsss.TPitem);
 	    reg(Itemsss.ProtectionCharm);
+	    reg(Itemsss.MagnetRing);
 	    
 	    regWithMeta(Itemsss.ItemMagnet, 1);
 	    regWithMeta(Itemsss.ItemMagnetT2, 1);

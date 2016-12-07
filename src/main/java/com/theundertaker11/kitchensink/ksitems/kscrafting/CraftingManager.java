@@ -16,7 +16,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class CraftingManager{
 	public static void Crecipes(){
-		//shaped
+		////shaped
 		//items
 		GameRegistry.addRecipe(new ItemStack(Itemsss.obsidianPlate), "xxx", "xxx", "xxx", 'x', Blocks.OBSIDIAN);
 		GameRegistry.addRecipe(new ItemStack(Itemsss.deathIngot), "xxx", "xxx", "xxx", 'x', Itemsss.deathNugget);
@@ -36,6 +36,7 @@ public class CraftingManager{
 		GameRegistry.addRecipe(new ItemStack(Itemsss.TPitem), "zzz", "xyx", "zzz", 'x', Itemsss.angelAlloy, 'y', Itemsss.blessedRock, 'z', Items.ENDER_EYE);
 		GameRegistry.addRecipe(new ItemStack(Itemsss.ProtectionCharm), "xzx", "zyz", "xzx", 'x', Itemsss.obsidianPlate, 'y', Itemsss.godEssence, 'z', Itemsss.angelAlloy);
 		GameRegistry.addRecipe(new ItemStack(Itemsss.HealthTPitem), "xzx", "aya", "xzx", 'x', Itemsss.netherStarPlate, 'y', Itemsss.TPitem, 'z', Itemsss.angelAlloy, 'a', Items.END_CRYSTAL);
+		GameRegistry.addRecipe(new ItemStack(Itemsss.MagnetRing), "yxy", "x x", "yxy", 'x', Items.IRON_INGOT, 'y', Items.REDSTONE);
 		//tools
 		GameRegistry.addRecipe(new ItemStack(Itemsss.blessedPick), "xxx", " y ", " y ", 'x', Itemsss.angelAlloy, 'y', Itemsss.obsidianPlate);
 		GameRegistry.addRecipe(new ItemStack(Itemsss.blessedShovel), " x ", " y ", " y ", 'x', Itemsss.angelAlloy, 'y', Itemsss.obsidianPlate);
@@ -45,7 +46,7 @@ public class CraftingManager{
 		GameRegistry.addRecipe(new ItemStack(Itemsss.blessedHoe), "xx ", " y ", " y ", 'x', Itemsss.angelAlloy, 'y', Itemsss.obsidianPlate);
 		GameRegistry.addRecipe(new ItemStack(Itemsss.blessedHoe), " xx", " y ", " y ", 'x', Itemsss.angelAlloy, 'y', Itemsss.obsidianPlate);
 		GameRegistry.addRecipe(new ItemStack(Itemsss.blessedHoe), " xx", " y ", " y ", 'x', Itemsss.angelAlloy, 'y', Itemsss.obsidianPlate);
-		GameRegistry.addRecipe(new ItemStack(Itemsss.godsTool), "xxx", "ayb", "xzx", 'x', Itemsss.godEssence, 'y', Itemsss.blessedPick, 'a', Itemsss.blessedShovel, 'b', Itemsss.blessedAxe, 'z', Itemsss.blessedHoe);
+		GameRegistry.addRecipe(new ItemStack(Itemsss.godsTool), "   ", "ayb", "xzx", 'x', Itemsss.godEssence, 'y', Itemsss.blessedPick, 'a', Itemsss.blessedShovel, 'b', Itemsss.blessedAxe, 'z', Itemsss.blessedHoe);
 		GameRegistry.addRecipe(new ItemStack(Itemsss.DeathHand), " z ", "yxy", " z ", 'z',Itemsss.deathsSythe, 'y', Itemsss.godEssence, 'x', Itemsss.deathIngot);
 		
 		//Blocks
@@ -61,7 +62,7 @@ public class CraftingManager{
 		GameRegistry.addRecipe(new ItemStack(KSBlocks.YellowBlock, 6), " y ", "xxx", "xxx", 'x', Blocks.COBBLESTONE, 'y', new ItemStack(Items.DYE, 1, 11));
 		
 		
-		//shapeless
+		////shapeless
 		GameRegistry.addShapelessRecipe(new ItemStack(Itemsss.deathNugget, 9), new Object[] {Itemsss.deathIngot});		
 		
 		//GameRegistry.addRecipe(new ShapedOreRecipe(Item.bucketEmpty, true, new Object[]{
@@ -128,6 +129,7 @@ public class CraftingManager{
 		GameRegistry.addRecipe(new CustomLevelToolMagnet());
 		GameRegistry.addRecipe(new CustomLevelToolXP());
 		GameRegistry.addRecipe(new CustomLevelToolAutoRepair());
+		GameRegistry.addRecipe(new MagnetRingCrafting());
 		
 		//smelting
 		}

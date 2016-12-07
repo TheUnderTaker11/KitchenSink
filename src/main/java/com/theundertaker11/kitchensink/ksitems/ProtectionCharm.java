@@ -26,7 +26,10 @@ public class ProtectionCharm extends angelAlloy implements IBauble{
 		tooltip.add("Protects you from any and all damage");
 		tooltip.add("Only comes into affect when you reach 30% or lower health");
 		tooltip.add("Also slowly repairs itself");
-		tooltip.add("Duribility:"+stack.getTagCompound().getInteger("dur")+"/"+stack.getTagCompound().getInteger("maxdur"));
+		if(stack.getTagCompound()!=null)
+			{
+			tooltip.add("Duribility:"+stack.getTagCompound().getInteger("dur")+"/"+stack.getTagCompound().getInteger("maxdur"));
+			}
     }
 	
 	public static void DamageCharm(ItemStack itemstack, int amount)
