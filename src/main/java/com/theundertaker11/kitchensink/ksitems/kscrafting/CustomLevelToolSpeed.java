@@ -22,6 +22,7 @@ public class CustomLevelToolSpeed implements IRecipe{
 	{
 		int pick = 0;
 		int redstonecount = 0;
+		int none = 0;
 		for(int i=0; i < inv.getSizeInventory(); ++i)
 		{
 			
@@ -36,8 +37,9 @@ public class CustomLevelToolSpeed implements IRecipe{
 			{
 				++redstonecount;
 			}
+			if(item==null) ++none;
 		}
-		if(pick == 1&&redstonecount==8)
+		if(pick == 1&&redstonecount==4&&none==4)
 		{
 			return true;
 		}

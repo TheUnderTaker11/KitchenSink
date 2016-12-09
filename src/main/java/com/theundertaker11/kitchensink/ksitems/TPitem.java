@@ -9,6 +9,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
@@ -16,29 +17,27 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 
-public class TPitem extends Item {
+public class TPitem extends angelAlloy {
 	
 	public TPitem(String name)
 	{
-		super();
-		this.setUnlocalizedName(name);
-		this.setCreativeTab(KitchenSink.KStab);
-		this.setRegistryName(name);
+		super(name);
 		this.setMaxStackSize(1);
 	}
 	
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand)
+	public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World worldIn, EntityPlayer playerIn, EnumHand hand)
     {
 			if(playerIn.isSneaking()) 
 			{
-				ModUtils.WritePlayerXYZtoNBT(itemStackIn, playerIn);
+				ModUtils.WritePlayerXYZtoNBT(stack, playerIn);
 			}
-			else if(itemStackIn.getTagCompound()!=null)
+			else if(stack.getTagCompound()!=null)
 				{
-					ModUtils.TeleportPlayer(playerIn, itemStackIn.getTagCompound().getDouble("x"), itemStackIn.getTagCompound().getDouble("y"), itemStackIn.getTagCompound().getDouble("z"), itemStackIn.getTagCompound().getInteger("dim"));
+					NBTTagCompound tag=stack.getTagCompound();
+					ModUtils.TeleportPlayer(playerIn, tag.getDouble("x"), tag.getDouble("y"), tag.getDouble("z"), tag.getInteger("dim"));
 				}
-		return new ActionResult<ItemStack>(EnumActionResult.PASS, itemStackIn);
+		return new ActionResult<ItemStack>(EnumActionResult.PASS, stack);
 	}
 	
 	@Override
@@ -49,9 +48,9 @@ public class TPitem extends Item {
     }
 	
 	@Override
-	 public boolean hasEffect(ItemStack par1ItemStack)
+	 public boolean hasEffect(ItemStack stack)
 	 {
-		if(par1ItemStack.getItemDamage()==0&&par1ItemStack.getTagCompound()!=null) return true;
+		if(stack.getItemDamage()==0&&stack.getTagCompound()!=null) return true;
 		else return false;
 	 }
 }

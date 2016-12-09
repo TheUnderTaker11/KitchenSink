@@ -68,21 +68,22 @@ public class LevelPick extends ItemPickaxe {
 	{
 		if(!world.isRemote&&itemstack.getTagCompound()!=null)
 		{
-			if(itemstack.getTagCompound().getInteger("maxdur")<itemstack.getTagCompound().getInteger("dur"))
+			NBTTagCompound tag = itemstack.getTagCompound();
+			if(tag.getInteger("maxdur")<tag.getInteger("dur"))
 			{
-				itemstack.getTagCompound().setInteger("dur",itemstack.getTagCompound().getInteger("maxdur"));
+				tag.setInteger("dur",tag.getInteger("maxdur"));
 			}
-			if(itemstack.getTagCompound().getInteger("pickxp")>=itemstack.getTagCompound().getInteger("xptonextlevel"))
+			if(tag.getInteger("pickxp")>=tag.getInteger("xptonextlevel"))
 			{
-				if(itemstack.getTagCompound().getInteger("picklevel")==0)
+				if(tag.getInteger("picklevel")==0)
 				{
 					levelUpPick(itemstack, entity,1F);
 				}
-				if(itemstack.getTagCompound().getInteger("picklevel")==2||itemstack.getTagCompound().getInteger("picklevel")==3)
+				if(tag.getInteger("picklevel")==2||tag.getInteger("picklevel")==3)
 				{
 					levelUpPick(itemstack, entity,3F);
 				}
-				if(itemstack.getTagCompound().getInteger("picklevel")==4)
+				if(tag.getInteger("picklevel")==4)
 				{
 					levelUpPick(itemstack, entity, 1F);
 					//Adds fortune 10 if it there is not silk touch
@@ -94,19 +95,11 @@ public class LevelPick extends ItemPickaxe {
 					
 				}
 				//If it was level 1 or level 5+
-				if(itemstack.getTagCompound().getInteger("picklevel")==1||itemstack.getTagCompound().getInteger("picklevel")>=5)
+				if(tag.getInteger("picklevel")==1||tag.getInteger("picklevel")>=5)
 				{
 					levelUpPick(itemstack, entity, 2F);
 				}
 			}
-			
-			/*
-			 * Does math to the level to set certain values(Ones that only matter what the level is).
-			 * 
-			 */
-			itemstack.getTagCompound().setInteger("maxdur", ((itemstack.getTagCompound().getInteger("picklevel")*250)+250));
-			itemstack.getTagCompound().setInteger("xptonextlevel", ((itemstack.getTagCompound().getInteger("picklevel")*200)+50));
-			itemstack.getTagCompound().setInteger("harvestlevel", itemstack.getTagCompound().getInteger("picklevel"));
 		/*
 		 * Start magnet
 		 * 
@@ -168,11 +161,15 @@ if(itemstack.getTagCompound().getBoolean("allowmagnet")&&itemstack.getTagCompoun
 	  {
 		  if(itemstack.getTagCompound()!=null)
 		  {
-			  itemstack.getTagCompound().setInteger("pickxp", 0);
-			  itemstack.getTagCompound().setInteger("picklevel", itemstack.getTagCompound().getInteger("picklevel")+1);
-			  itemstack.getTagCompound().setFloat("pickspeed", (itemstack.getTagCompound().getFloat("pickspeed")+speedadded));
+			  NBTTagCompound tag = itemstack.getTagCompound();
+			  tag.setInteger("pickxp", 0);
+			  tag.setInteger("picklevel", tag.getInteger("picklevel")+1);
+			  tag.setFloat("pickspeed", (tag.getFloat("pickspeed")+speedadded));
 			  entity.addChatMessage(new TextComponentString("Your Pick Has Leveled Up!"));
 			  entity.addChatMessage(new TextComponentString("Speed added: " + speedadded));
+			  tag.setInteger("harvestlevel", tag.getInteger("picklevel"));
+			  tag.setInteger("xptonextlevel", ((tag.getInteger("picklevel")*200)+50));
+			  tag.setInteger("maxdur", ((tag.getInteger("picklevel")*250)+250));
 		  }
 	  }
 	  
@@ -181,37 +178,54 @@ if(itemstack.getTagCompound().getBoolean("allowmagnet")&&itemstack.getTagCompoun
 	public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced)
     {
 		if(stack.getTagCompound() !=null)
-		{ 
-		String dur = stack.getTagCompound().getInteger("dur") + "";
-		String harvestlevel = stack.getTagCompound().getInteger("harvestlevel") + "";
-		String picklevel = stack.getTagCompound().getInteger("picklevel") + "";
-		String pickspeed = stack.getTagCompound().getFloat("pickspeed") + "";
-		String pickxp = stack.getTagCompound().getInteger("pickxp") + "";
-		String xpremains = stack.getTagCompound().getInteger("xptonextlevel") + "";
-		String maxdur = stack.getTagCompound().getInteger("maxdur") + "";
-		
-			if(stack.getTagCompound().getInteger("dur")>0)
+		{
+		  NBTTagCompound tag = stack.getTagCompound();
+		  if(tag.getBoolean("dummyRepair")||tag.getBoolean("dummyMagnet")||tag.getBoolean("dummySpeed")||tag.getBoolean("dummyXP"))
+		  {
+			  if(tag.getBoolean("dummyRepair"))
+			  {
+				  tooltip.add(TextFormatting.BOLD+"This will repair your pickaxe");
+				  tooltip.add(TextFormatting.BLUE + "Duribility remaining: " +tag.getInteger("dur")+"/"+tag.getInteger("maxdur"));
+			  }
+			  else if(tag.getBoolean("dummyMagnet"))
+			  {
+				  tooltip.add(TextFormatting.BOLD+"This will add a magnet to your pick");
+			  }
+			  else if(tag.getBoolean("dummySpeed"))
+			  {
+				  tooltip.add(TextFormatting.BOLD+"This will add speed to your pick");
+			  }
+			  else if(tag.getBoolean("dummyXP"))
+			  {
+				  tooltip.add(TextFormatting.BOLD+"This will add the XP addon to your pick");
+				  tooltip.add(TextFormatting.BOLD+"It will make you be able to right click every 20 blocks or so for XP");
+			  }
+		  }
+		  else
+		  {
+			if(tag.getInteger("dur")>0)
 			{
-				tooltip.add(TextFormatting.BLUE + "Duribility remaining: " + dur+"/"+maxdur);
+				tooltip.add(TextFormatting.BLUE + "Duribility remaining: " +tag.getInteger("dur")+"/"+tag.getInteger("maxdur"));
 			}
-			if(stack.getTagCompound().getInteger("dur")==0)
+			if(tag.getInteger("dur")==0)
 			{
 				tooltip.add(TextFormatting.RED + "Tool is Broken");
 			}
-			tooltip.add(TextFormatting.GOLD + "Pickaxe Level: "+picklevel);
-			tooltip.add(TextFormatting.GOLD + "Harvest Level: "+harvestlevel);
-			tooltip.add(TextFormatting.GOLD + "Mining Speed: "+pickspeed);
-			if(stack.getTagCompound().getBoolean("allowmagnet"))
+			tooltip.add(TextFormatting.GOLD + "Pickaxe Level: "+tag.getInteger("picklevel"));
+			tooltip.add(TextFormatting.GOLD + "Harvest Level: "+tag.getInteger("harvestlevel"));
+			tooltip.add(TextFormatting.GOLD + "Mining Speed: "+tag.getFloat("pickspeed"));
+			if(tag.getBoolean("allowmagnet"))
 			{
-				if(stack.getTagCompound().getBoolean("magnetactive"))
+				if(tag.getBoolean("magnetactive"))
 				{
 					tooltip.add(TextFormatting.BOLD+"Magnet Enabled");
 				}
 				else tooltip.add(TextFormatting.BOLD+"Magnet Disabled");
 			}
-			if(stack.getTagCompound().getBoolean("allowxp")) tooltip.add("Right clicks remaining: "+(stack.getTagCompound().getInteger("xpfromblocks")/20));
-			tooltip.add("Current XP: "+pickxp+"/"+xpremains);
-			if(stack.getTagCompound().getBoolean("autorepair")) tooltip.add("Repair I");
+			if(tag.getBoolean("allowxp")) tooltip.add("Right clicks remaining: "+(tag.getInteger("xpfromblocks")/20));
+			tooltip.add("Current XP: "+tag.getInteger("pickxp")+"/"+tag.getInteger("xptonextlevel"));
+			if(tag.getBoolean("autorepair")) tooltip.add("Repair I");
+		  }
 		}
     }
 	/**
@@ -236,22 +250,23 @@ if(itemstack.getTagCompound().getBoolean("allowmagnet")&&itemstack.getTagCompoun
     {
 		if(!worldIn.isRemote&&stack.getTagCompound() !=null&& stack.getTagCompound().getInteger("dur")>0)
 		{
-			stack.getTagCompound().setInteger("dur", (stack.getTagCompound().getInteger("dur")-1));
+			NBTTagCompound tag = stack.getTagCompound();
+			tag.setInteger("dur", (tag.getInteger("dur")-1));
 			//These will give varying XP based on the block broken.
 			if(blockIn==Blocks.DIAMOND_ORE||blockIn==Blocks.GOLD_ORE||blockIn==Blocks.EMERALD_ORE||blockIn==Blocks.QUARTZ_ORE||blockIn==Blocks.OBSIDIAN)
 			{
-			stack.getTagCompound().setInteger("pickxp", stack.getTagCompound().getInteger("pickxp")+4);
+			tag.setInteger("pickxp", tag.getInteger("pickxp")+4);
 			}
 			else if(blockIn==Blocks.COAL_ORE||blockIn==Blocks.IRON_ORE||blockIn==Blocks.LAPIS_ORE||blockIn==Blocks.REDSTONE_ORE)
 			{
-			stack.getTagCompound().setInteger("pickxp", stack.getTagCompound().getInteger("pickxp")+3);
+			tag.setInteger("pickxp", tag.getInteger("pickxp")+3);
 			}
-			else stack.getTagCompound().setInteger("pickxp", stack.getTagCompound().getInteger("pickxp")+1);
+			else tag.setInteger("pickxp", tag.getInteger("pickxp")+1);
 
 			//Increases xpfromblocks NBT if it has been crafted with the xp items.
-			if(stack.getTagCompound().getBoolean("allowxp"))
+			if(tag.getBoolean("allowxp"))
 			{
-			stack.getTagCompound().setInteger("xpfromblocks", (stack.getTagCompound().getInteger("xpfromblocks")+1));
+			tag.setInteger("xpfromblocks", (tag.getInteger("xpfromblocks")+1));
 			}
 		}
 		
@@ -316,19 +331,23 @@ if(itemstack.getTagCompound().getBoolean("allowmagnet")&&itemstack.getTagCompoun
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand)
     {
-		if (!worldIn.isRemote && playerIn.isSneaking()&&itemStackIn.getTagCompound()!=null)
+		if(itemStackIn.getTagCompound()!=null)
 		{
-			if(itemStackIn.getTagCompound().getBoolean("allowmagnet"))
+			NBTTagCompound tag=itemStackIn.getTagCompound();
+			if (!worldIn.isRemote && playerIn.isSneaking())
 			{
-				itemStackIn.getTagCompound().setBoolean("magnetactive", (!itemStackIn.getTagCompound().getBoolean("magnetactive")));
+				if(tag.getBoolean("allowmagnet"))
+				{
+					tag.setBoolean("magnetactive", (!tag.getBoolean("magnetactive")));
+				}
 			}
-		}
-		if(!worldIn.isRemote&&!playerIn.isSneaking()&&itemStackIn.getTagCompound()!=null&&itemStackIn.getTagCompound().getBoolean("allowxp"))
-		{
-			if(itemStackIn.getTagCompound().getInteger("xpfromblocks")>19)
+			if(!worldIn.isRemote&&!playerIn.isSneaking()&&tag.getBoolean("allowxp"))
 			{
-				worldIn.spawnEntityInWorld(new EntityXPOrb(worldIn, playerIn.posX + 1, playerIn.posY, playerIn.posZ, 23));
-				itemStackIn.getTagCompound().setInteger("xpfromblocks", (itemStackIn.getTagCompound().getInteger("xpfromblocks")-20));
+				if(tag.getInteger("xpfromblocks")>19)
+				{
+					worldIn.spawnEntityInWorld(new EntityXPOrb(worldIn, playerIn.posX + 1, playerIn.posY, playerIn.posZ, 23));
+					tag.setInteger("xpfromblocks", (tag.getInteger("xpfromblocks")-20));
+				}
 			}
 		}
 		return new ActionResult<ItemStack>(EnumActionResult.PASS, itemStackIn);
@@ -343,9 +362,10 @@ if(itemstack.getTagCompound().getBoolean("allowmagnet")&&itemstack.getTagCompoun
 		
 		if(itemstack.getTagCompound()!=null&&itemstack.getTagCompound().getBoolean("autorepair")&&!player.isSwingInProgress)
 		{
-			if(itemstack.getTagCompound().getInteger("dur")<itemstack.getTagCompound().getInteger("maxdur"))
+			NBTTagCompound tag = itemstack.getTagCompound();
+			if(tag.getInteger("dur")<tag.getInteger("maxdur"))
 			{
-				itemstack.getTagCompound().setInteger("dur",(itemstack.getTagCompound().getInteger("dur")+20));
+				tag.setInteger("dur",(tag.getInteger("dur")+20));
 			}
 		}
 	}

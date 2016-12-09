@@ -29,6 +29,8 @@ public class KitchenSink {
 	@SidedProxy(clientSide = Refernce.CLIENTPROXY, serverSide = Refernce.SERVERPROXY)
 	public static CommonProxy proxy;
 	
+	public static boolean debugMode = false;
+	
 	@Mod.EventHandler
 	public void preInit(FMLPreInitializationEvent event)
 	{
@@ -46,16 +48,6 @@ public class KitchenSink {
 		CraftingManager.Crecipes();
 		proxy.RegisterRenders();
 		MinecraftForge.EVENT_BUS.register(new KSEventHandler());
-		FMLCommonHandler.instance().bus().register(new KSEventHandler());
-		
-		//Use this in the US_lang file to name things for oreDic
-		//{UNLOCALIZED_NAME}=Your Name That Will Be Displayed When A Player Hovers Over That Item\
-		
-		//Use this to register your Item for oreDic
-		//OreDictionary.registerOre("ingotCopper", ingotCopper);
-		
-		//Go to CraftingManager for how to use it in recipes
-
 	}
 
 	@Mod.EventHandler

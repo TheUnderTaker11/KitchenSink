@@ -33,10 +33,8 @@ public class blessedPick extends ItemPickaxe {
 		this.setRegistryName(name);
 		
 	}
-	String namE = "blessedPick";
 	
-	
-	//adds tooltip(duh?)
+	//adds tooltip
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced)
     {
@@ -47,7 +45,7 @@ public class blessedPick extends ItemPickaxe {
 			{
 				tooltip.add("Right Click Enabled");
 			}
-			if(stack.getTagCompound().getBoolean("state")==false)
+			else
 			{
 				tooltip.add("Right Click Disabled");
 			}
@@ -60,21 +58,9 @@ public class blessedPick extends ItemPickaxe {
 	{
 		if (itemstack.getTagCompound() == null)
         {
-			itemstack.setTagCompound(new NBTTagCompound()); 
-			String toggle = "Enabled";
+			itemstack.setTagCompound(new NBTTagCompound());
 			itemstack.getTagCompound().setBoolean("state", true);
-        }
-		
-		if(itemstack.getTagCompound().getBoolean("state")==true)
-		{
-			String namE = "blessedPick";
-		}
-		if(itemstack.getTagCompound().getBoolean("state")==false)
-		{
-			String namE = "blessedPick1";
-			String toggle = "Disabled";
-		}
-		
+        }	
 	}
 	
 
@@ -87,7 +73,7 @@ public class blessedPick extends ItemPickaxe {
 		{
 			if(playerIn.isSneaking() && itemStackIn.getTagCompound() != null)
 			{
-			 itemStackIn.getTagCompound().setBoolean("state", itemStackIn.getTagCompound().getBoolean("state") == true ? false : true);
+			 itemStackIn.getTagCompound().setBoolean("state", !itemStackIn.getTagCompound().getBoolean("state"));
 			}
 			if(!playerIn.isSneaking()&& itemStackIn.getTagCompound() != null)
 			{

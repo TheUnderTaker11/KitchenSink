@@ -56,12 +56,13 @@ public class HealthTPitem extends Item {
 		{
 			if(item.getTagCompound()!=null && entity instanceof EntityPlayer)
 			{
+				NBTTagCompound tag=item.getTagCompound();
 				EntityPlayer player = (EntityPlayer)entity;
-				if(player.getHealth()<=(player.getMaxHealth()*0.2F)&&item.getTagCompound().getInteger("dur")==item.getTagCompound().getInteger("maxdur"))
+				if(player.getHealth()<=(player.getMaxHealth()*0.2F)&&tag.getInteger("dur")==tag.getInteger("maxdur"))
 				{
 						player.addChatMessage(new TextComponentString(TextFormatting.RED+"Health Critical, Teleporting Now"));
-						ModUtils.TeleportPlayer(player, item.getTagCompound().getDouble("x"), item.getTagCompound().getDouble("y"), item.getTagCompound().getDouble("z"), item.getTagCompound().getInteger("dim"));
-						item.getTagCompound().setInteger("dur", 0);
+						ModUtils.TeleportPlayer(player, tag.getDouble("x"), tag.getDouble("y"), tag.getDouble("z"), tag.getInteger("dim"));
+						tag.setInteger("dur", 0);
 				}
 				
 				

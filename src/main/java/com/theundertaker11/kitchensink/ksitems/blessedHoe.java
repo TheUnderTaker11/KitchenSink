@@ -42,62 +42,12 @@ public class blessedHoe extends ItemHoe {
     {
         return false;
     }
+	//Make it Always gain back its durability
 	@Override
-	@SuppressWarnings("incomplete-switch")
-    public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
-    {
-        if (!playerIn.canPlayerEdit(pos.offset(facing), facing, stack))
-        {
-            return EnumActionResult.FAIL;
-        }
-        else
-        {
-            int hook = net.minecraftforge.event.ForgeEventFactory.onHoeUse(stack, playerIn, worldIn, pos);
-            if (hook != 0) return hook > 0 ? EnumActionResult.SUCCESS : EnumActionResult.FAIL;
-
-            IBlockState iblockstate = worldIn.getBlockState(pos);
-            Block block = iblockstate.getBlock();
-
-            if (facing != EnumFacing.DOWN && worldIn.isAirBlock(pos.up()))
-            {
-                if (block == Blocks.GRASS || block == Blocks.GRASS_PATH)
-                {
-                    this.setBlock(stack, playerIn, worldIn, pos, Blocks.FARMLAND.getDefaultState());
-                    return EnumActionResult.SUCCESS;
-                }
-
-                if (block == Blocks.DIRT)
-                {
-                    switch ((BlockDirt.DirtType)iblockstate.getValue(BlockDirt.VARIANT))
-                    {
-                        case DIRT:
-                            this.setBlock(stack, playerIn, worldIn, pos, Blocks.FARMLAND.getDefaultState());
-                            return EnumActionResult.SUCCESS;
-                        case COARSE_DIRT:
-                            this.setBlock(stack, playerIn, worldIn, pos, Blocks.DIRT.getDefaultState().withProperty(BlockDirt.VARIANT, BlockDirt.DirtType.DIRT));
-                            return EnumActionResult.SUCCESS;
-                    }
-                }
-            }
-
-            return EnumActionResult.PASS;
-        }
-    }
-	/**
-	 * What runs to do the hoe action
-	 */
-	@Override
-	protected void setBlock(ItemStack stack, EntityPlayer player, World worldIn, BlockPos pos, IBlockState state)
-    {
-        worldIn.playSound(player, pos, SoundEvents.ITEM_HOE_TILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
-
-        if (!worldIn.isRemote)
-        {
-            worldIn.setBlockState(pos, state, 11);
-            stack.damageItem(1, player);
-        }
-    }
-
+	public void onUpdate(ItemStack itemstack, World world, Entity entity, int metadata, boolean bool)
+	{
+		if(itemstack.getItemDamage()>0) itemstack.setItemDamage(0);
+	}
 	//Tinkers Code
 	@Override
 	  public boolean hasCustomEntity(ItemStack stack) {

@@ -38,20 +38,15 @@ import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import net.minecraftforge.event.entity.player.PlayerPickupXpEvent;
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
 
-public class ItemMagnetT6 extends Item {
+public class ItemMagnetT6 extends angelAlloy {
 	protected double distanceFromPlayer;
-	private static int teir = 0;
 
 	public ItemMagnetT6(String name, double range, int teir) {
-		super();
-		this.teir = teir;
+		super(name);
 		setMaxStackSize(1);
 		this.distanceFromPlayer = range;
 		canRepair = false;
 		setMaxDamage(0);
-		this.setRegistryName(name);
-		setUnlocalizedName(name);
-		setCreativeTab(KitchenSink.KStab);
 	}
 
 	@Override
@@ -71,11 +66,6 @@ public class ItemMagnetT6 extends Item {
 	@SuppressWarnings("rawtypes")
 	@Override
 	public void onUpdate(ItemStack item, World world, Entity entity, int i, boolean f) {
-		if(item.getTagCompound()==null)
-		{
-			item.setTagCompound(new NBTTagCompound());
-			item.getTagCompound().setInteger("teir", this.teir);
-		}
 		if (world.isRemote)
 			return;
 		if (!isActivated(item))

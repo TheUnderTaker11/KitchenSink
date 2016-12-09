@@ -16,12 +16,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class blessedRock extends Item implements IBauble{
+public class blessedRock extends deathIngot implements IBauble{
 	public blessedRock(String name){
-		super();
-		this.setUnlocalizedName(name);
-		this.setCreativeTab(KitchenSink.KStab);
-		this.setRegistryName(name);
+		super(name);
 	}
 	
 	@Override
@@ -36,13 +33,7 @@ public class blessedRock extends Item implements IBauble{
 	    {
 	        return EnumRarity.RARE;
 	    }
-	
-	@Override
-    public boolean hasEffect(ItemStack par1ItemStack)
-    {
-	    return true;
-    }
-	
+
 	@Override
 	public void onUpdate(ItemStack itemstack, World world, Entity entity, int metadata, boolean bool)
 	{
@@ -52,7 +43,6 @@ public class blessedRock extends Item implements IBauble{
 			player.capabilities.allowFlying = true;
 		}
 	}
-
 	@Override
 	public BaubleType getBaubleType(ItemStack arg0) 
 	{

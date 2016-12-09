@@ -11,23 +11,20 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 
-public class xpItem extends Item {
+public class xpItem extends angelAlloy {
 	public xpItem(String name){
-		super();
-		this.setUnlocalizedName(name);
-		this.setCreativeTab(KitchenSink.KStab);
+		super(name);
 		setMaxDamage(1);
-		this.setRegistryName(name);
 	}
 	
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand)
+	public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World worldIn, EntityPlayer playerIn, EnumHand hand)
     {
 		if(!worldIn.isRemote){
-		worldIn.spawnEntityInWorld(new EntityXPOrb(worldIn, playerIn.posX + 1, playerIn.posY, playerIn.posZ, 23));
-		itemStackIn.damageItem(2, playerIn);
+		worldIn.spawnEntityInWorld(new EntityXPOrb(worldIn, playerIn.posX + 1, playerIn.posY, playerIn.posZ, 43));
+		stack.damageItem(2, playerIn);
 		}
-		return new ActionResult<ItemStack>(EnumActionResult.PASS, itemStackIn);
+		return new ActionResult<ItemStack>(EnumActionResult.PASS, stack);
 	}
 
 }

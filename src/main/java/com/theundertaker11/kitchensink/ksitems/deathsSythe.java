@@ -46,22 +46,20 @@ public class deathsSythe extends blessedSword {
 		public deathsSythe(String name, ToolMaterial blessed_mat) 
 		{
 		super(name, blessed_mat);
-		this.setUnlocalizedName(name);
 		setMaxDamage(10000);
-		this.setCreativeTab(KitchenSink.KStab);
 		}
 
 	@Override
 	public void onUpdate(ItemStack itemstack, World world, Entity entity, int metadata, boolean bool)
 	{
 		//Fixes it when it loses duribility
-		if (itemstack.getItemDamage() != 0)
+		if (itemstack.getItemDamage()>0)
 		{
 			itemstack.setItemDamage(0);
 		}
-		if(entity instanceof EntityPlayer)
+		if(itemstack.getTagCompound() == null)
 		{
-			if (itemstack.getTagCompound() == null)
+			if (entity instanceof EntityPlayer)
 			{
 				itemstack.setTagCompound(new NBTTagCompound());  
 				itemstack.getTagCompound().setString("ownerID", entity.getUniqueID().toString());
@@ -81,13 +79,13 @@ public class deathsSythe extends blessedSword {
 				//Adds the owners name and if the person holding it is the owner.
 				if(stack.getTagCompound() != null)
 				{
-					String owner = stack.getTagCompound().getString("owner");
-					tooltip.add("Owner:" + owner);
+					tooltip.add("Owner: "+stack.getTagCompound().getString("owner"));
 					if(!stack.getTagCompound().getString("ownerID").equals(playerIn.getUniqueID().toString()))
 					{
 						tooltip.add(TextFormatting.DARK_RED + "You are not the owner");
 					}
 				}
+				else tooltip.add("Owner: (Owner Has Not Been Set)");
 				
 		    }
 			
@@ -126,71 +124,12 @@ public class deathsSythe extends blessedSword {
 				}
 			}
 		}
-		//Makes it so players take 20 damage that bypasses armor
+		//Makes it so players take 10 damage that bypasses armor
 		if(entity instanceof EntityPlayer)
 		{
 			float damage = 10f;
-			entity.attackEntityFrom(DamageSource.starve, damage);
 			entity.attackEntityFrom(DamageSource.outOfWorld, damage);
 		}
         return false;
     }
-	
-	//lets it be a hoe cause why not
-	@Override
-	@SuppressWarnings("incomplete-switch")
-    public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
-    {
-        if (!playerIn.canPlayerEdit(pos.offset(facing), facing, stack))
-        {
-            return EnumActionResult.FAIL;
-        }
-        else
-        {
-            int hook = net.minecraftforge.event.ForgeEventFactory.onHoeUse(stack, playerIn, worldIn, pos);
-            if (hook != 0) return hook > 0 ? EnumActionResult.SUCCESS : EnumActionResult.FAIL;
-
-            IBlockState iblockstate = worldIn.getBlockState(pos);
-            Block block = iblockstate.getBlock();
-
-            if (facing != EnumFacing.DOWN && worldIn.isAirBlock(pos.up()))
-            {
-                if (block == Blocks.GRASS || block == Blocks.GRASS_PATH)
-                {
-                    this.setBlock(stack, playerIn, worldIn, pos, Blocks.FARMLAND.getDefaultState());
-                    return EnumActionResult.SUCCESS;
-                }
-
-                if (block == Blocks.DIRT)
-                {
-                    switch ((BlockDirt.DirtType)iblockstate.getValue(BlockDirt.VARIANT))
-                    {
-                        case DIRT:
-                            this.setBlock(stack, playerIn, worldIn, pos, Blocks.FARMLAND.getDefaultState());
-                            return EnumActionResult.SUCCESS;
-                        case COARSE_DIRT:
-                            this.setBlock(stack, playerIn, worldIn, pos, Blocks.DIRT.getDefaultState().withProperty(BlockDirt.VARIANT, BlockDirt.DirtType.DIRT));
-                            return EnumActionResult.SUCCESS;
-                    }
-                }
-            }
-
-            return EnumActionResult.PASS;
-        }
-    }
-	/**
-	 * What runs to do the hoe action
-	 */
-	protected void setBlock(ItemStack stack, EntityPlayer player, World worldIn, BlockPos pos, IBlockState state)
-    {
-        worldIn.playSound(player, pos, SoundEvents.ITEM_HOE_TILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
-
-        if (!worldIn.isRemote)
-        {
-            worldIn.setBlockState(pos, state, 11);
-            stack.damageItem(1, player);
-        }
-    }
-	//end of letting it be a hoe
-	
 }

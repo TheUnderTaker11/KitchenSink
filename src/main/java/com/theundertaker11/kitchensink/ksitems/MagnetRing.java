@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.theundertaker11.kitchensink.KitchenSink;
 import com.theundertaker11.kitchensink.ModUtils;
+import com.theundertaker11.kitchensink.entity.IndestructibleEntityItem;
 
 import baubles.api.BaubleType;
 import baubles.api.IBauble;
@@ -16,6 +17,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
@@ -111,5 +113,26 @@ public class MagnetRing extends Item implements IBauble{
 			
 		}
 	}
+	
+	//Tinkers Code
+		@Override
+		  public boolean hasCustomEntity(ItemStack stack) {
+		    return true;
+		  }
+
+		  @Override
+		  public Entity createEntity(World world, Entity location, ItemStack itemstack) {
+		    EntityItem entity = new IndestructibleEntityItem(world, location.posX, location.posY, location.posZ, itemstack);
+		    if(location instanceof EntityItem) {
+		      // workaround for private access on that field >_>
+		      NBTTagCompound tag = new NBTTagCompound();
+		      location.writeToNBT(tag);
+		      entity.setPickupDelay(tag.getShort("PickupDelay"));
+		    }
+		    entity.motionX = location.motionX;
+		    entity.motionY = location.motionY;
+		    entity.motionZ = location.motionZ;
+		    return entity;
+		  }
 
 }

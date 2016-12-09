@@ -49,9 +49,9 @@ public class godsTool extends ItemPickaxe {
 			itemstack.setItemDamage(0);
 		}
 		
-		if(entity instanceof EntityPlayer)
+		if(itemstack.getTagCompound() == null)
 		{
-			if (itemstack.getTagCompound() == null)
+			if (entity instanceof EntityPlayer)
 			{
 				itemstack.setTagCompound(new NBTTagCompound());  
 				itemstack.getTagCompound().setString("ownerID", entity.getUniqueID().toString());
@@ -112,7 +112,7 @@ public class godsTool extends ItemPickaxe {
 	//End multitool code
 	
 	
-	//adds tooltip(duh?)
+	//adds tooltip
 		@Override
 		public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced)
 	    {	
@@ -134,12 +134,6 @@ public class godsTool extends ItemPickaxe {
 	    {
 	        return EnumRarity.RARE;
 	    }
-	//adds enchanted look
-	@Override
-    public boolean hasEffect(ItemStack par1ItemStack)
-    {
-	    return true;
-    }
 
 	//Next two make it not lose durability when hitting or breaking blocks
 			@Override

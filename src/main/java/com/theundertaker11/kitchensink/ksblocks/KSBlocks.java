@@ -18,7 +18,7 @@ public final class KSBlocks {
 	public static Block RedBlock;
 	public static Block WhiteBlock;
 	public static Block YellowBlock;
-	public static Block CompChest;
+	//public static Block CompChest;
 	
 	
 	public static void createBlocks() 
@@ -33,7 +33,7 @@ public final class KSBlocks {
 		GameRegistry.register(RedBlock = new BlockBase("RedBlock"));
 		GameRegistry.register(WhiteBlock = new BlockBase("WhiteBlock"));
 		GameRegistry.register(YellowBlock = new BlockBase("YellowBlock"));
-		GameRegistry.register(CompChest = new StorageBlockBase(Material.IRON, "CompChest"));
+		//GameRegistry.register(CompChest = new StorageBlockBase(Material.IRON, "CompChest"));
 		GameRegistry.registerBlock(BabyBlueBlock);
 		GameRegistry.registerBlock(BlackBlock);
 		GameRegistry.registerBlock(BlueBlock);
@@ -44,7 +44,7 @@ public final class KSBlocks {
 		GameRegistry.registerBlock(RedBlock);
 		GameRegistry.registerBlock(WhiteBlock);
 		GameRegistry.registerBlock(YellowBlock);
-		GameRegistry.registerBlock(CompChest);
+		//GameRegistry.registerBlock(CompChest);
 	}
 
 }

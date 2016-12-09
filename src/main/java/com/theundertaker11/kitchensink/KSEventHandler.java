@@ -181,7 +181,7 @@ public class KSEventHandler {
 		{
 			if(event.getEntityLiving() instanceof EntityWither)
 			{
-				event.getEntityLiving().dropItem(Itemsss.deathNugget, 2);
+				event.getEntityLiving().dropItem(Itemsss.deathNugget, 4);
 			}
 		}
 	}
@@ -193,8 +193,8 @@ public class KSEventHandler {
 	  */
 	 @SubscribeEvent
 	 public void onDeath(LivingDeathEvent event)
-	 {
-		 if(!event.getEntityLiving().worldObj.isRemote && event.getSource().getEntity() instanceof EntityPlayer )
+	 {  
+		 if(!event.getEntityLiving().worldObj.isRemote &&event.getSource().getEntity() instanceof EntityPlayer)
 		 {
 			 EntityPlayer player = (EntityPlayer) event.getSource().getEntity();
 			 if(player.getHeldItem(EnumHand.MAIN_HAND).getItem()!=null&&player.getHeldItem(EnumHand.MAIN_HAND).getItem() == Itemsss.SkeletonSword)

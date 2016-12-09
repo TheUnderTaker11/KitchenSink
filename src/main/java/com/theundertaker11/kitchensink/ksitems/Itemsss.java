@@ -55,7 +55,7 @@ public class Itemsss
 	public static Item DemonicSword;
 	public static Item SkeletonSword;
 	
-	public static Item Wand;
+	//public static Item Wand;
 	public static Item LevelPick;
 
 	
@@ -68,7 +68,7 @@ public class Itemsss
 		GameRegistry.register(diamondPlate = new angelAlloy("diamondPlate"));
 		GameRegistry.register(blessedRock = new blessedRock("blessedRock"));
 		GameRegistry.register(netherStarPlate = new deathIngot("netherStarPlate"));
-		GameRegistry.register(godEssence = new godEssence("godEssence"));
+		GameRegistry.register(godEssence = new deathIngot("godEssence"));
 		GameRegistry.register(ItemMagnet = new ItemMagnetT6("ItemMagnet", 2.5,1));
 		GameRegistry.register(ItemMagnetT2 = new ItemMagnetT6("ItemMagnetT2", 3.5,2));
 		GameRegistry.register(ItemMagnetT3 = new ItemMagnetT6("ItemMagnetT3", 4.5,3));
@@ -95,7 +95,7 @@ public class Itemsss
 		GameRegistry.register(DeathHand = new DeathHand("DeathHand", low_mat));
 		
 		//waht
-		GameRegistry.register(Wand = new Wand("Wand"));	
+		//GameRegistry.register(Wand = new Wand("Wand"));	
 		
 	}
 

@@ -11,6 +11,7 @@ public class deathIngot extends Item {
 		this.setUnlocalizedName(name);
 		this.setCreativeTab(KitchenSink.KStab);
 		this.setRegistryName(name);
+		this.setMaxDamage(0);
 	}
 	@Override
     public boolean hasEffect(ItemStack par1ItemStack)

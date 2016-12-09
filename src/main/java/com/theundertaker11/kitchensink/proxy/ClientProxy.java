@@ -21,12 +21,12 @@ public class ClientProxy extends CommonProxy {
 		
 		
 		
-		ResourceLocation[] WandTextures = new ResourceLocation[WandVariantInt];
+		//ResourceLocation[] WandTextures = new ResourceLocation[WandVariantInt];
 		ResourceLocation[] LevelPickTextures = new ResourceLocation[PickVariantInt];
 		for(int i = 0; i < WandVariantInt; i++)
 		{
 			String modelName = Refernce.MODID + ":" + "Wand" + i;
-			WandTextures[i] = new ResourceLocation(modelName);
+			//WandTextures[i] = new ResourceLocation(modelName);
 		}
 		for(int i = 0; i < PickVariantInt; i++)
 		{
@@ -34,7 +34,7 @@ public class ClientProxy extends CommonProxy {
 			LevelPickTextures[i] = new ResourceLocation(modelName);
 		}
 		
-		ModelBakery.registerItemVariants(Itemsss.Wand, WandTextures);
+		//ModelBakery.registerItemVariants(Itemsss.Wand, WandTextures);
 		ModelBakery.registerItemVariants(Itemsss.LevelPick, LevelPickTextures);
 	}
 

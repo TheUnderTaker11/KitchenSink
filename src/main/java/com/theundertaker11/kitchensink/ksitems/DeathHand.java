@@ -36,6 +36,16 @@ public class DeathHand extends ItemSword
 	}
 	
 	@Override
+	public void onCreated(ItemStack stack, World worldIn, EntityPlayer playerIn)
+    {
+		if(stack.getTagCompound()!=null)
+		{
+			stack.getTagCompound().setString("ownerID", playerIn.getUniqueID().toString());
+			stack.getTagCompound().setString("owner", playerIn.getName());
+			stack.getTagCompound().setBoolean("active", false);
+		}
+    }
+	@Override
 	public void onUpdate(ItemStack itemstack, World world, Entity entity, int metadata, boolean bool)
 	{
 		//Fixes it when it loses duribility
@@ -43,13 +53,14 @@ public class DeathHand extends ItemSword
 		{
 			itemstack.setItemDamage(0);
 		}
-		if(entity instanceof EntityPlayer)
+		if(itemstack.getTagCompound() == null)
 		{
-			if (itemstack.getTagCompound() == null)
+			if (entity instanceof EntityPlayer)
 			{
 				itemstack.setTagCompound(new NBTTagCompound());  
 				itemstack.getTagCompound().setString("ownerID", entity.getUniqueID().toString());
 				itemstack.getTagCompound().setString("owner", entity.getName());
+				itemstack.getTagCompound().setBoolean("active", false);
 			}
 			
 		}
@@ -85,10 +96,6 @@ public class DeathHand extends ItemSword
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced)
     {
-		tooltip.add("Shift right click to toggle force kill");
-		tooltip.add("(Force kill MAY not drop items)");
-		tooltip.add(TextFormatting.BOLD + "Mobs hit when inactive will die normally ");
-		tooltip.add(TextFormatting.BOLD + "or be put to half health");
 		if(stack.getTagCompound()!=null)
 		{
 			if(stack.getTagCompound().getBoolean("active")&&stack.getTagCompound().getString("ownerID").equals(playerIn.getUniqueID().toString()))
@@ -98,11 +105,19 @@ public class DeathHand extends ItemSword
 			else tooltip.add(TextFormatting.BLUE+"Force Killing Disabled");
 			
 			String owner = stack.getTagCompound().getString("owner");
-			tooltip.add("Owner:" + owner);
+			tooltip.add("Owner: " + owner);
 			if(!stack.getTagCompound().getString("ownerID").equals(playerIn.getUniqueID().toString()))
 			{
 				tooltip.add(TextFormatting.DARK_RED + "You are not the owner");
 			}
+		}
+		else{
+			tooltip.add("Shift right click to toggle force kill");
+			tooltip.add("(Force kill MAY not drop items)");
+			tooltip.add(TextFormatting.BOLD + "Mobs hit when inactive will die normally ");
+			tooltip.add(TextFormatting.BOLD + "or be put to half health");
+			tooltip.add(TextFormatting.BLUE+"Force Killing Disabled");
+			tooltip.add("Owner: (Owner Has Not Been Set)" );
 		}
 		
 	}

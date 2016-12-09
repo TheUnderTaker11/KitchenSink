@@ -48,6 +48,7 @@ public class ItemRenderRegistry {
 	    regWithMeta(Itemsss.ItemMagnetT4, 1);
 	    regWithMeta(Itemsss.ItemMagnetT5, 1);
 	    regWithMeta(Itemsss.ItemMagnetT6, 1);
+	    regWithMeta(Itemsss.deathIngot, 1);
 	    
 	    regBlock(KSBlocks.BlackBlock);
 	    regBlock(KSBlocks.BlueBlock);
@@ -60,17 +61,20 @@ public class ItemRenderRegistry {
 	    regBlock(KSBlocks.YellowBlock);
 	    regBlock(KSBlocks.BabyBlueBlock);
 	    
-	    regWithMetaAndName(Itemsss.Wand, 0, "Wand0");
-	    regWithMetaAndName(Itemsss.Wand, 1, "Wand0");
-	    regWithMetaAndName(Itemsss.Wand, 2, "Wand0");
-	    regWithMetaAndName(Itemsss.Wand, 3, "Wand0");
+	    //regWithMetaAndName(Itemsss.Wand, 0, "Wand0");
+	    //regWithMetaAndName(Itemsss.Wand, 1, "Wand0");
+	    //regWithMetaAndName(Itemsss.Wand, 2, "Wand0");
+	    //regWithMetaAndName(Itemsss.Wand, 3, "Wand0");
 	    
 	    for(int i=0;i<8;++i)
 	    {
 	    	String name = "LevelPick" + i;
 	    	regWithMetaAndName(Itemsss.LevelPick, i, name);
 	    }
-	   
+	    //dummy item rendering(For recipes)
+	    regWithMetaAndName(Itemsss.LevelPick, 8, "LevelPick0");
+	    regWithMetaAndName(Itemsss.DemonicSword, -1, "DemonicSword");
+	    
 	}
 	//Registers the item if no meta data/first meta data(0)
 	public static void reg(Item item) {

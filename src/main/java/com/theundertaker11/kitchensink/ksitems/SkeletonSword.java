@@ -34,52 +34,26 @@ public class SkeletonSword extends ItemSword {
 		this.setRegistryName(name);
 	}
 
-	
-	@Override
-	public void onCreated(ItemStack itemStack, World world, EntityPlayer player){
-			
-			if(itemStack.getTagCompound() != null)
-			  {
-				if(itemStack.getTagCompound().getString("mob").equals("zombie"))
-				{
-					itemStack.getTagCompound().setString("mob", "zombie");
-				}
-				if(itemStack.getTagCompound().getString("mob").equals("skeleton"))
-				{
-					itemStack.getTagCompound().setString("mob", "skeleton");
-				}
-				if(itemStack.getTagCompound().getString("mob").equals("creeper"))
-				{
-					itemStack.getTagCompound().setString("mob", "creeper");
-				}
-				if(itemStack.getTagCompound().getString("mob").equals("enderman"))
-				{
-					itemStack.getTagCompound().setString("mob", "enderman");
-				}
-			  }
-	}
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced)
     {	
 	 if(stack.getTagCompound() != null)
 	 {	
-		 	int intKills = stack.getTagCompound().getInteger("kills");
-		 	String stringKills = intKills + "";
 			 if(stack.getTagCompound().getString("mob").equals("skeleton"))
 			 {
-				 tooltip.add(TextFormatting.RED + "Skeleton Souls: " + stringKills);
+				 tooltip.add(TextFormatting.RED + "Skeleton Souls: " + stack.getTagCompound().getInteger("kills"));
 			 }
 			 if(stack.getTagCompound().getString("mob").equals("zombie"))
 			 {
-				 tooltip.add(TextFormatting.RED + "Zombie Souls: " + stringKills);
+				 tooltip.add(TextFormatting.RED + "Zombie Souls: " + stack.getTagCompound().getInteger("kills"));
 			 }
 			 if(stack.getTagCompound().getString("mob").equals("creeper"))
 			 {
-				 tooltip.add(TextFormatting.RED + "Creeper Souls: " + stringKills);
+				 tooltip.add(TextFormatting.RED + "Creeper Souls: " + stack.getTagCompound().getInteger("kills"));
 			 }
 			 if(stack.getTagCompound().getString("mob").equals("enderman"))
 			 {
-				 tooltip.add(TextFormatting.RED + "Enderman Souls: " + stringKills);
+				 tooltip.add(TextFormatting.RED + "Enderman Souls: " + stack.getTagCompound().getInteger("kills"));
 			 }
 	 }
 	 else
@@ -92,7 +66,7 @@ public class SkeletonSword extends ItemSword {
 	
 	public static void addKill(ItemStack stack, int mob)
 	{
-		if (stack.getTagCompound() != null)
+		if (stack.getTagCompound() != null&&stack.getTagCompound().getInteger("kills")<50)
         {
 			if(mob == 0 && stack.getTagCompound().getString("mob").equals("skeleton"))
 			{
@@ -119,11 +93,11 @@ public class SkeletonSword extends ItemSword {
 	{
 		if (itemstack.getTagCompound() == null)
         {
-			itemstack.setTagCompound(new NBTTagCompound());  
+			itemstack.setTagCompound(new NBTTagCompound());
         }
-		if(itemstack.getTagCompound().getInteger("kills") >= 50)
+		if(itemstack.getTagCompound().getInteger("kills") > 50)
 		{
-			itemstack.setItemDamage(0);
+			itemstack.getTagCompound().setInteger("kills", 50);
 		}
 	  
 	}
@@ -134,37 +108,35 @@ public class SkeletonSword extends ItemSword {
     {
 		if (stack.getTagCompound() != null)
         {
-		if(stack.getTagCompound().getInteger("kills") >= 50)
+			NBTTagCompound tag=stack.getTagCompound();
+			float damage = 75f;
+		if(tag.getInteger("kills") >= 50)
 		{
-			if(stack.getTagCompound().getString("mob").equals("skeleton"))
+			if(tag.getString("mob").equals("skeleton"))
 			{
 				if(entity instanceof EntitySkeleton)
 				{
-					float damage = 75f;
 					entity.attackEntityFrom(DamageSource.causePlayerDamage(player), damage);
 				}
 			}	
-			if(stack.getTagCompound().getString("mob").equals("zombie"))
+			if(tag.getString("mob").equals("zombie"))
 			{
 				if(entity instanceof EntityZombie)
 				{
-					float damage = 75f;
 					entity.attackEntityFrom(DamageSource.causePlayerDamage(player), damage);
 				}
 			}
-			if(stack.getTagCompound().getString("mob").equals("creeper"))
+			if(tag.getString("mob").equals("creeper"))
 			{
 				if(entity instanceof EntityCreeper)
 				{
-					float damage = 75f;
 					entity.attackEntityFrom(DamageSource.causePlayerDamage(player), damage);
 				}
 			}
-			if(stack.getTagCompound().getString("mob").equals("enderman"))
+			if(tag.getString("mob").equals("enderman"))
 			{
 				if(entity instanceof EntityEnderman)
 				{
-					float damage = 75f;
 					entity.attackEntityFrom(DamageSource.causePlayerDamage(player), damage);
 				}
 			}
@@ -173,24 +145,10 @@ public class SkeletonSword extends ItemSword {
         return false;
     }
 	
-	/*
-	 * 
-	 * 
-	 * 
-	 */
 	@Override
 	public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker)
     {
-		if (stack.getTagCompound() != null)
-        {
-			if(stack.getTagCompound().getInteger("kills") >= 50)
-			{
-				return false;
-			}
-        }
-		stack.damageItem(1, attacker);
-		return true;
-        
+		return true;   
     }
 	@Override
 	public boolean onBlockDestroyed(ItemStack stack, World worldIn, IBlockState blockIn, BlockPos pos, EntityLivingBase entityLiving)
@@ -212,11 +170,11 @@ public class SkeletonSword extends ItemSword {
     }
 	
 	@Override
-    public boolean hasEffect(ItemStack par1ItemStack)
+    public boolean hasEffect(ItemStack stack)
     {
-		if (par1ItemStack.getTagCompound() != null)
+		if (stack.getTagCompound() != null)
         {
-			if(par1ItemStack.getTagCompound().getInteger("kills") > 49)
+			if(stack.getTagCompound().getInteger("kills") > 49)
 			{
 	    	return true;
 			}
