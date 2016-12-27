@@ -1,7 +1,8 @@
 package com.theundertaker11.kitchensink.ksblocks;
 
 import com.theundertaker11.kitchensink.KitchenSink;
-import com.theundertaker11.kitchensink.tileentity.KSTileEntityStorageBlock;
+import com.theundertaker11.kitchensink.tileentity.KSTileEntityHealingBlock;
+import com.theundertaker11.kitchensink.tileentity.KSTileEntityQuarryBlock;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
@@ -22,24 +23,29 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.ILockableContainer;
 import net.minecraft.world.World;
 
-public class StorageBlockBase extends BlockContainer {
+public class StorageBlockBase extends BlockBase {
 	
-	public StorageBlockBase(Material materialIn, String name) 
+	public StorageBlockBase(String name, Material material, float hardness, float resistance) 
 	{
-		super(materialIn);
-		this.setRegistryName(name);
-		this.setUnlocalizedName("CompChest");
-		this.setCreativeTab(KitchenSink.KStab);
-		this.setHardness(2.0F);
-		this.setResistance(200.0F);
-		this.setHarvestLevel("axe", 1);
+		super(name, material, hardness, resistance);
+		this.isBlockContainer=true;
+	}
+	public StorageBlockBase(String name)
+	{
+		this(name, Material.IRON, 0.5f, 0.5f);
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) 
-	{
-		return new KSTileEntityStorageBlock();
-	}
+	public boolean hasTileEntity(IBlockState state)
+    {
+        return true;
+    }
+	@Override
+	public TileEntity createTileEntity(World world, IBlockState state)
+    {
+		//This should never actually be called since it should be overridden in every actual block code.
+		return new KSTileEntityHealingBlock();
+    }
 
 	
 
