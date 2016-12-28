@@ -1,5 +1,7 @@
 package com.theundertaker11.kitchensink;
 
+import com.theundertaker11.kitchensink.ksitems.Itemsss;
+
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -17,6 +19,6 @@ public final class CreativeTabKS extends CreativeTabs
     @SideOnly(Side.CLIENT)
     public Item getTabIconItem()
     {
-        return Items.BOWL;
+        return Itemsss.deathIngot;
     }
 }

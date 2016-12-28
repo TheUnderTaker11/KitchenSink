@@ -35,6 +35,7 @@ item.HealthTPitem.name=Charm of the Immortal Coward
 item.TPitem.name=Charm of Recall
 item.ProtectionCharm.name=Charm of Protection
 item.MagnetRing.name=Magnet Ring
+item.speedForceRing.name=Speed Force Ring
 
 tile.BlackBlock.name=Black Block
 tile.BabyBlueBlock.name=Baby Blue Block
@@ -46,3 +47,6 @@ tile.PurpleBlock.name=Purple Block
 tile.RedBlock.name=Red Block
 tile.WhiteBlock.name=White Block
 tile.YellowBlock.name=Yellow Block
+tile.HealingBlock.name=Healing Station
+tile.TrashChest.name=Trash Can
+tile.QuarryBlock.name=Quarry

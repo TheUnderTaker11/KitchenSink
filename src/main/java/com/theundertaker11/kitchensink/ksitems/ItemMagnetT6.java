@@ -3,10 +3,8 @@ package com.theundertaker11.kitchensink.ksitems;
 import java.util.Iterator;
 import java.util.List;
 
-import com.theundertaker11.kitchensink.ModUtils;
 import com.theundertaker11.kitchensink.entity.IndestructibleEntityItem;
 import com.theundertaker11.kitchensink.KitchenSink;
-import com.theundertaker11.kitchensink.Logger;
 import com.theundertaker11.kitchensink.ModUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
@@ -38,10 +36,10 @@ import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import net.minecraftforge.event.entity.player.PlayerPickupXpEvent;
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
 
-public class ItemMagnetT6 extends angelAlloy {
+public class ItemMagnetT6 extends ItemBase {
 	protected double distanceFromPlayer;
 
-	public ItemMagnetT6(String name, double range, int teir) {
+	public ItemMagnetT6(String name, double range) {
 		super(name);
 		setMaxStackSize(1);
 		this.distanceFromPlayer = range;

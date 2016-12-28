@@ -14,6 +14,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.oredict.ShapedOreRecipe;
 
 public class CraftingManager{
 	public static void Crecipes(){
@@ -22,22 +23,27 @@ public class CraftingManager{
 		GameRegistry.addRecipe(new ItemStack(Itemsss.obsidianPlate), "xxx", "xxx", "xxx", 'x', Blocks.OBSIDIAN);
 		GameRegistry.addRecipe(new ItemStack(Itemsss.deathIngot), "xxx", "xxx", "xxx", 'x', Itemsss.deathNugget);
 		GameRegistry.addRecipe(new ItemStack(Itemsss.diamondPlate), "xx", "xx", 'x', Itemsss.compDiamond);
-		GameRegistry.addRecipe(new ItemStack(Itemsss.compDiamond), "xx", "xx", 'x', Items.DIAMOND);
 		GameRegistry.addRecipe(new ItemStack(Itemsss.netherStarPlate), "xx", "xx", 'x', Items.NETHER_STAR);
 		GameRegistry.addRecipe(new ItemStack(Itemsss.godEssence), "xax", "yzy", "xax", 'x', Itemsss.netherStarPlate, 'y', Itemsss.deathNugget, 'z', Items.WHEAT_SEEDS, 'a', Itemsss.obsidianPlate);
 		GameRegistry.addRecipe(new ItemStack(Itemsss.angelAlloy), "axa", "xyx", "aza", 'z', Itemsss.diamondPlate, 'y', Itemsss.netherStarPlate, 'x', Itemsss.compDiamond, 'a', Itemsss.obsidianPlate);
-		GameRegistry.addRecipe(new ItemStack(Itemsss.ItemMagnet), "x x", "x x", "xyx", 'x', Items.IRON_INGOT, 'y', Items.DIAMOND);
 		GameRegistry.addRecipe(new ItemStack(Itemsss.ItemMagnetT2), " x ", "xyx", " x ", 'x', Itemsss.ItemMagnet, 'y', Itemsss.obsidianPlate);
 		GameRegistry.addRecipe(new ItemStack(Itemsss.ItemMagnetT3), " x ", "xyx", " x ", 'x', Itemsss.ItemMagnetT2, 'y', Items.DIAMOND);
 		GameRegistry.addRecipe(new ItemStack(Itemsss.ItemMagnetT4), " x ", "xyx", " x ", 'x', Itemsss.ItemMagnetT3, 'y', Itemsss.compDiamond);
 		GameRegistry.addRecipe(new ItemStack(Itemsss.ItemMagnetT5), " x ", "xyx", " x ", 'x', Itemsss.ItemMagnetT4, 'y', Itemsss.diamondPlate);
 		GameRegistry.addRecipe(new ItemStack(Itemsss.ItemMagnetT6), " x ", "xyx", " x ", 'x', Itemsss.ItemMagnetT5, 'y', Itemsss.angelAlloy);
 		GameRegistry.addRecipe(new ItemStack(Itemsss.blessedRock), " x ", "xyx", " x ", 'x', Blocks.COBBLESTONE, 'y', Itemsss.angelAlloy);
-		GameRegistry.addRecipe(new ItemStack(Itemsss.xpItem), " z ", "xyx", "xxx", 'x', Items.ROTTEN_FLESH, 'y', Items.GLASS_BOTTLE, 'z', Items.DIAMOND);
 		GameRegistry.addRecipe(new ItemStack(Itemsss.TPitem), "zzz", "xyx", "zzz", 'x', Itemsss.angelAlloy, 'y', Itemsss.blessedRock, 'z', Items.ENDER_EYE);
-		GameRegistry.addRecipe(new ItemStack(Itemsss.ProtectionCharm), "xzx", "zyz", "xzx", 'x', Itemsss.obsidianPlate, 'y', Itemsss.godEssence, 'z', Itemsss.angelAlloy);
 		GameRegistry.addRecipe(new ItemStack(Itemsss.HealthTPitem), "xzx", "aya", "xzx", 'x', Itemsss.netherStarPlate, 'y', Itemsss.TPitem, 'z', Itemsss.angelAlloy, 'a', Items.END_CRYSTAL);
-		GameRegistry.addRecipe(new ItemStack(Itemsss.MagnetRing), "yxy", "x x", "yxy", 'x', Items.IRON_INGOT, 'y', Items.REDSTONE);
+		GameRegistry.addRecipe(new ItemStack(KSBlocks.TrashChest), " x ", "xyx", " x ", 'x', Blocks.COBBLESTONE, 'y', Blocks.CHEST);
+		if(KitchenSink.enableHealthStation)
+		{
+		IRecipe healingblock = new ShapedOreRecipe(new ItemStack(KSBlocks.HealingBlock),"zxz", "xyx", "zxz", 'x', "dyeRed", 'y', Itemsss.godEssence, 'z', Itemsss.angelAlloy);
+		GameRegistry.addRecipe(healingblock);
+		}
+		if(KitchenSink.enableProtectionCharm)
+		{
+			GameRegistry.addRecipe(new ItemStack(Itemsss.ProtectionCharm), "xzx", "zyz", "xzx", 'x', Itemsss.obsidianPlate, 'y', Itemsss.godEssence, 'z', Itemsss.angelAlloy);
+		}
 		//tools
 		GameRegistry.addRecipe(new ItemStack(Itemsss.blessedPick), "xxx", " y ", " y ", 'x', Itemsss.angelAlloy, 'y', Itemsss.obsidianPlate);
 		GameRegistry.addRecipe(new ItemStack(Itemsss.blessedShovel), " x ", " y ", " y ", 'x', Itemsss.angelAlloy, 'y', Itemsss.obsidianPlate);
@@ -46,24 +52,51 @@ public class CraftingManager{
 		GameRegistry.addRecipe(new ItemStack(Itemsss.blessedAxe), "xx ", "xy ", " y ", 'x', Itemsss.angelAlloy, 'y', Itemsss.obsidianPlate);
 		GameRegistry.addRecipe(new ItemStack(Itemsss.blessedHoe), "xx ", " y ", " y ", 'x', Itemsss.angelAlloy, 'y', Itemsss.obsidianPlate);
 		GameRegistry.addRecipe(new ItemStack(Itemsss.blessedHoe), " xx", " y ", " y ", 'x', Itemsss.angelAlloy, 'y', Itemsss.obsidianPlate);
+		if(KitchenSink.enableGodsTool)
+		{
 		GameRegistry.addRecipe(new ItemStack(Itemsss.godsTool), "   ", "ayb", "xzx", 'x', Itemsss.godEssence, 'y', Itemsss.blessedPick, 'a', Itemsss.blessedShovel, 'b', Itemsss.blessedAxe, 'z', Itemsss.blessedHoe);
-		GameRegistry.addRecipe(new ItemStack(Itemsss.DeathHand), " z ", "yxy", " z ", 'z',Itemsss.deathsSythe, 'y', Itemsss.godEssence, 'x', Itemsss.deathIngot);
+		}
+		if(KitchenSink.enableDeathHand)
+		{
+			GameRegistry.addRecipe(new ItemStack(Itemsss.DeathHand), " z ", "yxy", " z ", 'z',Itemsss.deathsSythe, 'y', Itemsss.godEssence, 'x', Itemsss.deathIngot);
+		}
 		
 		//Blocks
-		GameRegistry.addRecipe(new ItemStack(KSBlocks.BlackBlock, 6), " y ", "xxx", "xxx", 'x', Blocks.COBBLESTONE, 'y', Items.DYE);
-		GameRegistry.addRecipe(new ItemStack(KSBlocks.BabyBlueBlock, 6), " y ", "xxx", "xxx", 'x', Blocks.COBBLESTONE, 'y', new ItemStack(Items.DYE, 1, 12));
-		GameRegistry.addRecipe(new ItemStack(KSBlocks.BlueBlock, 6), " y ", "xxx", "xxx", 'x', Blocks.COBBLESTONE, 'y', new ItemStack(Items.DYE, 1, 4));
-		GameRegistry.addRecipe(new ItemStack(KSBlocks.BrownBlock, 6), " y ", "xxx", "xxx", 'x', Blocks.COBBLESTONE, 'y', new ItemStack(Items.DYE, 1, 3));
-		GameRegistry.addRecipe(new ItemStack(KSBlocks.GreenBlock, 6), " y ", "xxx", "xxx", 'x', Blocks.COBBLESTONE, 'y', new ItemStack(Items.DYE, 1, 2));
-		GameRegistry.addRecipe(new ItemStack(KSBlocks.OrangeBlock, 6), " y ", "xxx", "xxx", 'x', Blocks.COBBLESTONE, 'y', new ItemStack(Items.DYE, 1, 14));
-		GameRegistry.addRecipe(new ItemStack(KSBlocks.PurpleBlock, 6), " y ", "xxx", "xxx", 'x', Blocks.COBBLESTONE, 'y', new ItemStack(Items.DYE, 1, 5));
-		GameRegistry.addRecipe(new ItemStack(KSBlocks.RedBlock, 6), " y ", "xxx", "xxx", 'x', Blocks.COBBLESTONE, 'y', new ItemStack(Items.DYE,1, 1));
-		GameRegistry.addRecipe(new ItemStack(KSBlocks.WhiteBlock, 6), " y ", "xxx", "xxx", 'x', Blocks.COBBLESTONE, 'y', new ItemStack(Items.DYE, 1, 15));
-		GameRegistry.addRecipe(new ItemStack(KSBlocks.YellowBlock, 6), " y ", "xxx", "xxx", 'x', Blocks.COBBLESTONE, 'y', new ItemStack(Items.DYE, 1, 11));
-		
+		//All these use oreDictionary dyes now
+		IRecipe black = new ShapedOreRecipe(new ItemStack(KSBlocks.BlackBlock, 6), new Object[] {" y ", "xxx", "xxx", 'x', Blocks.COBBLESTONE, 'y', "dyeBlack"});
+		GameRegistry.addRecipe(black);
+		IRecipe babyblue = new ShapedOreRecipe(new ItemStack(KSBlocks.BabyBlueBlock, 6), new Object[] {" y ", "xxx", "xxx", 'x', Blocks.COBBLESTONE, 'y', "dyeLightBlue"});
+		GameRegistry.addRecipe(babyblue);
+		IRecipe blue = new ShapedOreRecipe(new ItemStack(KSBlocks.BlueBlock, 6), new Object[] {" y ", "xxx", "xxx", 'x', Blocks.COBBLESTONE, 'y', "dyeBlue"});
+		GameRegistry.addRecipe(blue);
+		IRecipe brown = new ShapedOreRecipe(new ItemStack(KSBlocks.BrownBlock, 6), new Object[] {" y ", "xxx", "xxx", 'x', Blocks.COBBLESTONE, 'y', "dyeBrown"});
+		GameRegistry.addRecipe(brown);
+		IRecipe green = new ShapedOreRecipe(new ItemStack(KSBlocks.GreenBlock, 6), new Object[] {" y ", "xxx", "xxx", 'x', Blocks.COBBLESTONE, 'y', "dyeGreen"});
+		GameRegistry.addRecipe(green);
+		IRecipe orange = new ShapedOreRecipe(new ItemStack(KSBlocks.OrangeBlock, 6), new Object[] {" y ", "xxx", "xxx", 'x', Blocks.COBBLESTONE, 'y', "dyeOrange"});
+		GameRegistry.addRecipe(orange);
+		IRecipe purple = new ShapedOreRecipe(new ItemStack(KSBlocks.PurpleBlock, 6), new Object[] {" y ", "xxx", "xxx", 'x', Blocks.COBBLESTONE, 'y', "dyePurple"});
+		GameRegistry.addRecipe(purple);
+		IRecipe red = new ShapedOreRecipe(new ItemStack(KSBlocks.RedBlock, 6), new Object[] {" y ", "xxx", "xxx", 'x', Blocks.COBBLESTONE, 'y', "dyeRed"});
+		GameRegistry.addRecipe(red);
+		IRecipe white = new ShapedOreRecipe(new ItemStack(KSBlocks.WhiteBlock, 6), new Object[] {" y ", "xxx", "xxx", 'x', Blocks.COBBLESTONE, 'y', "dyeWhite"});
+		GameRegistry.addRecipe(white);
+		IRecipe yellow = new ShapedOreRecipe(new ItemStack(KSBlocks.YellowBlock, 6), new Object[] {" y ", "xxx", "xxx", 'x', Blocks.COBBLESTONE, 'y', "dyeYellow"});
+		GameRegistry.addRecipe(yellow);
+		IRecipe magnetring = new ShapedOreRecipe(new ItemStack(Itemsss.MagnetRing), new Object[] {"yxy", "x x", "yxy", 'x', "ingotIron", 'y', "dustRedstone"});
+		GameRegistry.addRecipe(magnetring);
+		IRecipe compdiamond = new ShapedOreRecipe(new ItemStack(Itemsss.compDiamond),new Object[] {"xx", "xx", 'x', "gemDiamond"});
+		GameRegistry.addRecipe(compdiamond);
+		IRecipe quarry = new ShapedOreRecipe(new ItemStack(KSBlocks.QuarryBlock),new Object[] {"aaa", "xyx", "aza", 'x', Blocks.PISTON, 'y', Items.DIAMOND_PICKAXE, 'z', "dustRedstone", 'a', "stone"});
+		GameRegistry.addRecipe(quarry);
+		IRecipe itemmagnett1 = new ShapedOreRecipe(new ItemStack(Itemsss.ItemMagnet),new Object[] {"x x", "x x", "xyx", 'x', "ingotIron", 'y', "gemDiamond"});
+		GameRegistry.addRecipe(itemmagnett1);
+		IRecipe xpitem = new ShapedOreRecipe(new ItemStack(Itemsss.xpItem), " z ", "xyx", "xxx", 'x', Items.ROTTEN_FLESH, 'y', Items.GLASS_BOTTLE, 'z', "gemDiamond");
+		GameRegistry.addRecipe(xpitem);
 		
 		////shapeless
 		GameRegistry.addShapelessRecipe(new ItemStack(Itemsss.deathNugget, 9), Itemsss.deathIngot);
+		GameRegistry.addShapelessRecipe(new ItemStack(Itemsss.deathNugget, 1), Items.NETHER_STAR);
 		
 		
 		//Swords and Lapis pick crafting
@@ -133,12 +166,12 @@ public class CraftingManager{
 		
 		
 		//Start Magnet Ring Crafting//////////////////////////////
-		ItemStack T1 = new ItemStack(Itemsss.ItemMagnet);
-		ItemStack T2 = new ItemStack(Itemsss.ItemMagnetT2);
-		ItemStack T3 = new ItemStack(Itemsss.ItemMagnetT3);
-		ItemStack T4 = new ItemStack(Itemsss.ItemMagnetT4);
-		ItemStack T5 = new ItemStack(Itemsss.ItemMagnetT5);
-		ItemStack T6 = new ItemStack(Itemsss.ItemMagnetT6);
+		ItemStack T1 = new ItemStack(Itemsss.MagnetRing);
+		ItemStack T2 = new ItemStack(Itemsss.MagnetRing);
+		ItemStack T3 = new ItemStack(Itemsss.MagnetRing);
+		ItemStack T4 = new ItemStack(Itemsss.MagnetRing);
+		ItemStack T5 = new ItemStack(Itemsss.MagnetRing);
+		ItemStack T6 = new ItemStack(Itemsss.MagnetRing);
 		
 		T1.setTagCompound(new NBTTagCompound());
 		T2.setTagCompound(new NBTTagCompound());

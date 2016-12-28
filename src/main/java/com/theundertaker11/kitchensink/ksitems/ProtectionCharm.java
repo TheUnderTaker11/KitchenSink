@@ -11,7 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
-public class ProtectionCharm extends angelAlloy implements IBauble{
+public class ProtectionCharm extends ItemBase implements IBauble{
 	
 	public ProtectionCharm(String name) 
 	{

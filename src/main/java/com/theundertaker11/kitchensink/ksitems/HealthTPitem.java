@@ -18,13 +18,10 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 
-public class HealthTPitem extends Item {
+public class HealthTPitem extends ItemBase {
 	public HealthTPitem(String name)
 	{
-		super();
-		this.setUnlocalizedName(name);
-		this.setCreativeTab(KitchenSink.KStab);
-		this.setRegistryName(name);
+		super(name);
 		this.setMaxDamage(0);
 		this.setMaxStackSize(1);
 	}

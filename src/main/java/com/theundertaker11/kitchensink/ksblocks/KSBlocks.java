@@ -1,10 +1,12 @@
 package com.theundertaker11.kitchensink.ksblocks;
 
 import com.theundertaker11.kitchensink.KitchenSink;
+import com.theundertaker11.kitchensink.ksitems.ItemModelProvider;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
 import net.minecraft.block.material.Material;
+import net.minecraft.item.ItemBlock;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public final class KSBlocks {
@@ -19,32 +21,47 @@ public final class KSBlocks {
 	public static Block WhiteBlock;
 	public static Block YellowBlock;
 	//public static Block CompChest;
-	
+	public static Block HealingBlock;
+	public static Block QuarryBlock;
+	public static Block TrashChest;
 	
 	public static void createBlocks() 
 	{
-		GameRegistry.register(BabyBlueBlock = new BlockBase("BabyBlueBlock"));
-		GameRegistry.register(BlackBlock = new BlockBase("BlackBlock"));
-		GameRegistry.register(BlueBlock = new BlockBase("BlueBlock"));
-		GameRegistry.register(BrownBlock = new BlockBase("BrownBlock"));
-		GameRegistry.register(GreenBlock = new BlockBase("GreenBlock"));
-		GameRegistry.register(OrangeBlock = new BlockBase("OrangeBlock"));
-		GameRegistry.register(PurpleBlock = new BlockBase("PurpleBlock"));
-		GameRegistry.register(RedBlock = new BlockBase("RedBlock"));
-		GameRegistry.register(WhiteBlock = new BlockBase("WhiteBlock"));
-		GameRegistry.register(YellowBlock = new BlockBase("YellowBlock"));
-		//GameRegistry.register(CompChest = new StorageBlockBase(Material.IRON, "CompChest"));
-		GameRegistry.registerBlock(BabyBlueBlock);
-		GameRegistry.registerBlock(BlackBlock);
-		GameRegistry.registerBlock(BlueBlock);
-		GameRegistry.registerBlock(BrownBlock);
-		GameRegistry.registerBlock(GreenBlock);
-		GameRegistry.registerBlock(OrangeBlock);
-		GameRegistry.registerBlock(PurpleBlock);
-		GameRegistry.registerBlock(RedBlock);
-		GameRegistry.registerBlock(WhiteBlock);
-		GameRegistry.registerBlock(YellowBlock);
-		//GameRegistry.registerBlock(CompChest);
+		BabyBlueBlock = register(new BlockBase("BabyBlueBlock"));
+		BlackBlock = register(new BlockBase("BlackBlock"));
+		BlueBlock = register(new BlockBase("BlueBlock"));
+		BrownBlock = register(new BlockBase("BrownBlock"));
+		GreenBlock = register(new BlockBase("GreenBlock"));
+		OrangeBlock = register(new BlockBase("OrangeBlock"));
+		PurpleBlock = register(new BlockBase("PurpleBlock"));
+		RedBlock = register(new BlockBase("RedBlock"));
+		WhiteBlock = register(new BlockBase("WhiteBlock"));
+		YellowBlock = register(new BlockBase("YellowBlock"));
+		HealingBlock = register(new HealingBlock("HealingBlock"));
+		QuarryBlock = register(new QuarryBlock("QuarryBlock"));
+		TrashChest = register(new TrashChest("TrashChest"));
+	}
+	private static <T extends Block> T register (T block, ItemBlock itemBlock)
+	{
+		 GameRegistry.register(block);
+		 if(itemBlock != null)
+		 {
+		 GameRegistry.register(itemBlock);
+		 }
+		 
+		 if(block instanceof ItemModelProvider)
+		 {
+		 ((ItemModelProvider)block).registerItemModel(itemBlock);
+		 }
+		 
+		 return block;
+	}
+		 
+	private static <T extends Block> T register(T block)
+	{
+		 ItemBlock itemBlock = new ItemBlock(block);
+		 itemBlock.setRegistryName(block.getRegistryName());
+		 return register(block, itemBlock);
 	}
 
 }

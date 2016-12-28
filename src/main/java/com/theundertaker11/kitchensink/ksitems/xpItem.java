@@ -11,7 +11,7 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 
-public class xpItem extends angelAlloy {
+public class xpItem extends ItemBase {
 	public xpItem(String name){
 		super(name);
 		setMaxDamage(1);

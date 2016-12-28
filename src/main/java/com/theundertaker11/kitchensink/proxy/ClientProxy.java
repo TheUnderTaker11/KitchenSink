@@ -1,21 +1,25 @@
 package com.theundertaker11.kitchensink.proxy;
 
-import com.theundertaker11.kitchensink.KitchenSink;
 import com.theundertaker11.kitchensink.Refernce;
 import com.theundertaker11.kitchensink.ksitems.ItemRenderRegistry;
 import com.theundertaker11.kitchensink.ksitems.Itemsss;
 
 import net.minecraft.client.renderer.block.model.ModelBakery;
-import net.minecraft.item.ItemStack;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.MinecraftForgeClient;
-import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import net.minecraftforge.client.model.ModelLoader;
 
 public class ClientProxy extends CommonProxy {
 	int WandVariantInt = 4;
 	int PickVariantInt = 8;
 	@Override
-	public void RegisterRenders()
+	public void registerItemRenderer(Item item, int meta, String id) 
+	{
+		 ModelLoader.setCustomModelResourceLocation(item, meta, new ModelResourceLocation(Refernce.MODID + ":" + id, "inventory"));
+	}
+	@Override
+	public void registerRenders()
 	{
 		ItemRenderRegistry.RenderItems();
 		

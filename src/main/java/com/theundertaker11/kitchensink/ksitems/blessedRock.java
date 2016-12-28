@@ -16,9 +16,10 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class blessedRock extends deathIngot implements IBauble{
+public class blessedRock extends ItemBase implements IBauble{
 	public blessedRock(String name){
-		super(name);
+		super(name, true);
+		this.setMaxStackSize(1);
 	}
 	
 	@Override

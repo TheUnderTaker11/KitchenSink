@@ -11,33 +11,50 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 
 public final class ModUtils
 {
-	public int moveSpeed = 1;
-	public int moveSlowness = 2;
-	public int digSpeed = 3;
-	public int miningSlowDown = 4;
-	public int strength = 5;
-	public int jumpBoost = 8;
-	public int nausea = 9;
-	public int regeneration = 10;
-	public int resistance = 11;
-	public int fireResistance = 12;
-	public int waterBreathing = 13;
-	public int invisibility = 14;
-	public int blindness = 15;
-	public int nightVision = 16;
-	public int hunger = 17;
-	public int weakness = 18;
-	public int poison = 19;
-	public int wither = 20;
+	/*//This will loops through all blocks in a range(Cube)
+	 * 
+	 * for(int x = loc.getX() - radius; x < loc.getx + radius; x++ )
+		{
+  			for(int y = loc.getY() - radius; y < loc.getY + radius; y++ )
+  			{
+      			for(int z = loc.getZ() - radius; z < loc.getZ + radius; z++ )
+      			{
+            //Block b = get block at (x,y,z)
+      			}
+  			}
+		}
+	 */
+	public static int moveSpeed = 1;
+	public static int moveSlowness = 2;
+	public static int digSpeed = 3;
+	public static int miningSlowDown = 4;
+	public static int strength = 5;
+	public static int jumpBoost = 8;
+	public static int nausea = 9;
+	public static int regeneration = 10;
+	public static int resistance = 11;
+	public static int fireResistance = 12;
+	public static int waterBreathing = 13;
+	public static int invisibility = 14;
+	public static int blindness = 15;
+	public static int nightVision = 16;
+	public static int hunger = 17;
+	public static int weakness = 18;
+	public static int poison = 19;
+	public static int wither = 20;
 	//Start things by Jotato
 	public static List<Entity> getEntitiesInRange(Class<? extends Entity> entityType, World world, double x, double y, double z, double radius) {
 		return getEntitesInTange(entityType, world, x - radius, y - radius, z - radius, x + radius, y + radius,
@@ -109,7 +126,7 @@ public final class ModUtils
 	
 	/**
 	 * Test if an ItemStack in in a persons bauble slots
-	 * 
+	 * @param item ItemStack of whatever item you are testing for, if it has no special data just make a new ItemStack for this
 	 */
 	public static boolean baublesHasItemStack(EntityPlayer player, ItemStack item)
 	{
@@ -126,5 +143,52 @@ public final class ModUtils
 		 		}
 		 }
 		return false;
+	}
+	/**
+	 * Gets an IInventory at the given position
+	 * @param world
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @return
+	 */
+	public static IInventory getIInventoryAtPos(World world, int x, int y, int z)
+	{
+		IInventory inventory = null;
+		BlockPos blockPos = new BlockPos(x,y,z);
+		
+		if(world.getTileEntity(blockPos)!=null)
+		{
+			TileEntity tileentity = world.getTileEntity(blockPos);
+			 if (tileentity instanceof IInventory)
+	            {
+	                inventory = (IInventory)tileentity;
+	            }
+		}
+		return inventory;
+	}
+	/**
+	 * Gets the IItemHandler at a given position, which is a capability.
+	 * @param world
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @param facing EnumFacing side.
+	 * @return
+	 */
+	public static IItemHandler getIItemHandlerAtPos(World world, int x, int y, int z, EnumFacing facing)
+	{
+		IItemHandler inventory = null;
+		BlockPos blockPos = new BlockPos(x,y,z);
+		
+		if(world.getTileEntity(blockPos)!=null)
+		{
+			TileEntity tileentity = world.getTileEntity(blockPos);
+			if(tileentity.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing))
+			{
+				inventory = tileentity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing);
+			}
+		}
+		return inventory;
 	}
 }

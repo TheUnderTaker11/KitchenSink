@@ -5,6 +5,7 @@ import java.util.Set;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import com.theundertaker11.kitchensink.KitchenSink;
+import com.theundertaker11.kitchensink.ModUtils;
 import com.theundertaker11.kitchensink.entity.IndestructibleEntityItem;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -72,8 +73,8 @@ public class godsTool extends ItemPickaxe {
 				
 					if(playerIn.getUniqueID().toString().equals(itemStackIn.getTagCompound().getString("ownerID")))
 					{
-						playerIn.addPotionEffect((new PotionEffect(Potion.getPotionById(12), 1200, 2)));
-						playerIn.addPotionEffect((new PotionEffect(Potion.getPotionById(1), 1200, 2)));
+						playerIn.addPotionEffect((new PotionEffect(Potion.getPotionById(ModUtils.fireResistance), 1200, 2)));
+						playerIn.addPotionEffect((new PotionEffect(Potion.getPotionById(ModUtils.moveSpeed), 1200, 2)));
 						playerIn.removePotionEffect(Potion.getPotionById(2));
 						playerIn.removePotionEffect(Potion.getPotionById(4));
 						playerIn.removePotionEffect(Potion.getPotionById(9));

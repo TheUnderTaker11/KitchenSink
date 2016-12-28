@@ -25,15 +25,12 @@ import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import net.minecraftforge.event.entity.player.PlayerPickupXpEvent;
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
 
-public class MagnetRing extends Item implements IBauble{
+public class MagnetRing extends ItemBase implements IBauble{
 	protected double distanceFromPlayer = 0;
 	protected int teir;
 	public MagnetRing(String name)
 	{
-		super();
-		this.setUnlocalizedName(name);
-		this.setCreativeTab(KitchenSink.KStab);
-		this.setRegistryName(name);
+		super(name);
 		this.setMaxDamage(0);
 		this.setMaxStackSize(1);
 	}
@@ -49,8 +46,8 @@ public class MagnetRing extends Item implements IBauble{
 		}
 		else 
 			{
-				tooltip.add("Craft with an Item Magnet teir to activate");
-				tooltip.add("While sneaking it will not pull in items");
+				tooltip.add("Craft with an Item Magnet teir to activate.");
+				tooltip.add("While sneaking it will not pull in items.");
 			}
     }
 

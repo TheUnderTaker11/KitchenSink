@@ -12,6 +12,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -20,9 +21,12 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.FakePlayerFactory;
+import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
@@ -32,15 +36,15 @@ public class KSTileEntityQuarryBlock extends TileEntity implements ITickable{
 	public static int radius = KitchenSink.QuarryRadius;
 	
 	public static final int SIZE = 1;
-	//TODO Add the ability to replace the blocks broken with cobblestone or stone
-	//private boolean replaceBlocks;
+	private boolean replaceBlocks;
 	private int Energy;
-	private int x;
-	private int y;
-	private int z;
+	private int currentX;
+	private int currentY;
+	private int currentZ;
+	private boolean isOff;
 	//Vars below this don't need to be saved
 	private int tickTimer;
-	private boolean isOff;
+	
 	
 	//TODO Implement a fake player to break the blocks the quarry breaks.
 	//private static GameProfile KitchenSinkProfile = new GameProfile(UUID.fromString("a7d50290-b3f6-4dd9-afa1-d1de51ce3355"),"[KitchenSink]");
@@ -67,21 +71,38 @@ public class KSTileEntityQuarryBlock extends TileEntity implements ITickable{
 		{
 			++this.tickTimer;
 		}
-
+		
 		World world = this.getWorld();
 		IItemHandler quarry = world.getTileEntity(this.getPos()).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP);
 
 		//Pretty much all quarry mining code called here.
 		if(this.tickTimer>=this.ticksNeeded&&this.Energy>0&&!this.isOff)
-		{	
-			tryToMineBlock(new BlockPos(x,y,z), world);
+		{
+			tryToMineBlock(new BlockPos(currentX,currentY,currentZ), world);
 		}
-
+		
+		//This Auto turns any coal in the inventory into energy.
+		if(quarry.getStackInSlot(0)!=null)
+		{
+			ItemStack item = quarry.getStackInSlot(0);
+			if(item.getItem()==Items.COAL)
+			{
+				int num = item.stackSize;
+				this.addEnergy(num*8);
+				quarry.extractItem(0, num, false);
+			}
+			if(item.getItem() instanceof ItemBlock&&Block.getBlockFromItem(item.getItem())==Blocks.COAL_BLOCK)
+			{
+				int num = item.stackSize;
+				this.addEnergy(num*72);
+				quarry.extractItem(0, num, false);
+			}
+		}
 		//This auto-exports items out the top of the quarry to any inventory that is there.
 		if(quarry.getStackInSlot(0)!=null && ModUtils.getIItemHandlerAtPos(world, this.getPos().getX(), this.getPos().getY()+1, this.getPos().getZ(), EnumFacing.DOWN)!=null)
 		{
 			IItemHandler upInventory = ModUtils.getIItemHandlerAtPos(world, this.getPos().getX(), this.getPos().getY()+1, this.getPos().getZ(), EnumFacing.DOWN);
-			if(quarry.getStackInSlot(0)!=null) // Hey can't hurt to check twice right? Make extra sure??
+			if(quarry.getStackInSlot(0)!=null&&quarry.getStackInSlot(0).getItem()!=null) // Hey can't hurt to check twice right? Make extra sure??
 			{
 				ItemStack quarrysItem = quarry.getStackInSlot(0).copy();
 				for(int i=0;i<upInventory.getSlots();i++)
@@ -94,79 +115,100 @@ public class KSTileEntityQuarryBlock extends TileEntity implements ITickable{
 				}
 			}
 			
-		} 
+		}
 	}
-	//TODO Make it so the quarry actually gets the blocks it breaks and puts them in its inventory(Silk touch way)
+	/**
+	 * This will attempt to mine a block given the x,y,z. If there is no room in the quarry's inventory
+	 * it won't change the currentX,Y, and Z ints, this makes it so I don't have to worry about calling this as many times as I like.
+	 * @param blockPos BlockPos of block you want mined
+	 * @param world 
+	 */
 	public void tryToMineBlock(BlockPos blockPos, World world)
 	{
 		if(world.isRemote) return;
+		IItemHandler quarry = world.getTileEntity(this.getPos()).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP);
 		int localx;
 		int localy;
 		int localz;
-		if(this.y==0)
+		if(quarry.getStackInSlot(0)!=null) return;
+		//EntityPlayer dummy = KitchenSink.proxy.getDummyPlayer((WorldServer)worldObj, this.getPos().getX(), this.getPos().getX(), this.getPos().getX()).get();
+		//BlockEvent.BreakEvent event = new BlockEvent.BreakEvent(worldObj, new BlockPos(this.currentX,this.currentY, this.currentZ), state, dummy);
+		//MinecraftForge.EVENT_BUS.post(event);
+		if(this.currentY==0)
 		{
-			localx=(this.getPos().getX()-this.radius);
-			localy=(this.getPos().getY()-1);
-			localz=(this.getPos().getZ()-this.radius);
+			this.currentX=(this.getPos().getX()-this.radius);
+			this.currentY=(this.getPos().getY()-1);
+			this.currentZ=(this.getPos().getZ()-this.radius);
 			this.markDirty();
+			return;
 		}
 		//The logic here is I do all Y's down then move across the X axis, then after I hit a side scoot the Z over 1 and start the 
 		//x and y mining again.
 		else
 		{
 			//Big stuff will only happen after it tried to mine the last Y yea?
-				if(this.y==1)
+				if(this.currentY==1)
 				{
 					localy=(this.getPos().getY()-1);
 					//If x is at max then reset it back to the lowest value.
-					if(this.x==(this.getPos().getX()+this.radius))
+					if(this.currentX==(this.getPos().getX()+this.radius))
 					{
 						localx=(this.getPos().getX()-this.radius);
 						//If Z is max then the quarry is done.
-						if(this.z==(this.getPos().getZ()+this.radius))
+						if(this.currentZ==(this.getPos().getZ()+this.radius))
 						{
 							//This will make it start over, sure it will keep running with no blocks, but if its air
-							//it skips over it, and doing this makes it work with FunkLocomotion or other mods that move
-							// Tile entities!
+							//it skips over it, and doing this makes it work with FunkyLocomotion or other mods that move
+							// Tile entities
 							localz=(this.getPos().getZ()-this.radius);
 						}
 						//If X is finished, add 1 to Z(given its not already at max, checked above)
-						else localz = (this.z+1);
+						else localz = (this.currentZ+1);
 					}
 					//If Y is finished, add 1 to X(given its not already at max, checked above)
 					else
 					{
-						localx=(this.x+1);
-						localz=this.z;
+						localx=(this.currentX+1);
+						localz=this.currentZ;
 					}
 					
 				}
 				else{
-					localy=(this.y-1);
-					localx=this.x;
-					localz=this.z;
+					localy=(this.currentY-1);
+					localx=this.currentX;
+					localz=this.currentZ;
 				}
 				this.markDirty();
 		}
-		
 		Block blockToMine = world.getBlockState(blockPos).getBlock();
-			
+		
 		if(blockToMine!=Blocks.AIR)
 		{
-			if(blockToMine==Blocks.WATER)
+			if(blockToMine==Blocks.WATER||blockToMine==Blocks.LAVA)
 			{
-				world.setBlockToAir(blockPos);
+				if(this.replaceBlocks) world.setBlockState(blockPos, Blocks.STONE.getDefaultState(), 3);
+				
+				else world.setBlockToAir(blockPos);
 			}
 			else
 			{
 				this.tickTimer=0;
 				this.removeEnergy(1);
-				world.destroyBlock(blockPos, true);
+				if(blockToMine==Blocks.LIT_REDSTONE_ORE)
+				{
+					blockToMine = Blocks.REDSTONE_ORE;
+				}
+				if(Item.getItemFromBlock(blockToMine)!=null&&quarry.getStackInSlot(0)==null&&blockToMine!=Blocks.BEDROCK)
+				{
+					if(this.replaceBlocks) world.setBlockState(blockPos, Blocks.STONE.getDefaultState(), 3);
+					else world.destroyBlock(blockPos, false);
+					quarry.insertItem(0, new ItemStack(Item.getItemFromBlock(blockToMine), 1), false);
+				}
 			}
 		}
-		this.x = localx;
-		this.y = localy;
-		this.z = localz;
+		this.currentX = localx;
+		this.currentY = localy;
+		this.currentZ = localz;
 		this.markDirty();
 	}
 	
@@ -176,14 +218,18 @@ public class KSTileEntityQuarryBlock extends TileEntity implements ITickable{
 		this.markDirty();
 	}
 	
-	//public void setReplaceBlocks(boolean bool)
-	//{
-	//	this.replaceBlocks = bool;
-	//}
+	public void setReplaceBlocks(boolean bool)
+	{
+		this.replaceBlocks = bool;
+	}
+	
+	public boolean getReplaceBlocks()
+	{
+		return this.replaceBlocks;
+	}
 	
 	public int getEnergy()
 	{
-		System.out.println("Tile Entity Energy: "+ this.Energy);
 		return this.Energy;
 	}
 	
@@ -203,13 +249,13 @@ public class KSTileEntityQuarryBlock extends TileEntity implements ITickable{
     public NBTTagCompound writeToNBT(NBTTagCompound compound)
 	{
         super.writeToNBT(compound);
-        System.out.println("Written to NBT");
         compound.setTag("items", itemStackHandler.serializeNBT());
-        //compound.setBoolean("replaceBlocks", this.replaceBlocks);
+        compound.setBoolean("replaceBlocks", this.replaceBlocks);
         compound.setInteger("Energy", this.Energy);
-        compound.setInteger("x", this.x);
-        compound.setInteger("y", this.y);
-        compound.setInteger("z", this.z);
+        compound.setInteger("currentX", this.currentX);
+        compound.setInteger("currentY", this.currentY);
+        compound.setInteger("currentZ", this.currentZ);
+        compound.setBoolean("isOff", this.isOff);
         return compound;
         
     }
@@ -217,15 +263,15 @@ public class KSTileEntityQuarryBlock extends TileEntity implements ITickable{
 	public void readFromNBT(NBTTagCompound compound)
 	{
 		super.readFromNBT(compound);
-		System.out.println("NBT Energy: "+ compound.getInteger("Energy"));
 		if (compound.hasKey("items")) {
             itemStackHandler.deserializeNBT((NBTTagCompound) compound.getTag("items"));
         }
-		//this.replaceBlocks = compound.getBoolean("replaceBlocks");
+		this.replaceBlocks = compound.getBoolean("replaceBlocks");
 		this.Energy = compound.getInteger("Energy");
-		this.x = compound.getInteger("x");
-		this.y = compound.getInteger("y");
-		this.z = compound.getInteger("z");
+		this.currentX = compound.getInteger("currentX");
+		this.currentY = compound.getInteger("currentY");
+		this.currentZ = compound.getInteger("currentZ");
+		this.isOff = compound.getBoolean("isOff");
 	}
 	
 	@Override

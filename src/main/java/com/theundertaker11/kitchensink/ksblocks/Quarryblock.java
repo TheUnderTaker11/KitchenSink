@@ -22,9 +22,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 
-public class Quarryblock extends BlockBase {
+public class QuarryBlock extends BlockBase {
 
-	public Quarryblock(String name) {
+	public QuarryBlock(String name) {
 		super(name);
 		this.isBlockContainer=true;
 	}
@@ -78,6 +78,17 @@ public class Quarryblock extends BlockBase {
 				}
 			}
 			playerIn.addChatMessage(new TextComponentString("Charge is "+quarry.getEnergy()+" SE"));
+			if(playerIn.isSneaking())
+			{
+				quarry.setReplaceBlocks(!quarry.getReplaceBlocks());
+			}
+			if(!quarry.getReplaceBlocks())
+			{
+				playerIn.addChatMessage(new TextComponentString("Block Replacement is Disabled, shift right click to enable."));
+			}
+			else{
+				playerIn.addChatMessage(new TextComponentString("Block Replacement is Enabled, shift right click to disable."));
+			}
 		}
 		
         return true;
@@ -96,7 +107,7 @@ public class Quarryblock extends BlockBase {
             	quarry.setIsOff(true);
             }
             else{
-            	if (!worldIn.isBlockPowered(quarry.getPos()))
+            	if (!worldIn.isBlockPowered(pos))
                 {
                     quarry.setIsOff(false);
                 }

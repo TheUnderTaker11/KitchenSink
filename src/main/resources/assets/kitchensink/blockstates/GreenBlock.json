@@ -1,5 +1,16 @@
 {
+    "forge_marker": 1,
+    "defaults": {
+        "textures": {
+            "all": "kitchensink:blocks/GreenBlock"
+        }
+    },
     "variants": {
-        "normal": { "model": "kitchensink:GreenBlock" }
+        "normal": {
+            "model": "cube_all"
+        },
+        "inventory": {
+            "model": "cube_all"
+        }
     }
 }

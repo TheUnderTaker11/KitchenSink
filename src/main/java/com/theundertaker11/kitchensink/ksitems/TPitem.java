@@ -17,7 +17,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 
-public class TPitem extends angelAlloy {
+public class TPitem extends ItemBase {
 	
 	public TPitem(String name)
 	{

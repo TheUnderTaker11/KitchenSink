@@ -1,5 +1,16 @@
 {
+    "forge_marker": 1,
+    "defaults": {
+        "textures": {
+            "all": "kitchensink:blocks/RedBlock"
+        }
+    },
     "variants": {
-        "normal": { "model": "kitchensink:RedBlock" }
+        "normal": {
+            "model": "cube_all"
+        },
+        "inventory": {
+            "model": "cube_all"
+        }
     }
 }

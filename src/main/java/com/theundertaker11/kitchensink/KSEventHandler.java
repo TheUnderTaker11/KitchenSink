@@ -49,6 +49,7 @@ public class KSEventHandler {
 	private int ticktimer = 0;
 	
 	List<String> PlayersWithFlight = new ArrayList<String>();
+	List<String> PlayersWithSpeed = new ArrayList<String>();
 	@SubscribeEvent
 	public void GameTick(TickEvent event)
 	{
@@ -58,7 +59,7 @@ public class KSEventHandler {
 	@SubscribeEvent
 	public void WorldTick(WorldTickEvent event)
 	{
-		if(ticktimer>1000&&event.world.provider.getDimension()==0)	
+		if(ticktimer>1000&&event.world.provider.getDimension()==0&&!event.world.isRemote)	
 		{
 			ticktimer = 0;
 			for(EntityPlayerMP player: event.world.getMinecraftServer().getPlayerList().getPlayerList())
@@ -68,32 +69,48 @@ public class KSEventHandler {
 				 */
 				IBaublesItemHandler baubles = player.getCapability(BaublesCapabilities.CAPABILITY_BAUBLES, player.getHorizontalFacing());
 				String username = player.getGameProfile().getName();
-				
-				 if(!player.capabilities.isCreativeMode)
+				boolean hasRock=false;
+				boolean hasSpeedRing=false;
+				//Looks in bauble slots
+				//To save on how many times I use loops, I also check if the protection charm is in the baubles slots
+				//with this same loop
+				 for(int i=0;i<baubles.getSlots();++i)
 				 {
-					 boolean hasRock=false;
-					 
-					//Looks in bauble slots
-					//To save on how many times I use loops, I also check if the protection charm is in the baubles slots
-					//with this same loop.
-					 for(int i=0;i<baubles.getSlots();++i)
-					 {
-						 if(baubles.getStackInSlot(i)!=null)
-					 		{
-					 			ItemStack stack = baubles.getStackInSlot(i);
-					 			//This is where I repair the protection charm.
-					 			if(stack.getItem()==Itemsss.ProtectionCharm)
-					 			{
-					 				ProtectionCharm.RepairCharm(stack, 3);
-					 			}
-					 			//Back to your regularly scheduled creative flight code.
-					 			if(stack.getItem()==Itemsss.blessedRock)
-					 			{
-					 				hasRock=true;
-					 			}
-					 		}
-					 }
-					 
+					 if(baubles.getStackInSlot(i)!=null)
+				 		{
+				 			ItemStack stack = baubles.getStackInSlot(i);
+				 			//This is where I repair the protection charm.
+				 			if(stack.getItem()==Itemsss.ProtectionCharm)
+				 			{
+				 				ProtectionCharm.RepairCharm(stack, 3);
+				 			}
+				 			//This if checks for the rock.
+				 			if(stack.getItem()==Itemsss.blessedRock)
+				 			{
+				 				hasRock=true;
+				 			}
+				 			/*I'm just throwing stuff in here at this point.
+				 			if(stack.getItem().equals(Itemsss.speedForceRing));
+				 			{
+				 				//player.capabilities.setFlySpeed(3.0F);
+				 				//player.capabilities.setPlayerWalkSpeed(3.0F);
+				 				//if(stack.getItemDamage()==1)
+				 				//{
+				 				//	player.stepHeight = 1.0F;
+				 				//}
+				 				hasSpeedRing=true;
+				 				//if(!PlayersWithSpeed.contains(username)) PlayersWithSpeed.add(username);
+				 			}*/
+				 		}
+				 }
+				 /*if(!hasSpeedRing&&PlayersWithSpeed.contains(username))
+				 {
+					 player.capabilities.setFlySpeed(0.1F);
+		 			 player.capabilities.setPlayerWalkSpeed(0.2F);
+					 player.stepHeight = 0.5F;
+				 }*/
+				 if(!player.capabilities.isCreativeMode)
+				 { 
 					 //Looks in normal inventory(Only if not in baubles, to save lag.
 					 if(!hasRock)
 					 {
@@ -130,7 +147,8 @@ public class KSEventHandler {
 				 /**
 				  * Repairs the protection charm, Lapis Pick, and Immortal Coward charm
 				  */
-				 if(player.inventory.hasItemStack(new ItemStack(Itemsss.ProtectionCharm))||player.inventory.hasItemStack(new ItemStack(Itemsss.HealthTPitem))||player.inventory.hasItemStack(new ItemStack(Itemsss.LevelPick)))
+				 if(player.inventory.hasItemStack(new ItemStack(Itemsss.ProtectionCharm))||player.inventory.hasItemStack(new ItemStack(Itemsss.HealthTPitem))
+						 ||player.inventory.hasItemStack(new ItemStack(Itemsss.LevelPick)))
 				 {
 					 for(int i=0;i<player.inventory.getSizeInventory();++i)
 						{
