@@ -1,14 +1,14 @@
 package com.theundertaker11.kitchensink.ksblocks;
 
 import com.theundertaker11.kitchensink.KitchenSink;
-import com.theundertaker11.kitchensink.ksitems.ItemModelProvider;
+import com.theundertaker11.kitchensink.ksitems.IItemModelProvider;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemPickaxe;
 
-public class BlockBase extends Block implements ItemModelProvider{
+public class BlockBase extends Block implements IItemModelProvider{
 	protected String Name;
 	
 	public BlockBase(String name, Material material, float hardness, float resistance) {

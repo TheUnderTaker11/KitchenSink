@@ -1,7 +1,7 @@
 package com.theundertaker11.kitchensink.ksblocks;
 
 import com.theundertaker11.kitchensink.KitchenSink;
-import com.theundertaker11.kitchensink.ksitems.ItemModelProvider;
+import com.theundertaker11.kitchensink.ksitems.IItemModelProvider;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
@@ -49,9 +49,9 @@ public final class KSBlocks {
 		 GameRegistry.register(itemBlock);
 		 }
 		 
-		 if(block instanceof ItemModelProvider)
+		 if(block instanceof IItemModelProvider)
 		 {
-		 ((ItemModelProvider)block).registerItemModel(itemBlock);
+		 ((IItemModelProvider)block).registerItemModel(itemBlock);
 		 }
 		 
 		 return block;

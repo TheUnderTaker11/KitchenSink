@@ -114,8 +114,8 @@ public class Itemsss
 	private static <T extends Item> T register(T item) {
 		GameRegistry.register(item);
 		
-		if(item instanceof ItemModelProvider) {
-			((ItemModelProvider)item).registerItemModel(item);
+		if(item instanceof IItemModelProvider) {
+			((IItemModelProvider)item).registerItemModel(item);
 		}
 		
 		return item;

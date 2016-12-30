@@ -8,7 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemBase extends Item implements ItemModelProvider{
+public class ItemBase extends Item implements IItemModelProvider{
 	protected String name;
 	boolean hasEffct;
 	public ItemBase(String name, boolean hasEffect){

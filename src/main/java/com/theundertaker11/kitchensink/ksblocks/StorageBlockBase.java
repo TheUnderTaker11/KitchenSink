@@ -7,7 +7,9 @@ import com.theundertaker11.kitchensink.tileentity.KSTileEntityQuarryBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
 import net.minecraft.block.BlockContainer;
+import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -23,7 +25,9 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.ILockableContainer;
 import net.minecraft.world.World;
 
-public class StorageBlockBase extends BlockBase {
+public class StorageBlockBase extends BlockBase{
+	
+	public static final PropertyDirection FACING = BlockHorizontal.FACING;
 	
 	public StorageBlockBase(String name, Material material, float hardness, float resistance) 
 	{
@@ -46,7 +50,4 @@ public class StorageBlockBase extends BlockBase {
 		//This should never actually be called since it should be overridden in every actual block code.
 		return new KSTileEntityHealingBlock();
     }
-
-	
-
 }

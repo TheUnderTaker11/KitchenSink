@@ -1,7 +1,6 @@
 package com.theundertaker11.kitchensink.ksblocks;
 
 import com.theundertaker11.kitchensink.KitchenSink;
-import com.theundertaker11.kitchensink.ksitems.ItemModelProvider;
 import com.theundertaker11.kitchensink.tileentity.KSTileEntityHealingBlock;
 
 import net.minecraft.block.BlockContainer;

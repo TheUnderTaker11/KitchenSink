@@ -12,9 +12,11 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.oredict.OreDictionary;
 import com.theundertaker11.kitchensink.proxy.CommonProxy;
+import com.theundertaker11.kitchensink.proxy.GuiProxy;
 import com.theundertaker11.kitchensink.tileentity.KSTileEntity;
 import com.theundertaker11.kitchensink.ksblocks.KSBlocks;
 import com.theundertaker11.kitchensink.ksitems.ItemRenderRegistry;
@@ -36,6 +38,10 @@ public class KitchenSink {
 	public static int QuarryRadius;
 	
 	public static CreativeTabs KStab = new CreativeTabKS(CreativeTabs.getNextID(), "KStab");
+	
+	@Mod.Instance
+    public static KitchenSink instance;
+	
 	@SidedProxy(clientSide = Refernce.CLIENTPROXY, serverSide = Refernce.SERVERPROXY)
 	public static CommonProxy proxy;
 	
@@ -74,6 +80,7 @@ public class KitchenSink {
 	{
 		CraftingManager.Crecipes();
 		proxy.registerRenders();
+		NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiProxy());
 		MinecraftForge.EVENT_BUS.register(new KSEventHandler());
 	}
 
