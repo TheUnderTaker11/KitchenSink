@@ -1,7 +1,7 @@
 package com.theundertaker11.kitchensink.ksblocks;
 
 import com.theundertaker11.kitchensink.KitchenSink;
-import com.theundertaker11.kitchensink.ksitems.IItemModelProvider;
+import com.theundertaker11.kitchensink.render.IItemModelProvider;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -18,7 +18,7 @@ public class BlockBase extends Block implements IItemModelProvider{
         setCreativeTab(KitchenSink.KStab);
         setHardness(hardness);
         setResistance(resistance);
-        setHarvestLevel("axe", 0);
+        setHarvestLevel("pickaxe", 0);
         setRegistryName(name);
     }
 

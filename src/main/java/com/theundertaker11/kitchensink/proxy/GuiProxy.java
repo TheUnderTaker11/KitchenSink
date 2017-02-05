@@ -1,8 +1,8 @@
 package com.theundertaker11.kitchensink.proxy;
 
-import com.theundertaker11.kitchensink.container.TrashChestContainer;
-import com.theundertaker11.kitchensink.gui.TrashChestGui;
-import com.theundertaker11.kitchensink.tileentity.KSTileEntityTrashChest;
+import com.theundertaker11.kitchensink.ksblocks.trashchest.KSTileEntityTrashChest;
+import com.theundertaker11.kitchensink.ksblocks.trashchest.TrashChestContainer;
+import com.theundertaker11.kitchensink.ksblocks.trashchest.TrashChestGui;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;

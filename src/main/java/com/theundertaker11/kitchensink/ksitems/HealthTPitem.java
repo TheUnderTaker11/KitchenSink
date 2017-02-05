@@ -39,7 +39,7 @@ public class HealthTPitem extends ItemBase {
 	@Override
 	public void onUpdate(ItemStack item, World world, Entity entity, int p_77663_4_, boolean p_77663_5_) 
 	{
-		if(entity instanceof EntityPlayer)
+		if(!world.isRemote&&entity instanceof EntityPlayer)
 		{
 			if (item.getTagCompound() == null)
 			{
@@ -48,10 +48,7 @@ public class HealthTPitem extends ItemBase {
 				item.getTagCompound().setInteger("maxdur", 400);
 				ModUtils.WritePlayerXYZtoNBT(item, (EntityPlayer)entity);
 			}
-		}
-		if(!world.isRemote)
-		{
-			if(item.getTagCompound()!=null && entity instanceof EntityPlayer)
+			else
 			{
 				NBTTagCompound tag=item.getTagCompound();
 				EntityPlayer player = (EntityPlayer)entity;
@@ -61,11 +58,7 @@ public class HealthTPitem extends ItemBase {
 						ModUtils.TeleportPlayer(player, tag.getDouble("x"), tag.getDouble("y"), tag.getDouble("z"), tag.getInteger("dim"));
 						tag.setInteger("dur", 0);
 				}
-				
-				
 			}
-			
-			
 		}
 	}
 	
@@ -73,20 +66,18 @@ public class HealthTPitem extends ItemBase {
 	public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced)
     {
 		tooltip.add(TextFormatting.DARK_PURPLE+ "Shift right click to set teleport point");
-		tooltip.add(TextFormatting.DARK_PURPLE+ "At 20% health this will Teleport you to place you set");
-		tooltip.add(TextFormatting.DARK_PURPLE+ "There is a cooldown, shown by duribilty");
-		tooltip.add(TextFormatting.DARK_PURPLE+ "(Note:Don't keep more than one in your inventory)");
     }
 	
 	public static void TimerRepair(ItemStack item)
 	{
-		if(item.getTagCompound().getInteger("dur")<item.getTagCompound().getInteger("maxdur")) item.getTagCompound().setInteger("dur", (item.getTagCompound().getInteger("dur")+1));
+		NBTTagCompound tag = item.getTagCompound();
+		if(tag.getInteger("dur")<tag.getInteger("maxdur")) tag.setInteger("dur", (tag.getInteger("dur")+1));
 	}
 	
 	@Override
-	 public boolean hasEffect(ItemStack par1ItemStack)
+	 public boolean hasEffect(ItemStack stack)
 	 {
-		if(par1ItemStack.getTagCompound()!=null&&par1ItemStack.getTagCompound().getInteger("dur")==par1ItemStack.getTagCompound().getInteger("maxdur")) return true;
+		if(stack.getTagCompound()!=null&&stack.getTagCompound().getInteger("dur")==stack.getTagCompound().getInteger("maxdur")) return true;
 		else return false;
 	 }
 	
@@ -96,7 +87,7 @@ public class HealthTPitem extends ItemBase {
 		if(stack.getTagCompound()!=null&&stack.getTagCompound().getInteger("dur")<stack.getTagCompound().getInteger("maxdur")) return true;
 		else return false;
     }
-	/**Makes it so duribility bar still shows even though I'm using meta damage for textures */
+	
 	@Override
 	public double getDurabilityForDisplay(ItemStack stack)
     {

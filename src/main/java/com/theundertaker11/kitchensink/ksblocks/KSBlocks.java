@@ -1,7 +1,9 @@
 package com.theundertaker11.kitchensink.ksblocks;
 
 import com.theundertaker11.kitchensink.KitchenSink;
-import com.theundertaker11.kitchensink.ksitems.IItemModelProvider;
+import com.theundertaker11.kitchensink.ksblocks.quarry.QuarryBlock;
+import com.theundertaker11.kitchensink.ksblocks.trashchest.TrashChest;
+import com.theundertaker11.kitchensink.render.IItemModelProvider;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
@@ -20,10 +22,10 @@ public final class KSBlocks {
 	public static Block RedBlock;
 	public static Block WhiteBlock;
 	public static Block YellowBlock;
-	//public static Block CompChest;
 	public static Block HealingBlock;
 	public static Block QuarryBlock;
 	public static Block TrashChest;
+	public static Block BlessedFurnace;
 	
 	public static void createBlocks() 
 	{

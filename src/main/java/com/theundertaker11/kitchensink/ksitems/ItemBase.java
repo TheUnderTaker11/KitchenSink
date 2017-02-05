@@ -1,6 +1,7 @@
 package com.theundertaker11.kitchensink.ksitems;
 
 import com.theundertaker11.kitchensink.KitchenSink;
+import com.theundertaker11.kitchensink.render.IItemModelProvider;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.item.Item;

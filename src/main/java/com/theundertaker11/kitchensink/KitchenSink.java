@@ -4,6 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.FMLCommonHandler;
@@ -17,12 +18,13 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.oredict.OreDictionary;
 import com.theundertaker11.kitchensink.proxy.CommonProxy;
 import com.theundertaker11.kitchensink.proxy.GuiProxy;
-import com.theundertaker11.kitchensink.tileentity.KSTileEntity;
+import com.theundertaker11.kitchensink.render.ItemRenderRegistry;
+import com.theundertaker11.kitchensink.tileentity.KSTileEntityRegistry;
+import com.theundertaker11.kitchensink.crafting.CraftingManager;
+import com.theundertaker11.kitchensink.event.KSEventHandler;
 import com.theundertaker11.kitchensink.ksblocks.KSBlocks;
-import com.theundertaker11.kitchensink.ksitems.ItemRenderRegistry;
 import com.theundertaker11.kitchensink.ksitems.Itemsss;
-import com.theundertaker11.kitchensink.ksitems.kscrafting.CraftingManager;
-@Mod(modid = Refernce.MODID, version = Refernce.VERSION, name = Refernce.NAME)
+@Mod(modid = Refernce.MODID, version = Refernce.VERSION, name = Refernce.NAME, dependencies="after:Baubles")
 
 public class KitchenSink {
 	
@@ -45,12 +47,34 @@ public class KitchenSink {
 	@SidedProxy(clientSide = Refernce.CLIENTPROXY, serverSide = Refernce.SERVERPROXY)
 	public static CommonProxy proxy;
 	
-	public static boolean debugMode = false;
-	
 	@Mod.EventHandler
 	public void preInit(FMLPreInitializationEvent event)
 	{
 		Configuration config = new Configuration(event.getSuggestedConfigurationFile());
+		loadConfig(config);
+		
+		Itemsss.itemprops();
+		KSBlocks.createBlocks();
+		KSTileEntityRegistry.regTileEntitys();
+	}
+
+	@Mod.EventHandler
+	public void init(FMLInitializationEvent event)
+	{
+		CraftingManager.init();
+		proxy.registerRenders();
+		NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiProxy());
+		KSEventHandler.init();
+	}
+
+	@Mod.EventHandler
+	public void postInit(FMLPostInitializationEvent event)
+	{
+		
+	}
+	
+	public static void loadConfig(Configuration config)
+	{
 		config.load();
 		config.addCustomCategoryComment("Items", "Set any values to false to disable the recipe(s) for this item.");
 		config.addCustomCategoryComment("Health Station", "Configuration for Health Station");
@@ -67,28 +91,6 @@ public class KitchenSink {
 		QuarryRadius = config.getInt("Radius of Quarry", "Quarry", 8, 3, 50, "Changes the radius of the Quarry(Mines to bedrock in that radius)");
 		
 		config.save();
-		
-		Itemsss.itemprops();
-		KSBlocks.createBlocks();
-		KSTileEntity.regTileEntitys();
-		
-
 	}
-
-	@Mod.EventHandler
-	public void init(FMLInitializationEvent event)
-	{
-		CraftingManager.Crecipes();
-		proxy.registerRenders();
-		NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiProxy());
-		MinecraftForge.EVENT_BUS.register(new KSEventHandler());
-	}
-
-	@Mod.EventHandler
-	public void postInit(FMLPostInitializationEvent event)
-	{
-		
-	}
-	
 
 }

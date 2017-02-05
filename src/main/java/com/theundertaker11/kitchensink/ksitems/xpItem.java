@@ -20,9 +20,10 @@ public class xpItem extends ItemBase {
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World worldIn, EntityPlayer playerIn, EnumHand hand)
     {
-		if(!worldIn.isRemote){
-		worldIn.spawnEntityInWorld(new EntityXPOrb(worldIn, playerIn.posX + 1, playerIn.posY, playerIn.posZ, 43));
-		stack.damageItem(2, playerIn);
+		if(!worldIn.isRemote)
+		{
+			worldIn.spawnEntityInWorld(new EntityXPOrb(worldIn, playerIn.posX + 1, playerIn.posY, playerIn.posZ, 43));
+			stack.damageItem(2, playerIn);
 		}
 		return new ActionResult<ItemStack>(EnumActionResult.PASS, stack);
 	}

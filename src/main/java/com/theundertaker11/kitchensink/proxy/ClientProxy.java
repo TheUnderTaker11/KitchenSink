@@ -1,8 +1,8 @@
 package com.theundertaker11.kitchensink.proxy;
 
 import com.theundertaker11.kitchensink.Refernce;
-import com.theundertaker11.kitchensink.ksitems.ItemRenderRegistry;
 import com.theundertaker11.kitchensink.ksitems.Itemsss;
+import com.theundertaker11.kitchensink.render.ItemRenderRegistry;
 
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;

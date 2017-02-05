@@ -24,7 +24,9 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import net.minecraftforge.event.entity.player.PlayerPickupXpEvent;
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
+import net.minecraftforge.fml.common.Optional;
 
+@Optional.Interface(iface="baubles.api.IBauble", modid="Baubles", striprefs=true)
 public class MagnetRing extends ItemBase implements IBauble{
 	protected double distanceFromPlayer = 0;
 	protected int teir;
@@ -50,18 +52,18 @@ public class MagnetRing extends ItemBase implements IBauble{
 				tooltip.add("While sneaking it will not pull in items.");
 			}
     }
-
+	@Optional.Method(modid="Baubles")
 	@Override
 	public BaubleType getBaubleType(ItemStack itemstack) {
 		return BaubleType.RING;
 	}
-	
+	@Optional.Method(modid="Baubles")
 	@Override
 	public void onWornTick(ItemStack item, EntityLivingBase Player) {
 		if(item.getTagCompound()!=null)
-			{
+		{
 			this.distanceFromPlayer = (item.getTagCompound().getDouble("range"));
-			}
+		}
 		else return;
 		if (!(Player instanceof EntityPlayer))
 			return;

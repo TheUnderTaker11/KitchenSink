@@ -1,6 +1,5 @@
 package com.theundertaker11.kitchensink;
 
-
 import java.util.List;
 
 import com.theundertaker11.kitchensink.ksitems.Itemsss;
@@ -12,6 +11,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -24,19 +24,6 @@ import net.minecraftforge.items.IItemHandler;
 
 public final class ModUtils
 {
-	/*//This will loops through all blocks in a range(Cube)
-	 * 
-	 * for(int x = loc.getX() - radius; x < loc.getx + radius; x++ )
-		{
-  			for(int y = loc.getY() - radius; y < loc.getY + radius; y++ )
-  			{
-      			for(int z = loc.getZ() - radius; z < loc.getZ + radius; z++ )
-      			{
-            //Block b = get block at (x,y,z)
-      			}
-  			}
-		}
-	 */
 	public static int moveSpeed = 1;
 	public static int moveSlowness = 2;
 	public static int digSpeed = 3;
@@ -89,7 +76,8 @@ public final class ModUtils
 			itemStackIn.getTagCompound().setDouble("y", playerIn.posY);
 			itemStackIn.getTagCompound().setDouble("z", playerIn.posZ);
 			itemStackIn.getTagCompound().setInteger("dim", playerIn.dimension);
-			playerIn.playSound(SoundEvents.BLOCK_ANVIL_LAND, 3.0F, 0.1F);
+			playerIn.playSound(SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, 0.8F, 0.5F);
+			//playerIn.playSound(SoundEvents.BLOCK_ANVIL_LAND, 3.0F, 0.1F);
 		}
 		else if(itemStackIn.getTagCompound()!=null)
 		{
@@ -97,7 +85,7 @@ public final class ModUtils
 			itemStackIn.getTagCompound().setDouble("y", playerIn.posY);
 			itemStackIn.getTagCompound().setDouble("z", playerIn.posZ);
 			itemStackIn.getTagCompound().setInteger("dim", playerIn.dimension);
-			playerIn.playSound(SoundEvents.BLOCK_ANVIL_LAND, 3.0F, 0.1F);
+			playerIn.playSound(SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, 0.8F, 0.5F);
 		}
 		
 	}
@@ -124,26 +112,6 @@ public final class ModUtils
 		}
 	}
 	
-	/**
-	 * Test if an ItemStack in in a persons bauble slots
-	 * @param item ItemStack of whatever item you are testing for, if it has no special data just make a new ItemStack for this
-	 */
-	public static boolean baublesHasItemStack(EntityPlayer player, ItemStack item)
-	{
-		IBaublesItemHandler baubles = player.getCapability(BaublesCapabilities.CAPABILITY_BAUBLES, player.getHorizontalFacing());
-		for(int i=0;i<baubles.getSlots();++i)
-		 {
-			 if(baubles.getStackInSlot(i)!=null)
-		 		{
-		 			ItemStack stack = baubles.getStackInSlot(i);
-		 			if(stack.isItemEqual(item))
-		 			{
-		 				return true;
-		 			}
-		 		}
-		 }
-		return false;
-	}
 	/**
 	 * Gets an IInventory at the given position
 	 * @param world

@@ -10,7 +10,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.Optional;
 
+@Optional.Interface(iface="baubles.api.IBauble", modid="Baubles", striprefs=true)
 public class ProtectionCharm extends ItemBase implements IBauble{
 	
 	public ProtectionCharm(String name) 
@@ -42,9 +44,11 @@ public class ProtectionCharm extends ItemBase implements IBauble{
 	
 	public static void RepairCharm(ItemStack itemstack, int amount)
 	{
-		if(itemstack.getTagCompound().getInteger("dur")<=(400-amount))
+		NBTTagCompound tag = itemstack.getTagCompound();
+		if(tag.getInteger("dur")<(400))
 		{
-			itemstack.getTagCompound().setInteger("dur", (itemstack.getTagCompound().getInteger("dur")+amount));
+			tag.setInteger("dur", (tag.getInteger("dur")+amount));
+			if(tag.getInteger("dur")>400) tag.setInteger("dur", 400);
 		}
 	}
 	
@@ -78,7 +82,7 @@ public class ProtectionCharm extends ItemBase implements IBauble{
 		}
 		else return 1;
     }
-
+	@Optional.Method(modid="Baubles")
 	@Override
 	public BaubleType getBaubleType(ItemStack itemstack) {
 		return BaubleType.RING;

@@ -2,6 +2,18 @@ package com.theundertaker11.kitchensink.ksitems;
 
 import com.theundertaker11.kitchensink.CreativeTabKS;
 import com.theundertaker11.kitchensink.KitchenSink;
+import com.theundertaker11.kitchensink.ksitems.tools.DeathHand;
+import com.theundertaker11.kitchensink.ksitems.tools.DemonicSword;
+import com.theundertaker11.kitchensink.ksitems.tools.LevelPick;
+import com.theundertaker11.kitchensink.ksitems.tools.SkeletonSword;
+import com.theundertaker11.kitchensink.ksitems.tools.blessedAxe;
+import com.theundertaker11.kitchensink.ksitems.tools.blessedHoe;
+import com.theundertaker11.kitchensink.ksitems.tools.blessedPick;
+import com.theundertaker11.kitchensink.ksitems.tools.blessedShovel;
+import com.theundertaker11.kitchensink.ksitems.tools.blessedSword;
+import com.theundertaker11.kitchensink.ksitems.tools.deathsSythe;
+import com.theundertaker11.kitchensink.ksitems.tools.godsTool;
+import com.theundertaker11.kitchensink.render.IItemModelProvider;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.Item;
@@ -14,7 +26,7 @@ public class Itemsss
 {
 	
 	//Materials
-	public static ToolMaterial blessed_mat = EnumHelper.addToolMaterial("blessed_mat", 100, 1000, 12, 8, 20);
+	public static ToolMaterial blessed_mat = EnumHelper.addToolMaterial("blessed_mat", 100, 1000, 18, 8, 20);
 	public static ToolMaterial death_mat = EnumHelper.addToolMaterial("death_mat", 100, 10000, 10, 16, 40);
 	public static ToolMaterial god_mat = EnumHelper.addToolMaterial("god_mat", 100, 10000, 10000, 14, 40);
 	public static ToolMaterial low_mat = EnumHelper.addToolMaterial("low_mat", 1, 100, 10, 0, 20);
@@ -61,12 +73,10 @@ public class Itemsss
 	public static Item HealthTPitem;
 	public static Item TPitem;
 	public static Item ProtectionCharm;
-	public static Item speedForceRing;
 	
 	public static Item DemonicSword;
 	public static Item SkeletonSword;
 	
-	//public static Item Wand;
 	public static Item LevelPick;
 
 	
@@ -91,7 +101,6 @@ public class Itemsss
 		TPitem = register(new TPitem("TPitem"));
 		xpItem = register(new xpItem("xpItem"));
 		ProtectionCharm = register(new ProtectionCharm("ProtectionCharm"));
-		speedForceRing = register(new SpeedForceRing("speedForceRing"));
 		
 		//Tools
 		blessedSword = register(new blessedSword("blessedSword", blessed_mat));
@@ -104,12 +113,7 @@ public class Itemsss
 		DemonicSword = register(new DemonicSword("DemonicSword", low_mat2));
 		LevelPick = register(new LevelPick("LevelPick", low_mat2));
 		DeathHand = register(new DeathHand("DeathHand", low_mat));
-		godsTool = register(new godsTool("godsTool", god_mat));
-		
-			
-		//waht
-		//Wand = register(new Wand("Wand"));	
-		
+		godsTool = register(new godsTool("godsTool", god_mat));	
 	}
 	private static <T extends Item> T register(T item) {
 		GameRegistry.register(item);
