@@ -4,7 +4,7 @@ import java.util.UUID;
 
 import com.mojang.authlib.GameProfile;
 import com.theundertaker11.kitchensink.KitchenSink;
-import com.theundertaker11.kitchensink.ModUtils;
+import com.theundertaker11.kitchensink.util.ModUtils;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -193,7 +193,7 @@ public class KSTileEntityQuarryBlock extends TileEntity implements ITickable{
 		if(blockToMine!=Blocks.AIR)
 		{
 			
-			if(blockToMine==Blocks.WATER||blockToMine==Blocks.LAVA)
+			if(blockToMine==Blocks.WATER||blockToMine==Blocks.LAVA||blockToMine==Blocks.FLOWING_LAVA||blockToMine==Blocks.FLOWING_WATER)
 			{
 				if(this.replaceBlocks) world.setBlockState(blockPos, Blocks.STONE.getDefaultState(), 3);
 				

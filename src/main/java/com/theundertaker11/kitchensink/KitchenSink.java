@@ -31,6 +31,9 @@ public class KitchenSink {
 	public static boolean enableDeathHand;
 	public static boolean enableGodsTool;
 	public static boolean enableProtectionCharm;
+	public static boolean enableBlessedFurnace;
+	public static boolean enableAngelArmor;
+	public static boolean enableDeathArmor;
 	
 	public static boolean enableHealthStation;
 	public static int HealingBlockRange;
@@ -77,11 +80,13 @@ public class KitchenSink {
 	{
 		config.load();
 		config.addCustomCategoryComment("Items", "Set any values to false to disable the recipe(s) for this item.");
+		config.addCustomCategoryComment("Armor", "Various armor config options");
 		config.addCustomCategoryComment("Health Station", "Configuration for Health Station");
 		config.addCustomCategoryComment("Quarry", "Configuration for Quarry");
 		enableDeathHand = config.getBoolean("Enable Death Hand Recipe","Items",true,"");
 		enableGodsTool = config.getBoolean("Enable God's Tool Recipe","Items",true,"");
 		enableProtectionCharm = config.getBoolean("Enable Protection Charm Recipe","Items",true,"");
+		enableBlessedFurnace = config.getBoolean("Enable Blessed Furnace", "Items", true, "");
 		
 		enableHealthStation = config.getBoolean("Enable Healing Station Recipe", "Health Station", true, "");
 		HealingBlockRange = config.getInt("Range for the Healing Beacon", "Health Station", 5, 1, 20, "Radius for Health Station");
@@ -89,6 +94,9 @@ public class KitchenSink {
 		
 		QuarryTicksBetweenOperations = config.getInt("Ticks between each operation of the Quarry", "Quarry", 10, 1, 1000, "There is 20 ticks in a second");
 		QuarryRadius = config.getInt("Radius of Quarry", "Quarry", 8, 3, 50, "Changes the radius of the Quarry(Mines to bedrock in that radius)");
+		
+		enableAngelArmor = config.getBoolean("Enable Angel Alloy Armor", "Armor", true, "");
+		enableDeathArmor = config.getBoolean("Enable Death Metal Armor", "Armor", true, "");
 		
 		config.save();
 	}

@@ -1,7 +1,8 @@
 package com.theundertaker11.kitchensink.ksitems;
 
-import com.theundertaker11.kitchensink.CreativeTabKS;
-import com.theundertaker11.kitchensink.KitchenSink;
+import com.theundertaker11.kitchensink.ksitems.armor.AngelArmorRing;
+import com.theundertaker11.kitchensink.ksitems.armor.DeathArmorRing;
+import com.theundertaker11.kitchensink.ksitems.armor.KSArmor;
 import com.theundertaker11.kitchensink.ksitems.tools.DeathHand;
 import com.theundertaker11.kitchensink.ksitems.tools.DemonicSword;
 import com.theundertaker11.kitchensink.ksitems.tools.LevelPick;
@@ -15,22 +16,27 @@ import com.theundertaker11.kitchensink.ksitems.tools.deathsSythe;
 import com.theundertaker11.kitchensink.ksitems.tools.godsTool;
 import com.theundertaker11.kitchensink.render.IItemModelProvider;
 
-import net.minecraft.client.Minecraft;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
+import net.minecraft.item.ItemArmor;
+import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
 
 public class Itemsss
 {
 	
-	//Materials
+	//Tool Materials
 	public static ToolMaterial blessed_mat = EnumHelper.addToolMaterial("blessed_mat", 100, 1000, 18, 8, 20);
 	public static ToolMaterial death_mat = EnumHelper.addToolMaterial("death_mat", 100, 10000, 10, 16, 40);
 	public static ToolMaterial god_mat = EnumHelper.addToolMaterial("god_mat", 100, 10000, 10000, 14, 40);
 	public static ToolMaterial low_mat = EnumHelper.addToolMaterial("low_mat", 1, 100, 10, 0, 20);
 	public static ToolMaterial low_mat2 = EnumHelper.addToolMaterial("low_mat2", 1, 100, 10, 4, 30);
+	
+	//Armor materials
+	public static ArmorMaterial BlessedArmorMat = EnumHelper.addArmorMaterial("BlessedArmorMat", "kitchensink:BlessedArmor", 1000, new int[]{3, 8, 6, 3}, 30, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 3.0F);
 	
 	//Tools
 	public static Item blessedSword;
@@ -43,14 +49,16 @@ public class Itemsss
 	public static Item DeathHand;
 	
 	//Armor
-	public static Item blessedHelmet;
-	public static Item blessedChestplate;
-	public static Item blessedLeggings;
-	public static Item blessedBoots;
-	public static Item deathHelmet;
-	public static Item deathChestplate;
-	public static Item deathLeggings;
-	public static Item deathBoots;
+	public static ItemArmor blessedHelmet;
+	public static ItemArmor blessedChestplate;
+	public static ItemArmor blessedLeggings;
+	public static ItemArmor blessedBoots;
+	public static Item AngelArmorRing;
+	//public static ItemArmor deathHelmet;
+	//public static ItemArmor deathChestplate;
+	//public static ItemArmor deathLeggings;
+	//public static ItemArmor deathBoots;
+	public static Item DeathArmorRing;
 	
 	//items
 	public static Item angelAlloy;
@@ -113,7 +121,16 @@ public class Itemsss
 		DemonicSword = register(new DemonicSword("DemonicSword", low_mat2));
 		LevelPick = register(new LevelPick("LevelPick", low_mat2));
 		DeathHand = register(new DeathHand("DeathHand", low_mat));
-		godsTool = register(new godsTool("godsTool", god_mat));	
+		godsTool = register(new godsTool("godsTool", god_mat));
+		
+		//Armor
+		blessedHelmet = register(new KSArmor("blessedHelmet", true, BlessedArmorMat, 1, EntityEquipmentSlot.HEAD));
+		blessedChestplate = register(new KSArmor("blessedChestplate", true, BlessedArmorMat, 1, EntityEquipmentSlot.CHEST));
+		blessedLeggings = register(new KSArmor("blessedLeggings", true, BlessedArmorMat, 2, EntityEquipmentSlot.LEGS));
+		blessedBoots = register(new KSArmor("blessedBoots", true, BlessedArmorMat, 1, EntityEquipmentSlot.FEET));
+		AngelArmorRing = register(new AngelArmorRing("AngelArmorRing"));
+		
+		//DeathArmorRing = register(new DeathArmorRing("DeathArmorRing"));
 	}
 	private static <T extends Item> T register(T item) {
 		GameRegistry.register(item);

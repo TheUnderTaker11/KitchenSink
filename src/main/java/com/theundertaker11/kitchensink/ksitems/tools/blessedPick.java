@@ -2,8 +2,9 @@ package com.theundertaker11.kitchensink.ksitems.tools;
 
 import java.util.List;
 import com.theundertaker11.kitchensink.KitchenSink;
-import com.theundertaker11.kitchensink.ModUtils;
 import com.theundertaker11.kitchensink.entity.IndestructibleEntityItem;
+import com.theundertaker11.kitchensink.util.ModUtils;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;

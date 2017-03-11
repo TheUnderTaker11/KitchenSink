@@ -4,8 +4,9 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.theundertaker11.kitchensink.entity.IndestructibleEntityItem;
+import com.theundertaker11.kitchensink.util.ModUtils;
 import com.theundertaker11.kitchensink.KitchenSink;
-import com.theundertaker11.kitchensink.ModUtils;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
@@ -61,7 +62,6 @@ public class ItemMagnetT6 extends ItemBase {
 		return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
 	}
 
-	@SuppressWarnings("rawtypes")
 	@Override
 	public void onUpdate(ItemStack item, World world, Entity entity, int i, boolean f) {
 		if (world.isRemote)
@@ -72,46 +72,7 @@ public class ItemMagnetT6 extends ItemBase {
 			return;
 
 		EntityPlayer player = (EntityPlayer) entity;
-
-		// items
-		Iterator iterator = ModUtils.getEntitiesInRange(EntityItem.class, world, player.posX, player.posY,
-				player.posZ, this.distanceFromPlayer).iterator();
-		while (iterator.hasNext()) {
-			EntityItem itemToGet = (EntityItem) iterator.next();
-
-			EntityItemPickupEvent pickupEvent = new EntityItemPickupEvent(player, itemToGet);
-			MinecraftForge.EVENT_BUS.post(pickupEvent);
-			ItemStack itemStackToGet = itemToGet.getEntityItem();
-			int stackSize = itemStackToGet.stackSize;
-
-			if (pickupEvent.getResult() == Result.ALLOW || stackSize <= 0
-					|| player.inventory.addItemStackToInventory(itemStackToGet)) {
-				player.onItemPickup(itemToGet, stackSize);
-				world.playSound(player, player.getPosition(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.AMBIENT,
-						0.15F, ((world.rand.nextFloat() - world.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
-			}
-		}
-
-		// xp
-		iterator = ModUtils.getEntitiesInRange(EntityXPOrb.class, world, player.posX, player.posY, player.posZ,
-				this.distanceFromPlayer).iterator();
-		while (iterator.hasNext()) {
-			EntityXPOrb xpToGet = (EntityXPOrb) iterator.next();
-
-			if (xpToGet.isDead || xpToGet.isInvisible()) {
-				continue;
-			}
-			player.xpCooldown = 0;
-			xpToGet.delayBeforeCanPickup=0;
-			xpToGet.setPosition(player.posX,player.posY,player.posZ);
-			PlayerPickupXpEvent xpEvent = new PlayerPickupXpEvent(player, xpToGet);
-			MinecraftForge.EVENT_BUS.post(xpEvent);
-			if(xpEvent.getResult()==Result.ALLOW){
-				xpToGet.onCollideWithPlayer(player);
-			}
-			
-		}
-
+		ModUtils.doMagnet(player, world, this.distanceFromPlayer);
 	}
 
 	protected boolean isActivated(ItemStack item) {

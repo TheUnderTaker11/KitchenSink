@@ -5,8 +5,9 @@ import java.util.Set;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import com.theundertaker11.kitchensink.KitchenSink;
-import com.theundertaker11.kitchensink.ModUtils;
 import com.theundertaker11.kitchensink.entity.IndestructibleEntityItem;
+import com.theundertaker11.kitchensink.util.ModUtils;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;

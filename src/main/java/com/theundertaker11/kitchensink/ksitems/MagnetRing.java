@@ -4,8 +4,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.theundertaker11.kitchensink.KitchenSink;
-import com.theundertaker11.kitchensink.ModUtils;
 import com.theundertaker11.kitchensink.entity.IndestructibleEntityItem;
+import com.theundertaker11.kitchensink.util.ModUtils;
 
 import baubles.api.BaubleType;
 import baubles.api.IBauble;

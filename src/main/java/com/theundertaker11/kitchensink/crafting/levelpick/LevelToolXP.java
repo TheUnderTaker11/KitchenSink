@@ -1,5 +1,6 @@
-package com.theundertaker11.kitchensink.crafting;
+package com.theundertaker11.kitchensink.crafting.levelpick;
 
+import com.theundertaker11.kitchensink.crafting.CraftingManager;
 import com.theundertaker11.kitchensink.ksitems.Itemsss;
 
 import net.minecraft.enchantment.Enchantment;
@@ -11,7 +12,7 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
-public class CustomLevelToolFixing implements IRecipe{
+public class LevelToolXP implements IRecipe{
 		// 012
 		// 345
 		// 678
@@ -19,7 +20,7 @@ public class CustomLevelToolFixing implements IRecipe{
 	public boolean matches(InventoryCrafting inv, World worldIn) 
 	{
 		int pick = 0;
-		int ironcount = 0;
+		int xpcount = 0;
 		int noitem = 0;
 		for(int i=0; i < inv.getSizeInventory(); ++i)
 		{
@@ -29,32 +30,22 @@ public class CustomLevelToolFixing implements IRecipe{
 			if (item != null && item.getItem() == Itemsss.LevelPick && item.getTagCompound() != null) 
 			{
 				NBTTagCompound tag = item.getTagCompound();
-				if(tag.getInteger("dur")<(tag.getInteger("maxdur")))
+				if(!tag.hasKey("xpfromblocks"))
 				{
 					++pick;
 				}
 			}
-			if(item != null && item.getItem()==Items.IRON_INGOT)
+			if(item != null && inv.getStackInSlot(i).getItem()==Itemsss.xpItem)
 			{
-				++ironcount;
-			}
-			if(item==null)
-			{
-				++noitem;
+				++xpcount;
 			}
 		}
-		if(inv.getSizeInventory()==9&&pick == 1 && ironcount==1&&noitem==7)
+		if(inv.getSizeInventory()==9&&pick == 1 && xpcount==8)
 		{
 			return true;
 		}
-		if(inv.getSizeInventory()==4&&pick == 1 && ironcount==1&&noitem==2)
-		{
-			return true;
-		}
-		
 		else return false;
 	}
-
 	
 	@Override
 	public ItemStack getCraftingResult(InventoryCrafting inv) 
@@ -64,13 +55,23 @@ public class CustomLevelToolFixing implements IRecipe{
 		
 		ItemStack result = new ItemStack(Itemsss.LevelPick);
 		result.setTagCompound(item.copy().getTagCompound());
-		NBTTagCompound tag = result.getTagCompound();
-		tag.setInteger("dur", tag.getInteger("dur")+(tag.getInteger("maxdur")/6));
-		if(tag.getInteger("dur")>tag.getInteger("maxdur"))
+		result.getTagCompound().setInteger("xpfromblocks", 0);
+		if(item.getItemDamage()==0)
 		{
-			tag.setInteger("dur", tag.getInteger("maxdur"));
+			result.setItemDamage(1);
 		}
-		
+		else if(item.getItemDamage()==2)
+		{
+			result.setItemDamage(4);
+		}
+		else if(item.getItemDamage()==3)
+		{
+			result.setItemDamage(5);
+		}
+		else if(item.getItemDamage()==6)
+		{
+			result.setItemDamage(7);
+		}
 		return result;
 	}
 	@Override
@@ -81,8 +82,7 @@ public class CustomLevelToolFixing implements IRecipe{
 	@Override
 	public ItemStack getRecipeOutput()
 	{
-		ItemStack stack = new ItemStack(Itemsss.LevelPick);
-		return stack;	
+		return new ItemStack(Itemsss.LevelPick);
 	}
 	@Override
 	public ItemStack[] getRemainingItems(InventoryCrafting inv)

@@ -41,9 +41,7 @@ public class WorldTick {
 					
 				    try{
 				    	hasRock = baublesHasRock(player);
-				    }catch(NoSuchMethodError e){
-				    	
-				    }
+				    }catch(NoSuchMethodError e){}
 					//Looks in normal inventory(Only if not in baubles, to save lag.
 					if(!hasRock)
 					{
@@ -102,7 +100,7 @@ public class WorldTick {
 							 //Repairs my Lapis Pickaxe
 							 if(item==Itemsss.LevelPick)
 							 {
-								 if(tag.hasKey("dur")&&tag.hasKey("maxdur")&&tag.hasKey("autorepair"))
+								 if(!tag.hasKey("unbreakable")&&tag.hasKey("dur")&&tag.hasKey("maxdur")&&tag.hasKey("autorepair"))
 								 {
 									 LevelPick.addDur(itemstack, player);	
 								 }

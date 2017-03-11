@@ -12,7 +12,8 @@ item.deathsSythe.name=Death's Scythe
 item.SkeletonSword.name=Soul Sword
 item.DemonicSword.name=Demonic Soul Sword
 item.LevelPick.name=Lapis Pickaxe
-item.Wand.name=Wand Of Blessing
+item.AngelArmorRing.name=Angel Armor Ring
+item.DeathArmorRing.name=Death Armor Ring
 
 item.diamondPlate.name=Diamond Plate
 item.compDiamond.name=Compressed Diamond
@@ -37,6 +38,11 @@ item.ProtectionCharm.name=Charm of Protection
 item.MagnetRing.name=Magnet Ring
 item.speedForceRing.name=Speed Force Ring
 
+item.blessedHelmet.name=Angel Alloy Helmet
+item.blessedChestplate.name=Angel Alloy Chestplate
+item.blessedLeggings.name=Angel Alloy Leggings
+item.blessedBoots.name=Angel Alloy Boots
+
 tile.BlackBlock.name=Black Block
 tile.BabyBlueBlock.name=Baby Blue Block
 tile.BlueBlock.name=Blue Block
@@ -50,3 +56,4 @@ tile.YellowBlock.name=Yellow Block
 tile.HealingBlock.name=Healing Station
 tile.TrashChest.name=Trash Can
 tile.QuarryBlock.name=Quarry
+tile.BlessedFurnace.name=Blessed Furnace

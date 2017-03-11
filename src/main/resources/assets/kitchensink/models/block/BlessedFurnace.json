@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "particle": "kitchensink:blocks/Blessed_Furnace_Off",
+    "down": "kitchensink:blocks/Blessed_Furnace_Side",
+    "up": "kitchensink:blocks/Blessed_Furnace_Side",
+    "east": "kitchensink:blocks/Blessed_Furnace_Side",
+    "west": "kitchensink:blocks/Blessed_Furnace_Side",
+    "north": "kitchensink:blocks/Blessed_Furnace_Off",
+    "south": "kitchensink:blocks/Blessed_Furnace_Side"
+  }
+}

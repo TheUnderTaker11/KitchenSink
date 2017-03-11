@@ -3,7 +3,7 @@ package com.theundertaker11.kitchensink.ksitems;
 import java.util.List;
 
 import com.theundertaker11.kitchensink.KitchenSink;
-import com.theundertaker11.kitchensink.ModUtils;
+import com.theundertaker11.kitchensink.util.ModUtils;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;

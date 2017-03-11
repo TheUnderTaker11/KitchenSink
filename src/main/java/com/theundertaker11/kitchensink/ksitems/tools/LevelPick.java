@@ -1,12 +1,11 @@
 package com.theundertaker11.kitchensink.ksitems.tools;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
 import com.theundertaker11.kitchensink.KitchenSink;
-import com.theundertaker11.kitchensink.ModUtils;
 import com.theundertaker11.kitchensink.entity.IndestructibleEntityItem;
+import com.theundertaker11.kitchensink.util.ModUtils;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -56,112 +55,82 @@ public class LevelPick extends ItemPickaxe {
 	@Override
 	public void onUpdate(ItemStack itemstack, World world, Entity entity, int metadata, boolean bool)
 	{
-		if(!world.isRemote&&itemstack.getTagCompound()!=null)
+		if(!world.isRemote&&itemstack.getTagCompound()!=null&&(entity instanceof EntityPlayer))
 		{
+			EntityPlayer player = (EntityPlayer) entity;
+			
 			NBTTagCompound tag = itemstack.getTagCompound();
 			if(tag.getInteger("maxdur")<tag.getInteger("dur"))
 			{
 				tag.setInteger("dur",tag.getInteger("maxdur"));
 			}
-			if(tag.getInteger("pickxp")>=tag.getInteger("xptonextlevel"))
+			//testXPLevel(tag, itemstack, player);
+			
+			if(itemstack.getTagCompound().getBoolean("allowmagnet")&&itemstack.getTagCompound().getBoolean("magnetactive"))
 			{
-				if(tag.getInteger("picklevel")==0)
-				{
-					levelUpPick(itemstack, entity,1F);
-				}
-				if(tag.getInteger("picklevel")==2||tag.getInteger("picklevel")==3)
-				{
-					levelUpPick(itemstack, entity,3F);
-				}
-				if(tag.getInteger("picklevel")==4)
-				{
-					levelUpPick(itemstack, entity, 1F);
-					//Adds fortune 10 if it there is not silk touch
-					if(EnchantmentHelper.getEnchantmentLevel(Enchantment.getEnchantmentByID(33), itemstack)<1)
-					{
-						itemstack.addEnchantment(Enchantment.getEnchantmentByID(35), 10);
-						entity.addChatMessage(new TextComponentString("Fortune 10 added"));
-					}
-					
-				}
-				//If it was level 1 or level 5+
-				if(tag.getInteger("picklevel")==1||tag.getInteger("picklevel")>=5)
-				{
-					levelUpPick(itemstack, entity, 2F);
-				}
+				ModUtils.doMagnet(player, world, 12.5);
 			}
-		/*
-		 * Start magnet
-		 * 
-		 */
-		if(itemstack.getTagCompound().getBoolean("allowmagnet")&&itemstack.getTagCompound().getBoolean("magnetactive")&&(entity instanceof EntityPlayer))
-		{
-		EntityPlayer player = (EntityPlayer) entity;
-
-		// items
-				Iterator iterator = ModUtils.getEntitiesInRange(EntityItem.class, world, player.posX, player.posY,
-						player.posZ, 12.5).iterator();
-				while (iterator.hasNext()) {
-					EntityItem itemToGet = (EntityItem) iterator.next();
-
-					EntityItemPickupEvent pickupEvent = new EntityItemPickupEvent(player, itemToGet);
-					MinecraftForge.EVENT_BUS.post(pickupEvent);
-					ItemStack itemStackToGet = itemToGet.getEntityItem();
-					int stackSize = itemStackToGet.stackSize;
-
-					if (pickupEvent.getResult() == Result.ALLOW || stackSize <= 0
-							|| player.inventory.addItemStackToInventory(itemStackToGet)) {
-						player.onItemPickup(itemToGet, stackSize);
-						world.playSound(player, player.getPosition(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.AMBIENT,
-								0.15F, ((world.rand.nextFloat() - world.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
-					}
-				}
-
-				// xp
-				iterator = ModUtils.getEntitiesInRange(EntityXPOrb.class, world, player.posX, player.posY, player.posZ,
-						12.5).iterator();
-				while (iterator.hasNext()) {
-					EntityXPOrb xpToGet = (EntityXPOrb) iterator.next();
-
-					if (xpToGet.isDead || xpToGet.isInvisible()) {
-						continue;
-					}
-					player.xpCooldown = 0;
-					xpToGet.delayBeforeCanPickup=0;
-					xpToGet.setPosition(player.posX,player.posY,player.posZ);
-					PlayerPickupXpEvent xpEvent = new PlayerPickupXpEvent(player, xpToGet);
-					MinecraftForge.EVENT_BUS.post(xpEvent);
-					if(xpEvent.getResult()==Result.ALLOW){
-						xpToGet.onCollideWithPlayer(player);
-					}
-					
-				}
-		}
-	/*
-	 * End magnet
-	 * 
-	 */
 		}
 	}
 	
 	/**
-	 * Levels up the pick, entity is needed to give them the chat message
+	 * Checks if XP is >= max XP, and levels the pick up if it is.
+	 * @param tag
+	 * @param pick
+	 * @param player
 	 */
-	  public static void levelUpPick(ItemStack itemstack, Entity entity, float speedadded)
-	  {
+	public static void testXPLevel(NBTTagCompound tag, ItemStack pick, EntityPlayer player)
+	{
+		if(tag.getInteger("pickxp")>=tag.getInteger("xptonextlevel"))
+		{
+			if(tag.getInteger("picklevel")==0)
+			{
+				levelUpPick(pick, player,1F);
+			}
+			if(tag.getInteger("picklevel")==2||tag.getInteger("picklevel")==3)
+			{
+				levelUpPick(pick, player,3F);
+			}
+			if(tag.getInteger("picklevel")==4)
+			{
+				levelUpPick(pick, player, 1F);
+				//Adds fortune 10 if it there is not silk touch
+				if(EnchantmentHelper.getEnchantmentLevel(Enchantment.getEnchantmentByID(33), pick)<1)
+				{
+					pick.addEnchantment(Enchantment.getEnchantmentByID(35), 10);
+					player.addChatMessage(new TextComponentString("Fortune 10 added"));
+				}
+				
+			}
+			//If it was level 1 or level 5+
+			if(tag.getInteger("picklevel")==1||tag.getInteger("picklevel")>=5)
+			{
+				levelUpPick(pick, player, 2F);
+			}
+		}
+	}
+	/**
+	 * Levels up the pick, player is needed to give them the chat message
+	 */
+	 public static void levelUpPick(ItemStack itemstack, EntityPlayer player, float speedadded)
+	 {
 		  if(itemstack.getTagCompound()!=null)
 		  {
 			  NBTTagCompound tag = itemstack.getTagCompound();
 			  tag.setInteger("pickxp", 0);
 			  tag.setInteger("picklevel", tag.getInteger("picklevel")+1);
 			  tag.setFloat("pickspeed", (tag.getFloat("pickspeed")+speedadded));
-			  entity.addChatMessage(new TextComponentString("Your Pick Has Leveled Up!"));
-			  entity.addChatMessage(new TextComponentString("Speed added: " + speedadded));
+			  player.addChatMessage(new TextComponentString("Your Pick Has Leveled Up!"));
+			  player.addChatMessage(new TextComponentString("Speed added: " + speedadded));
 			  tag.setInteger("harvestlevel", tag.getInteger("picklevel"));
 			  tag.setInteger("xptonextlevel", ((tag.getInteger("picklevel")*150)+50));
-			  tag.setInteger("maxdur", ((tag.getInteger("picklevel")*250)+250));
+			  if(!tag.hasKey("unbreakable"))
+			  {
+				  tag.setInteger("maxdur", ((tag.getInteger("picklevel")*250)+250));
+				  tag.setInteger("dur", tag.getInteger("dur")+250);
+			  }
 		  }
-	  }
+	 }
 	  
 	//Adds tooltip
 	@Override
@@ -196,6 +165,10 @@ public class LevelPick extends ItemPickaxe {
 				  tooltip.add(TextFormatting.BOLD+"This will add auto repair onto your pick");
 				  tooltip.add(TextFormatting.BOLD+"It is fast enough it will never need repaired again.");
 			  }
+			  else if(tag.getBoolean("dummyUnbreakable"))
+			  {
+				  tooltip.add(TextFormatting.BOLD+"Your pick will be fully repaired and unbreakable");
+			  }
 		  }
 		  else
 		  {
@@ -218,12 +191,13 @@ public class LevelPick extends ItemPickaxe {
 				}
 				else tooltip.add(TextFormatting.BOLD+"Magnet Disabled");
 			}
-			if(tag.getBoolean("allowxp")) tooltip.add("Right clicks remaining: "+(tag.getInteger("xpfromblocks")/20));
+			if(tag.hasKey("xpfromblocks")) tooltip.add("Right clicks remaining: "+(tag.getInteger("xpfromblocks")/20));
 			tooltip.add("Current XP: "+tag.getInteger("pickxp")+"/"+tag.getInteger("xptonextlevel"));
 			if(tag.getBoolean("autorepair")) tooltip.add("Repair I");
 		  }
 		}
     }
+	
 	/**
 	 * Makes it so hitting Entity's takes 2 from NBT duribility
 	 * 
@@ -231,7 +205,7 @@ public class LevelPick extends ItemPickaxe {
 	@Override
 	public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker)
     {
-		if(stack.getTagCompound() !=null && stack.getTagCompound().getInteger("dur")>0)
+		if(stack.getTagCompound() !=null && !stack.getTagCompound().hasKey("unbreakable") && stack.getTagCompound().getInteger("dur")>0)
 		{
 			stack.getTagCompound().setInteger("dur", (stack.getTagCompound().getInteger("dur")-2));
 		}	
@@ -244,29 +218,31 @@ public class LevelPick extends ItemPickaxe {
 	@Override
 	public boolean onBlockDestroyed(ItemStack stack, World worldIn, IBlockState blockIn, BlockPos pos, EntityLivingBase entityLiving)
     {
-		if(!worldIn.isRemote&&stack.getTagCompound() !=null&& stack.getTagCompound().getInteger("dur")>0)
+		if(!worldIn.isRemote&&entityLiving instanceof EntityPlayer&&stack.getTagCompound()!=null&&stack.getTagCompound().getInteger("dur")>0)
 		{
+			Block block = blockIn.getBlock();
 			NBTTagCompound tag = stack.getTagCompound();
-			tag.setInteger("dur", (tag.getInteger("dur")-1));
-			//These will give varying XP based on the block broken.
-			if(blockIn==Blocks.DIAMOND_ORE||blockIn==Blocks.GOLD_ORE||blockIn==Blocks.EMERALD_ORE||blockIn==Blocks.QUARTZ_ORE||blockIn==Blocks.OBSIDIAN)
+			
+			if(block==Blocks.DIAMOND_ORE||block==Blocks.GOLD_ORE||block==Blocks.EMERALD_ORE||block==Blocks.QUARTZ_ORE||block==Blocks.OBSIDIAN)
 			{
-			tag.setInteger("pickxp", tag.getInteger("pickxp")+4);
+				tag.setInteger("pickxp", tag.getInteger("pickxp")+4);
 			}
-			else if(blockIn==Blocks.COAL_ORE||blockIn==Blocks.IRON_ORE||blockIn==Blocks.LAPIS_ORE||blockIn==Blocks.REDSTONE_ORE)
+			else if(block==Blocks.COAL_ORE||block==Blocks.IRON_ORE||block==Blocks.LAPIS_ORE||block==Blocks.REDSTONE_ORE||block==Blocks.LIT_REDSTONE_ORE)
 			{
-			tag.setInteger("pickxp", tag.getInteger("pickxp")+3);
+				tag.setInteger("pickxp", tag.getInteger("pickxp")+3);
 			}
 			else tag.setInteger("pickxp", tag.getInteger("pickxp")+1);
 
 			//Increases xpfromblocks NBT if it has been crafted with the xp items.
-			if(tag.getBoolean("allowxp"))
+			if(tag.hasKey("xpfromblocks"))
 			{
-			tag.setInteger("xpfromblocks", (tag.getInteger("xpfromblocks")+1));
+				tag.setInteger("xpfromblocks", (tag.getInteger("xpfromblocks")+1));
 			}
+			if(!tag.hasKey("unbreakable")) tag.setInteger("dur", (tag.getInteger("dur")-1));
+			testXPLevel(tag, stack, (EntityPlayer)entityLiving);
 		}
 		
-        return false;
+        return true;
     }
 	
 	/**
@@ -288,18 +264,20 @@ public class LevelPick extends ItemPickaxe {
     {
 		if(stack.getTagCompound() !=null)
 		{
-			if(stack.getTagCompound().getInteger("dur")>0)
+			if (state.getBlock()==Blocks.REDSTONE_ORE||state.getBlock()==Blocks.LIT_REDSTONE_ORE||state.getBlock()==Blocks.OBSIDIAN
+						||state.getBlock().isToolEffective("pickaxe", state))
 			{
-				if (state.getBlock().isToolEffective("pickaxe", state))
+				if(state.getBlock().getHarvestLevel(state)>=stack.getTagCompound().getInteger("harvestlevel"))
+				{
 					return stack.getTagCompound().getFloat("pickspeed");
+				}
 			}
-			else return 0.0F;
 		}
-		return 3.0F;
+		return super.getStrVsBlock(stack, state);
     }
 
-	/**Makes it so my pick cant break blocks when NBT Duribility is 0 
-	 * (Along with the getStrVsBlock method)
+	/**
+	 * Makes it so my pick cant break blocks when NBT Duribility is 0 
 	 */
 	@Override
 	public boolean onBlockStartBreak(ItemStack itemstack, BlockPos pos, EntityPlayer player)
@@ -316,10 +294,7 @@ public class LevelPick extends ItemPickaxe {
     }
 	
 	@Override
-	public int getItemEnchantability()
-    {
-        return 0;
-    }
+	public int getItemEnchantability(){return 0;}
 	/**
 	 * Code for magnet activation on shift click, and getting XP when that is allowed.
 	 * 
@@ -337,7 +312,7 @@ public class LevelPick extends ItemPickaxe {
 					tag.setBoolean("magnetactive", (!tag.getBoolean("magnetactive")));
 				}
 			}
-			if(!worldIn.isRemote&&!playerIn.isSneaking()&&tag.getBoolean("allowxp"))
+			if(!worldIn.isRemote&&!playerIn.isSneaking()&&tag.hasKey("xpfromblocks"))
 			{
 				if(tag.getInteger("xpfromblocks")>19)
 				{
@@ -350,7 +325,7 @@ public class LevelPick extends ItemPickaxe {
 	}
 	
 	/**
-	 * Adds duribility when called by the playertick in my event class
+	 * Adds duribility when called by the worldtick class
 	 * 
 	 */
 	public static void addDur(ItemStack itemstack, EntityPlayer player)
@@ -361,7 +336,7 @@ public class LevelPick extends ItemPickaxe {
 			NBTTagCompound tag = itemstack.getTagCompound();
 			if(tag.getInteger("dur")<tag.getInteger("maxdur"))
 			{
-				tag.setInteger("dur",(tag.getInteger("dur")+20));
+				tag.setInteger("dur",(tag.getInteger("dur")+1));
 			}
 		}
 	}
@@ -389,7 +364,8 @@ public class LevelPick extends ItemPickaxe {
 		if(item.getTagCompound()!=null) return item.getTagCompound().getBoolean("magnetactive");
 		else return false;
 	}
-	//Tinkers Code
+	
+	//Tinkers Code to make its EntityItem invincible
 	@Override
 	public boolean hasCustomEntity(ItemStack stack)
 	{

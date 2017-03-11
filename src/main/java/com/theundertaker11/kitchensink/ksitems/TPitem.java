@@ -3,7 +3,7 @@ package com.theundertaker11.kitchensink.ksitems;
 import java.util.List;
 
 import com.theundertaker11.kitchensink.KitchenSink;
-import com.theundertaker11.kitchensink.ModUtils;
+import com.theundertaker11.kitchensink.util.ModUtils;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
@@ -28,15 +28,18 @@ public class TPitem extends ItemBase {
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World worldIn, EntityPlayer playerIn, EnumHand hand)
     {
+		if(!worldIn.isRemote)
+		{
 			if(playerIn.isSneaking()) 
 			{
 				ModUtils.WritePlayerXYZtoNBT(stack, playerIn);
 			}
 			else if(stack.getTagCompound()!=null)
-				{
-					NBTTagCompound tag=stack.getTagCompound();
-					ModUtils.TeleportPlayer(playerIn, tag.getDouble("x"), tag.getDouble("y"), tag.getDouble("z"), tag.getInteger("dim"));
-				}
+			{
+				NBTTagCompound tag=stack.getTagCompound();
+				ModUtils.TeleportPlayer(playerIn, tag.getDouble("x"), tag.getDouble("y"), tag.getDouble("z"), tag.getInteger("dim"));
+			}
+		}
 		return new ActionResult<ItemStack>(EnumActionResult.PASS, stack);
 	}
 	

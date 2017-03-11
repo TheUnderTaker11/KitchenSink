@@ -1,6 +1,7 @@
 package com.theundertaker11.kitchensink.ksblocks;
 
 import com.theundertaker11.kitchensink.KitchenSink;
+import com.theundertaker11.kitchensink.ksblocks.blessedfurnace.BlockBlessedFurnace;
 import com.theundertaker11.kitchensink.ksblocks.quarry.QuarryBlock;
 import com.theundertaker11.kitchensink.ksblocks.trashchest.TrashChest;
 import com.theundertaker11.kitchensink.render.IItemModelProvider;
@@ -42,6 +43,7 @@ public final class KSBlocks {
 		HealingBlock = register(new HealingBlock("HealingBlock"));
 		QuarryBlock = register(new QuarryBlock("QuarryBlock"));
 		TrashChest = register(new TrashChest("TrashChest"));
+		BlessedFurnace = register(new BlockBlessedFurnace("BlessedFurnace"));
 	}
 	private static <T extends Block> T register (T block, ItemBlock itemBlock)
 	{

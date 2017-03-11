@@ -31,6 +31,9 @@ public class ItemRenderRegistry {
 	    regWithMeta(Itemsss.ItemMagnetT5, 1);
 	    regWithMeta(Itemsss.ItemMagnetT6, 1);
 	    regWithMeta(Itemsss.deathIngot, 1);
+	    regWithMeta(Itemsss.AngelArmorRing, 1);
+	    regWithMeta(Itemsss.AngelArmorRing, 10);
+	    regWithMeta(Itemsss.blessedRock, 1);
 
 	    //regWithMetaAndName(Itemsss.Wand, 0, "Wand0");
 	    //regWithMetaAndName(Itemsss.Wand, 1, "Wand0");

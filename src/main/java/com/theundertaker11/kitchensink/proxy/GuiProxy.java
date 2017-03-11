@@ -1,5 +1,8 @@
 package com.theundertaker11.kitchensink.proxy;
 
+import com.theundertaker11.kitchensink.ksblocks.blessedfurnace.ContainerBlessedFurnace;
+import com.theundertaker11.kitchensink.ksblocks.blessedfurnace.GuiBlessedFurnace;
+import com.theundertaker11.kitchensink.ksblocks.blessedfurnace.KSTileEntityBlessedFurnace;
 import com.theundertaker11.kitchensink.ksblocks.trashchest.KSTileEntityTrashChest;
 import com.theundertaker11.kitchensink.ksblocks.trashchest.TrashChestContainer;
 import com.theundertaker11.kitchensink.ksblocks.trashchest.TrashChestGui;
@@ -19,6 +22,10 @@ public class GuiProxy implements IGuiHandler{
         if (te instanceof KSTileEntityTrashChest) {
             return new TrashChestContainer(player.inventory, (KSTileEntityTrashChest) te);
         }
+        if(te instanceof KSTileEntityBlessedFurnace)
+        {
+        	return new ContainerBlessedFurnace(player.inventory, (KSTileEntityBlessedFurnace) te);
+        }
         return null;
     }
 
@@ -29,6 +36,10 @@ public class GuiProxy implements IGuiHandler{
         if (te instanceof KSTileEntityTrashChest) {
         	KSTileEntityTrashChest containerTileEntity = (KSTileEntityTrashChest) te;
             return new TrashChestGui(containerTileEntity, new TrashChestContainer(player.inventory, containerTileEntity));
+        }
+        if (te instanceof KSTileEntityBlessedFurnace)
+        {
+            return new GuiBlessedFurnace(player.inventory, (KSTileEntityBlessedFurnace) te);
         }
         return null;
     }

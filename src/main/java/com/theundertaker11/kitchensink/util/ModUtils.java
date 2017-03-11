@@ -1,5 +1,6 @@
-package com.theundertaker11.kitchensink;
+package com.theundertaker11.kitchensink.util;
 
+import java.util.Iterator;
 import java.util.List;
 
 import com.theundertaker11.kitchensink.ksitems.Itemsss;
@@ -8,6 +9,8 @@ import baubles.api.cap.BaublesCapabilities;
 import baubles.api.cap.IBaublesItemHandler;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.IInventory;
@@ -16,9 +19,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
+import net.minecraftforge.event.entity.player.PlayerPickupXpEvent;
+import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
@@ -59,6 +67,48 @@ public final class ModUtils
              (float) (entity.posY - clickedBlock.getY()),
              (float) (entity.posZ - clickedBlock.getZ()));
     }
+	
+	public static void doMagnet(EntityPlayer player, World world, double range)
+	{
+		if(world.isRemote||player==null) return;
+		// items
+		Iterator iterator = getEntitiesInRange(EntityItem.class, world, player.posX, player.posY, player.posZ, range).iterator();
+				while (iterator.hasNext()) {
+					EntityItem itemToGet = (EntityItem) iterator.next();
+
+					EntityItemPickupEvent pickupEvent = new EntityItemPickupEvent(player, itemToGet);
+					MinecraftForge.EVENT_BUS.post(pickupEvent);
+					ItemStack itemStackToGet = itemToGet.getEntityItem();
+					int stackSize = itemStackToGet.stackSize;
+
+					if (pickupEvent.getResult() == Result.ALLOW || stackSize <= 0
+							|| player.inventory.addItemStackToInventory(itemStackToGet)) {
+						player.onItemPickup(itemToGet, stackSize);
+						world.playSound(player, player.getPosition(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.AMBIENT,
+								0.15F, ((world.rand.nextFloat() - world.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+					}
+				}
+
+				// xp
+				iterator = getEntitiesInRange(EntityXPOrb.class, world, player.posX, player.posY, player.posZ,
+						range).iterator();
+				while (iterator.hasNext()) {
+					EntityXPOrb xpToGet = (EntityXPOrb) iterator.next();
+
+					if (xpToGet.isDead || xpToGet.isInvisible()) {
+						continue;
+					}
+					player.xpCooldown = 0;
+					xpToGet.delayBeforeCanPickup=0;
+					xpToGet.setPosition(player.posX,player.posY,player.posZ);
+					PlayerPickupXpEvent xpEvent = new PlayerPickupXpEvent(player, xpToGet);
+					MinecraftForge.EVENT_BUS.post(xpEvent);
+					if(xpEvent.getResult()==Result.ALLOW){
+						xpToGet.onCollideWithPlayer(player);
+					}
+					
+				}
+	}
 	//End things by Jotato
 	/**
 	 * Gets the Players X, Y, and Z and writes them as doubles to the key's x, y, and z in NBT,
@@ -158,5 +208,16 @@ public final class ModUtils
 			}
 		}
 		return inventory;
+	}
+	
+	public static String getRomanNum(int num)
+	{
+		String romanNum = "Error, report my Github!";
+		if(num==1) romanNum="I";
+		if(num==2) romanNum="II";
+		if(num==3) romanNum="III";
+		if(num==4) romanNum="IV";
+		if(num==5) romanNum="V";
+		return romanNum;
 	}
 }

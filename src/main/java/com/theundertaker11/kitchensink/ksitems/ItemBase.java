@@ -33,5 +33,4 @@ public class ItemBase extends Item implements IItemModelProvider{
 	{
 		return this.hasEffct;
 	}
-
 }

@@ -1,5 +1,6 @@
 package com.theundertaker11.kitchensink.tileentity;
 
+import com.theundertaker11.kitchensink.ksblocks.blessedfurnace.KSTileEntityBlessedFurnace;
 import com.theundertaker11.kitchensink.ksblocks.quarry.KSTileEntityQuarryBlock;
 import com.theundertaker11.kitchensink.ksblocks.trashchest.KSTileEntityTrashChest;
 
@@ -13,6 +14,6 @@ public class KSTileEntityRegistry {
 		GameRegistry.registerTileEntity(KSTileEntityHealingBlock.class, "KSTileEntityHealingBlock");
 		GameRegistry.registerTileEntity(KSTileEntityQuarryBlock.class, "KSTileEntityQuarryBlock");
 		GameRegistry.registerTileEntity(KSTileEntityTrashChest.class, "KSTileEntityTrashChest");
-		//GameRegistry.registerTileEntity(KSTileEntityBlessedFurnace.class, "KSTileEntityBlessedFurnace");
+		GameRegistry.registerTileEntity(KSTileEntityBlessedFurnace.class, "KSTileEntityBlessedFurnace");
 	}
 }
