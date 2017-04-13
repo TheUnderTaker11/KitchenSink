@@ -40,6 +40,7 @@ public class KSTileEntityQuarryBlock extends TileEntity implements ITickable{
 	
 	private final String FAKE_PLAYER_NAME = "[KitchenSink]";
 	private final UUID FAKE_PLAYER_ID = null;
+	
 	public static final int SIZE = 1;
 	private boolean replaceBlocks;
 	private int Energy;
@@ -139,9 +140,7 @@ public class KSTileEntityQuarryBlock extends TileEntity implements ITickable{
 		int localy;
 		int localz;
 		if(quarry.getStackInSlot(0)!=null) return;
-		//EntityPlayer dummy = KitchenSink.proxy.getDummyPlayer((WorldServer)worldObj, this.getPos().getX(), this.getPos().getX(), this.getPos().getX()).get();
-		//BlockEvent.BreakEvent event = new BlockEvent.BreakEvent(worldObj, new BlockPos(this.currentX,this.currentY, this.currentZ), state, dummy);
-		//MinecraftForge.EVENT_BUS.post(event);
+		
 		if(this.currentY==0)
 		{
 			this.currentX=(this.getPos().getX()-this.radius);
@@ -192,32 +191,34 @@ public class KSTileEntityQuarryBlock extends TileEntity implements ITickable{
 		Block blockToMine = stateToMine.getBlock();
 		if(blockToMine!=Blocks.AIR)
 		{
-			
-			if(blockToMine==Blocks.WATER||blockToMine==Blocks.LAVA||blockToMine==Blocks.FLOWING_LAVA||blockToMine==Blocks.FLOWING_WATER)
+			BreakEvent event = new BreakEvent(this.getWorld(), blockPos, stateToMine, fakeplayer);
+			MinecraftForge.EVENT_BUS.post(event);
+			if(event.getResult() == Result.ALLOW)
 			{
-				if(this.replaceBlocks) world.setBlockState(blockPos, Blocks.STONE.getDefaultState(), 3);
-				
-				else world.setBlockToAir(blockPos);
-			}
-			else
-			{
-				this.tickTimer=0;
-				this.removeEnergy(1);
-				
-				if(blockToMine.getItem(this.getWorld(), blockPos, stateToMine)!=null&&quarry.getStackInSlot(0)==null//&&blockToMine!=Blocks.BEDROCK
-						&&stateToMine.getBlock().getHarvestLevel(stateToMine)>-1)
+				if(blockToMine==Blocks.WATER||blockToMine==Blocks.LAVA||blockToMine==Blocks.FLOWING_LAVA||blockToMine==Blocks.FLOWING_WATER)
 				{
-					BreakEvent event = new BreakEvent(this.getWorld(), blockPos, stateToMine, fakeplayer);
-					MinecraftForge.EVENT_BUS.post(event);
-					
-					if(!event.isCanceled())
+					if(this.replaceBlocks) world.setBlockState(blockPos, Blocks.STONE.getDefaultState(), 3);
+					else world.setBlockToAir(blockPos);
+				}
+				else
+				{
+					this.tickTimer=0;
+					this.removeEnergy(1);
+				
+					if(blockToMine.getItem(this.getWorld(), blockPos, stateToMine)!=null&&quarry.getStackInSlot(0)==null//&&blockToMine!=Blocks.BEDROCK
+						&&stateToMine.getBlock().getHarvestLevel(stateToMine)>-1)
 					{
-						if(this.replaceBlocks) world.setBlockState(blockPos, Blocks.STONE.getDefaultState(), 3);
-						else world.destroyBlock(blockPos, false);
+						if(this.replaceBlocks) 
+							world.setBlockState(blockPos, Blocks.STONE.getDefaultState(), 3);
+						else 
+							world.destroyBlock(blockPos, false);
+						
 						quarry.insertItem(0, blockToMine.getItem(this.getWorld(), blockPos, stateToMine), false);
 					}
+					else return;
 				}
 			}
+			else return;
 		}
 		this.currentX = localx;
 		this.currentY = localy;

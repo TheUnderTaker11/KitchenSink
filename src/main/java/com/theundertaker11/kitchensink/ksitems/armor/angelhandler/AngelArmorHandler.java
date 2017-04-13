@@ -63,19 +63,19 @@ public class AngelArmorHandler {
 		if(!generallist.contains(player.getName())) generallist.add(player.getName());
 		if(!hasarmorlist.contains(player.getName())) addArmor(player);
 		ItemStack chest = null;
-		for(int i=0;i<player.inventory.armorInventory.length;i++)
+		for(ItemStack stack : player.inventory.armorInventory)
 		{
-			ItemStack stack = player.inventory.armorItemInSlot(i);
 			if(stack!=null&&stack.getTagCompound()!=null)
 			{
 				if(stack.getItem()==Itemsss.blessedChestplate) chest = stack;
 			}
 		}
-		
-		AngelHelmetHandler.handle(player, chest);
-		AngelChestHandler.handle(player, chest);
-		AngelLegHandler.handle(player, chest);
-		AngelBootsHandler.handle(player, chest);
+		if(chest!=null){
+			AngelHelmetHandler.handle(player, chest);
+			AngelChestHandler.handle(player, chest);
+			AngelLegHandler.handle(player, chest);
+			AngelBootsHandler.handle(player, chest);
+		}
 	}
 	/**
 	 * Removes all effects the angel armor gives.

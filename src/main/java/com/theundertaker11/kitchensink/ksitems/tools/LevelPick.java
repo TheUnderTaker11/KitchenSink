@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import com.theundertaker11.kitchensink.KitchenSink;
 import com.theundertaker11.kitchensink.entity.IndestructibleEntityItem;
+import com.theundertaker11.kitchensink.event.KSEventHandler;
 import com.theundertaker11.kitchensink.util.ModUtils;
 
 import net.minecraft.block.Block;
@@ -58,18 +59,16 @@ public class LevelPick extends ItemPickaxe {
 		if(!world.isRemote&&itemstack.getTagCompound()!=null&&(entity instanceof EntityPlayer))
 		{
 			EntityPlayer player = (EntityPlayer) entity;
-			
 			NBTTagCompound tag = itemstack.getTagCompound();
+			
 			if(tag.getInteger("maxdur")<tag.getInteger("dur"))
-			{
 				tag.setInteger("dur",tag.getInteger("maxdur"));
-			}
-			//testXPLevel(tag, itemstack, player);
 			
 			if(itemstack.getTagCompound().getBoolean("allowmagnet")&&itemstack.getTagCompound().getBoolean("magnetactive"))
-			{
 				ModUtils.doMagnet(player, world, 12.5);
-			}
+			
+			if(KSEventHandler.itemtimer>8)
+				testXPLevel(tag, itemstack, player);
 		}
 	}
 	
@@ -239,7 +238,6 @@ public class LevelPick extends ItemPickaxe {
 				tag.setInteger("xpfromblocks", (tag.getInteger("xpfromblocks")+1));
 			}
 			if(!tag.hasKey("unbreakable")) tag.setInteger("dur", (tag.getInteger("dur")-1));
-			testXPLevel(tag, stack, (EntityPlayer)entityLiving);
 		}
 		
         return true;

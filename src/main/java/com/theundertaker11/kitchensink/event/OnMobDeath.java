@@ -41,8 +41,7 @@ public class OnMobDeath {
 	@SubscribeEvent
 	public void onDeath(LivingDeathEvent event)
 	{  
-		if(!event.getEntityLiving().worldObj.isRemote && (event.getSource().getEntity()!=null) && event.getSource().getEntity() instanceof EntityPlayer
-				&&!(event.getSource().getEntity() instanceof FakePlayer))
+		if(!event.getEntityLiving().worldObj.isRemote&& event.getSource().getEntity()!=null && event.getSource().getEntity() instanceof EntityPlayer)
 		{
 			EntityPlayer player = (EntityPlayer) event.getSource().getEntity();
 			ItemStack stack = player.getHeldItem(EnumHand.MAIN_HAND);
@@ -66,7 +65,7 @@ public class OnMobDeath {
 				}
 			}
 				 
-			if(player.getHeldItem(EnumHand.MAIN_HAND).getItem()!=null&&player.getHeldItem(EnumHand.MAIN_HAND).getItem() == Itemsss.DemonicSword)
+			if(player.getHeldItem(EnumHand.MAIN_HAND)!=null&&player.getHeldItem(EnumHand.MAIN_HAND).getItem() == Itemsss.DemonicSword)
 			{
 				ItemStack in = player.getHeldItem(EnumHand.MAIN_HAND);
 				if(event.getEntityLiving() instanceof EntitySkeleton)

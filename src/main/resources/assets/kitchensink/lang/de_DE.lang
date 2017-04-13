@@ -1,0 +1,52 @@
+itemGroup.KStab=Kitchen Sink Mod
+
+
+item.blessedPick.name=Gesegnete Metallspitzhacke
+item.blessedShovel.name=Gesegnete Metallschaufel
+item.blessedSword.name=Gesegnetes Metallschwert
+item.blessedAxe.name=Gesegnete Metallaxt
+item.blessedHoe.name=Gesegnete Metallfeldhacke
+item.blessedPick2.name=Gesegnete Metallspitzhacke
+item.godsTool.name=Werkzeug Gottes
+item.deathsSythe.name=Sensenmann-Sense
+item.SkeletonSword.name=Seelenschwert
+item.DemonicSword.name=Dämonisches Seelenschwert
+item.LevelPick.name=Lapis-Spitzhacke
+item.Wand.name=Stab des Segens
+
+item.diamondPlate.name=Diamantplatte
+item.compDiamond.name=Komprimierter Diamant
+item.obsidianPlate.name=Obsidianplatte
+item.angelAlloy.name=Engelsbarren
+item.deathIngot.name=Barren des Todes
+item.deathNugget.name=Nugget des Todes
+item.blessedRock.name=Gesegnetes...Gestein?
+item.netherStarPlate.name=Nethersternplatte
+item.godEssence.name=Essenz des Gottes
+item.ItemMagnet.name=Item-Magnet T1
+item.ItemMagnetT2.name=Item-Magnet T2
+item.ItemMagnetT3.name=Item-Magnet T3
+item.ItemMagnetT4.name=Item-Magnet T4
+item.ItemMagnetT5.name=Item-Magnet T5
+item.ItemMagnetT6.name=Gesegneter Magnet
+item.xpItem.name=Extrahiertes Erfahrungsfläschchen
+item.DeathHand.name=Hand des Todes
+item.HealthTPitem.name=Zauber des unsterblichen Feiglings
+item.TPitem.name=Zauber des Rückrufs
+item.ProtectionCharm.name=Zauber des Schutzes
+item.MagnetRing.name=Magnetring
+item.speedForceRing.name=Geschwindigkeitskraftring
+
+tile.BlackBlock.name=Schwarzer Block
+tile.BabyBlueBlock.name=Himmelblauer Block
+tile.BlueBlock.name=Blauer Block
+tile.BrownBlock.name=Brauner Block
+tile.GreenBlock.name=Grüner Block
+tile.OrangeBlock.name=Oranger Block
+tile.PurpleBlock.name=Violetter Block
+tile.RedBlock.name=Roter Block
+tile.WhiteBlock.name=Weißer Block
+tile.YellowBlock.name=Gelber Block
+tile.HealingBlock.name=Heilungsstation
+tile.TrashChest.name=Mülltonne
+tile.QuarryBlock.name=Steinbruch

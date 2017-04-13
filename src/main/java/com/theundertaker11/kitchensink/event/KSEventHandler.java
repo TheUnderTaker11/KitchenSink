@@ -10,8 +10,9 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 public class KSEventHandler {
 	
-	public static int worldticktimer = 0;
-	public static int Angelticktimer = 0;
+	public static short worldticktimer = 0;
+	public static short Angelticktimer = 0;
+	public static short itemtimer = 0;
 	private static boolean toggle;
 	
 	public static void init()
@@ -30,6 +31,10 @@ public class KSEventHandler {
 		{
 			++worldticktimer;
 			++Angelticktimer;
+			++itemtimer;
+			
+			if(itemtimer>10) 
+				itemtimer=0;
 		}
 		toggle=!toggle;
 	}
