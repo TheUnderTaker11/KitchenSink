@@ -1,5 +1,6 @@
 # KitchenSink
 This mod is just everything I could find under my kitchen sink, meaning any items/blocks I think would be cool to add in I do, so this is an extra utilities type mod.
+Made this to learn how to do new stuff or just random ideas I liked, no longer devoleloped or supported.
 
 Go to the wiki page to get started!    
 
